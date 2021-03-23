@@ -13,7 +13,7 @@ if (strlen($username) === 0 || strlen($password) === 0) {
     return;
 }
 
-$sql = "SELECT * FROM users WHERE username='$username' AND password='$password';";
+$sql = "SELECT * FROM users WHERE username='" . $username . "' AND password='" . $password . "';";
 $result = $conn->query($sql);
 
 if ($result->num_rows === 1) {
