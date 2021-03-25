@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import  { Redirect } from 'react-router-dom'
 import axios from "axios";
-import { Button,
+import { 
          FormGroup,
          FormControl,
          } from "react-bootstrap";
@@ -32,6 +32,7 @@ export default class LogIn extends Component {
         var res = response["data"];
         if (res == 0) {
           console.log("user found");
+          //Redirect
         } else {
           console.log("user not found")
         }
