@@ -1,6 +1,7 @@
 {
   "name": "HomeworkHub",
   "version": "1.0.0",
+  "proxy": "http://localhost:",
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.2",
     "axios": "^0.21.1",

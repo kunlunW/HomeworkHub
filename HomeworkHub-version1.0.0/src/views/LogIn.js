@@ -27,11 +27,11 @@ export default class LogIn extends Component {
     formData.append("formData", data);
     axios.post(url, formData)
     .then(response => {
-        // console.log(response);
-        // console.log(response["data"]);
+
         var res = response["data"];
-        if (res == 0) {
-          console.log("user found");
+        //Need to add else if ("parent") when implementing parent stuff
+        if (res == "teacher") {
+          console.log("teacher user found");
           //Redirect
         } else {
           console.log("user not found")
