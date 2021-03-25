@@ -131,7 +131,7 @@ export default class Signup extends Component {
           { this.state.empty ? <h6>Please enter a username and password</h6> : null }
           </div>
           <br/>
-          <h5>Already a user? <a href="/login" > Log in</a></h5>
+          <h5>Already a user? <a href="/welcome/login" > Log in</a></h5>
           <button block size="lg" onClick = {this.handleRegisterButtonClick} > 
               Register
           </button>
