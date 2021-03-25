@@ -15,11 +15,18 @@ export default class LogIn extends Component {
       password: "",
       redirect: null,
       wrongPass: false,
+      empty: false,
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleLoginButtonClick = () => {
+    if (this.state.username === "" || this.state.password === "") {
+      this.setState({empty: true});
+      return;
+  } else {
+      this.setState({empty: false}); 
+  }
     const url = "/HomeworkHub/backend/login.php";
     let formData = new FormData();
     let data = '{"username":"' + this.state.username + '", "password":"' + this.state.password + '"}';
@@ -79,6 +86,7 @@ export default class LogIn extends Component {
           </FormGroup>
 
           { this.state.wrongPass ? <h6>Username or password incorrect</h6> : null }
+          { this.state.empty ? <h6>Please enter a username and password</h6> : null }
 
           <h5>Don't have an account? <a href="/welcome/signup" > Register Now</a></h5>
 

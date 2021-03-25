@@ -21,6 +21,7 @@ export default class Signup extends Component {
       badUsername: false,
       selected: true,
       regError: false,
+      empty: false
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -44,6 +45,12 @@ export default class Signup extends Component {
 
   handleRegisterButtonClick = () => {
     this.setState({badUsername: false, regError: false});
+    if (this.state.username === "" || this.state.password === "") {
+        this.setState({empty: true});
+        return;
+    } else {
+        this.setState({empty: false}); 
+    }
     if (this.state.password !== this.state.confirmPassword) {
         this.setState({passMatch: false, });
         return;
@@ -121,6 +128,7 @@ export default class Signup extends Component {
           { this.state.passMatch ? null : <h6>Passwords do not match</h6> }
           { this.state.badUsername ? <h6>Username already in use</h6> : null }
           { this.state.regError ? <h6>There was an error during registration</h6> : null }
+          { this.state.empty ? <h6>Please enter a username and password</h6> : null }
           </div>
           <br/>
           <h5>Already a user? <a href="/login" > Log in</a></h5>
