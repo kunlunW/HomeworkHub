@@ -8,10 +8,6 @@ $password = $json["password"];
 
 $conn = OpenCon();
 
-if (strlen($username) === 0 || strlen($password) === 0) {
-    echo 2;
-    return;
-}
 
 $sql = "SELECT * FROM users WHERE username='" . $username . "' AND password='" . $password . "';";
 $result = $conn->query($sql);
