@@ -7,6 +7,7 @@ import { Button,
          } from "react-bootstrap";
 
 
+
 export default class LogIn extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +21,7 @@ export default class LogIn extends Component {
   }
 
   handleLoginButtonClick = () => {
-    const url = "%2E%2E/backend/login.php";
+    const url = "/HomeworkHub/backend/login.php";
     let formData = new FormData();
     let data = '{"username":"' + this.state.username + '", "password":"' + this.state.password + '"}';
     formData.append("formData", data);
