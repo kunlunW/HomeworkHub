@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
-import AdminNavbar from "components/Navbars/AdminNavbar";
 import BlankSidebar from "components/Sidebar/BlankSidebar"
 import routes from "routes.js";
 

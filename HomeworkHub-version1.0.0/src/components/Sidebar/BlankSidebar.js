@@ -12,7 +12,7 @@ function BlankSidebar({ routes }) {
       <div/>
       <div className="sidebar-wrapper">
         <div className="logo d-flex align-items-center justify-content-start">
-            Homework Hub
+            <h3>HomeworkHub</h3>
         </div>
       </div>
     </div>

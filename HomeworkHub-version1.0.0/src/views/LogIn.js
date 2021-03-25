@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import  { Redirect } from 'react-router-dom'
+import axios from "axios";
 import { Button,
          FormGroup,
          FormControl,
@@ -11,7 +13,6 @@ export default class LogIn extends Component {
     this.state = {
       username: "",
       password: "",
-      redirectTo: null,
       wrongPass: false,
     };
 
@@ -19,37 +20,33 @@ export default class LogIn extends Component {
   }
 
   handleLoginButtonClick = () => {
-    const url = "/backend/login.php";
+    const url = "%2E%2E/backend/login.php";
     let formData = new FormData();
-    //let data = '{ "Data" : {"username":"' + this.state.username + '", "password":"' + this.state.password + '"}}';
     let data = '{"username":"' + this.state.username + '", "password":"' + this.state.password + '"}';
     formData.append("formData", data);
     axios.post(url, formData)
     .then(response => {
-        console.log(response);
-        console.log(response["data"]);
-        /*
-        if (response["data"] === 1) {
-            console.log(response);
-            console.log("This is Ben");
+        // console.log(response);
+        // console.log(response["data"]);
+        var res = response["data"];
+        if (res == 0) {
+          console.log("user found");
         } else {
-            console.log(response);
-            console.log("This is not Ben");
+          console.log("user not found")
         }
-        */
     })
     .catch(err=>console.log(err));
-  };
+  }
 
   handleChange = event => {
     this.setState({
-      [event.target.id]: event.target.value
+      [event.target.id]: event.target.value,
     });
   };
 
   render() {
  
-    return (
+    return ( 
       <div className="loginpage">
         <h1>Log In</h1>
         <br/> 
@@ -75,11 +72,11 @@ export default class LogIn extends Component {
 
           <h5>Don't have an account? <a href="/signup" > Register Now</a></h5>
 
-          <Button
+          <button
             block
             size="lg"
             onClick = {this.handleLoginButtonClick}>Login
-          </Button>
+          </button>
       </div>
     );
   }
