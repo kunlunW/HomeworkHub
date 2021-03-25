@@ -21,7 +21,7 @@ function Sidebar({ routes }) {
         </div>
         <Nav>
           {routes.map((prop, key) => {
-            if (!prop.redirect)
+            if (!prop.redirect && prop.layout === "/admin")
               return (
                 <li className={ activeRoute(prop.layout + prop.path) } >
                   <NavLink

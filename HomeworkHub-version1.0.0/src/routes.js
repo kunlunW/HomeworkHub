@@ -8,7 +8,7 @@ import viewClass from "views/viewClass.js";
 import LogIn from "views/LogIn.js";
 import Signup from "views/SignUp.js";
 
-const dashboardRoutes = [
+const routes = [
   
   {
     path: "/dashboard",
@@ -75,4 +75,5 @@ const dashboardRoutes = [
   },
 ];
 
-export default dashboardRoutes;
+
+export default routes;
