@@ -80,7 +80,7 @@ export default class LogIn extends Component {
 
           { this.state.wrongPass ? <h6>Username or password incorrect</h6> : null }
 
-          <h5>Don't have an account? <a href="/signup" > Register Now</a></h5>
+          <h5>Don't have an account? <a href="/welcome/signup" > Register Now</a></h5>
 
           <button
             block

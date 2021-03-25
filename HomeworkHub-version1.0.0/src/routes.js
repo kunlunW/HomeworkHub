@@ -6,6 +6,7 @@ import addTest from "views/addTest.js";
 import viewStudent from "views/viewStudent.js";
 import viewClass from "views/viewClass.js";
 import LogIn from "views/LogIn.js";
+import Signup from "views/SignUp.js";
 
 const dashboardRoutes = [
   
@@ -63,6 +64,13 @@ const dashboardRoutes = [
     name: "Log In",
     icon: "nc-icon nc-circle-09",
     component: LogIn,
+    layout: "/welcome",
+  },
+  {
+    path: "/signup",
+    name: "Sign Up",
+    icon: "nc-icon nc-circle-09",
+    component: Signup,
     layout: "/welcome",
   },
 ];

@@ -1,46 +1,34 @@
 <?php
- error_reporting(E_ALL);
- ini_set('display_errors', 1);
-$servername = "localhost";
-$username = "root";
-$password = "";
-$db = "test1";
+ include "sql_connection.php";
+
 // Create connection
-$conn = mysqli_connect($servername, $username, $password, $db);
+$conn = OpenCon();
 
 // Retrieve data from the frontend
-$recText = $_POST['text'];
-$recUsername = $_POST['username'];
-$recPassword = $_POST['password'];
-$recType = $_POST['type'];
+$data = $_POST['formData'];
+$json = json_decode($data, true);
+$username = $json["username"];
+$password = $json["password"];
+$type = $json["type"];
 
-// Check connection
-if (!$conn) {
-   die("Connection failed: " . mysqli_connect_error());
-}
-echo "Connected successfully";
-
-$result = mysqli_query($conn, "INSERT INTO users (name) VALUES ('$recText')");
-
-if(!$result) {
-    echo $recText;
-    echo "Insertion failed";
-} else {
-    echo "Insertion success";
+//Check if username is already in database
+$sql = "SELECT * FROM users WHERE username= '$username';";
+$result = $conn->query($sql);
+if ($result->num_rows != 0) {
+    echo 2; //username taken
+    return;
 }
 
-// Register User Account Insertion
-// Attribute: username, password, type (teacher/parent)
-$sqlRegister = "INSERT INTO Users (username, password, type) VALUES ('$recUsername', '$recPassword', '$recType')";
+$sqlRegister = "INSERT INTO Users (username, password, type) VALUES ('$username', '$password', '$type')";
 $resultRegister = $conn->query($sqlRegister);
-
 if(!$resultRegister) {
-    echo $recUsername;
-    echo "User Account Establishment failed";
+    echo 1;
 } else {
-    echo "User Account Establishment success";
+    echo 0;
 }
 
+CloseCon($conn);
 ?>
+
 
 
