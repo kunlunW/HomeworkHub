@@ -90,6 +90,10 @@ export default class LogIn extends Component {
 
           <h5>Don't have an account? <a href="/welcome/signup" > Register Now</a></h5>
 
+          <h5> Temporary <a href="/admin/dashboard" > Redirect </a></h5>
+
+
+
           <button
             block
             size="lg"
