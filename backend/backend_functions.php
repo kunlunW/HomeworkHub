@@ -1,37 +1,63 @@
 <?php
 include 'sql_connection.php';
 
-function login($username, $password)
+function Login($username, $password)
 {
-$conn = OpenCon();
+    $conn = OpenCon();
 
 
-$sql = "SELECT * FROM users WHERE username='" . $username . "' AND password='" . $password . "';";
-$result = $conn->query($sql);
+    $sql = "SELECT * FROM users WHERE username='" . $username . "' AND password='" . $password . "';";
+    $result = $conn->query($sql);
 
-if ($result->num_rows === 1) {
-    $row = $result->fetch_assoc();
-    echo $row["type"];
-} else {
-    echo 2;
+    if ($result->num_rows === 1) {
+        $row = $result->fetch_assoc();
+        echo $row["type"];
+    } else {
+        echo 2;
+    }
+
+    CloseCon($conn);
 }
 
-CloseCon($conn);
-}
-
-function createClassroom($crname, $tname)
+function CreateClassroom($crname, $tname)
 {
-$conn = OpenCon();
+    $conn = OpenCon();
 
-$sql = "INSERT INTO classrooms (classroomname, teachername) VALUES ('$crname', '$tname')";
+    $sql = "INSERT INTO classrooms (classroomname, teachername) VALUES ('$crname', '$tname')";
 
-if ($conn->query($sql) === TRUE) {
-    $lastId = $conn->insert_id;
-    echo $lastId;
-} else {
-    echo 0;
+    if ($conn->query($sql) === TRUE) {
+        $lastId = $conn->insert_id;
+        echo $lastId;
+    } else {
+        echo 0;
+    }
+
+    CloseCon($conn);
 }
 
-CloseCon($conn);
+function GetTeacherClassrooms($username)
+{
+    $conn = OpenCon();
+
+    $sql = "SELECT * FROM classrooms WHERE teachername='$username'";
+
+    $ret = '[';
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $ret .= '{"classroomid":"' . $row["classroomid"] . 
+                '", "classroomname":"' . $row["classroomname"] . 
+                '", "teachername":"' . $row["teachername"] . '},';
+        }
+    }
+
+    $ret = rtrim($ret, ",");
+    $ret .= ']';
+
+    echo $ret;
+
+    CloseCon($conn);
 }
 ?>
