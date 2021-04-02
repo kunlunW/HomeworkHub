@@ -1,15 +1,18 @@
 <?php
+include 'sql_connection.php';
+
 function CreateUsersTable($conn)
 {
     $sql = "CREATE TABLE users (
     username VARCHAR(255) PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
-    type ENUM('parent', 'teacher') DEFAULT 'parent'
+    type ENUM('parent', 'teacher') NOT NULL DEFAULT 'parent'
     )";
 
     if ($conn->query($sql) === TRUE) {
         return true;
     } else {
+        echo "users table was not created<br>";
         return false;
     }
 }
@@ -18,10 +21,11 @@ function DropUsersTable($conn)
 {
     $sql = "DROP TABLE users";
 
-    if ($conn->query($sql) === TRUE) {
+    if ($conn->query($sql)) {
         return true;
     } else {
-        return true;
+        echo "users table was not dropped<br>";
+        return false;
     }
 }
 
@@ -37,6 +41,7 @@ function CreateClassroomsTable($conn)
     if ($conn->query($sql) === TRUE) {
         return true;
     } else {
+        echo "classrooms table was not created<br>";
         return false;
     }
 }
@@ -48,7 +53,8 @@ function DropClassroomsTable($conn)
     if ($conn->query($sql) === TRUE) {
         return true;
     } else {
-        return true;
+        echo "classrooms table was not dropped<br>";
+        return false;
     }
 }
 
@@ -66,6 +72,7 @@ function CreateRequestsTable($conn)
     if ($conn->query($sql) === TRUE) {
         return true;
     } else {
+        echo "requests table was not created<br>";
         return false;
     }
 }
@@ -77,7 +84,8 @@ function DropRequestsTable($conn)
     if ($conn->query($sql) === TRUE) {
         return true;
     } else {
-        return true;
+        echo "requests table was not dropped<br>";
+        return false;
     }
 }
 
@@ -96,6 +104,7 @@ function CreateEventsTable($conn)
     if ($conn->query($sql) === TRUE) {
         return true;
     } else {
+        echo "events table was not created<br>";
         return false;
     }
 }
@@ -107,7 +116,25 @@ function DropEventsTable($conn)
     if ($conn->query($sql) === TRUE) {
         return true;
     } else {
-        return true;
+        echo "events table was not dropped<br>";
+        return false;
     }
+}
+
+function ResetTables()
+{
+$conn = OpenCon();
+
+DropRequestsTable($conn);
+DropEventsTable($conn);
+DropClassroomsTable($conn);
+DropUsersTable($conn);
+
+CreateUsersTable($conn);
+CreateClassroomsTable($conn);
+CreateRequestsTable($conn);
+CreateEventsTable($conn);
+
+CloseCon($conn);
 }
 ?>

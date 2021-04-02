@@ -19,6 +19,30 @@ function RetrieveUser($username, $password)
     }
 }
 
+function AddUser($username, $password, $type)
+{
+    $conn = OpenCon();
+    $ret;
+
+    //Check if username is already in database
+    $sql = "SELECT * FROM users WHERE username= '$username';";
+    $result = $conn->query($sql);
+    if ($result->num_rows != 0) {
+        $ret = 2;
+    }
+
+    $sqlRegister = "INSERT INTO users (username, password, type) VALUES ('$username', '$password', '$type')";
+    $resultRegister = $conn->query($sqlRegister);
+    if(!$resultRegister) {
+        $ret = 1;
+    } else {
+        $ret = 0;
+    }
+
+    CloseCon($conn);
+    return $ret; 
+}
+
 function CreateClassroom($crname, $tname)
 {
     $conn = OpenCon();
