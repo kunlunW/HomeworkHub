@@ -6,6 +6,6 @@ $json = json_decode($data, true);
 $username = $json["username"];
 $password = $json["password"];
 
-$ret = Login($username, $password);
+$ret = RetrieveUser($username, $password);
 echo $ret;
 ?>

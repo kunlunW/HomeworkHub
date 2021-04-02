@@ -56,9 +56,11 @@ function CreateRequestsTable($conn)
 {
     $sql = "CREATE TABLE requests (
     username VARCHAR(255) NOT NULL,
-    classroomname VARCHAR(255) NOT NULL,
+    classroomid INT NOT NULL,
     status ENUM('pending', 'accepted') NOT NULL DEFAULT 'pending',
-    PRIMARY KEY (username, classroomname)
+    PRIMARY KEY (username, classroomid),
+    FOREIGN KEY (username) REFERENCES users(username),
+    FOREIGN KEY (classroomid) REFERENCES classrooms(classroomid)
     )";
 
     if ($conn->query($sql) === TRUE) {

@@ -1,7 +1,7 @@
 <?php
 include 'sql_connection.php';
 
-function Login($username, $password)
+function RetrieveUser($username, $password)
 {
     $conn = OpenCon();
 
@@ -50,6 +50,27 @@ function GetTeacherClassrooms($username)
             $ret .= '{"classroomid":' . $row["classroomid"] . 
                 ', "classroomname":"' . $row["classroomname"] . 
                 '", "teachername":"' . $row["teachername"] . '"},';
+        }
+    }
+
+    $ret = rtrim($ret, ",");
+    $ret .= ']';
+
+    CloseCon($conn);
+    return $ret;
+}
+
+function GetPendingRequests($cid)
+{
+    $conn = OpenCon();
+    $sql = "SELECT * FROM requests WHERE  classroomid='$cid' AND status='pending'";
+
+    $result = $conn->query($sql);
+    $ret = '[';
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $ret .= '{"username":"' . $row["username"] . '"}, ';
         }
     }
 
