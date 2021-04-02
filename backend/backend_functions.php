@@ -11,12 +11,12 @@ function Login($username, $password)
 
     if ($result->num_rows === 1) {
         $row = $result->fetch_assoc();
-        echo $row["type"];
+        CloseCon($conn);
+        return $row["type"];
     } else {
-        echo 2;
+        CloseCon($conn);
+        return 2;
     }
-
-    CloseCon($conn);
 }
 
 function CreateClassroom($crname, $tname)
@@ -27,12 +27,12 @@ function CreateClassroom($crname, $tname)
 
     if ($conn->query($sql) === TRUE) {
         $lastId = $conn->insert_id;
-        echo $lastId;
+        CloseCon($conn);
+        return $lastId;
     } else {
-        echo 0;
+        CloseCon($conn);
+        return 0;
     }
-
-    CloseCon($conn);
 }
 
 function GetTeacherClassrooms($username)
@@ -47,17 +47,16 @@ function GetTeacherClassrooms($username)
 
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            $ret .= '{"classroomid":"' . $row["classroomid"] . 
-                '", "classroomname":"' . $row["classroomname"] . 
-                '", "teachername":"' . $row["teachername"] . '},';
+            $ret .= '{"classroomid":' . $row["classroomid"] . 
+                ', "classroomname":"' . $row["classroomname"] . 
+                '", "teachername":"' . $row["teachername"] . '"},';
         }
     }
 
     $ret = rtrim($ret, ",");
     $ret .= ']';
 
-    echo $ret;
-
     CloseCon($conn);
+    return $ret;
 }
 ?>

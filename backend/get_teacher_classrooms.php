@@ -6,5 +6,6 @@ $data = $_POST['formData'];
 $json = json_decode($data, true);
 $username = $json["username"];
 
-GetTeacherClassrooms($username);
+$ret = GetTeacherClassrooms($username);
+echo $ret;
 ?>

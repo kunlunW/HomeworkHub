@@ -6,5 +6,6 @@ $json = json_decode($data, true);
 $crname = $json["classroomname"];
 $tname = $json["teachername"];
 
-CreateClassroom($crname, $tname);
+$ret = CreateClassroom($crname, $tname);
+echo $ret;
 ?>
