@@ -19,7 +19,7 @@ if ($result->num_rows != 0) {
     return;
 }
 
-$sqlRegister = "INSERT INTO Users (username, password, type) VALUES ('$username', '$password', '$type')";
+$sqlRegister = "INSERT INTO users (username, password, type) VALUES ('$username', '$password', '$type')";
 $resultRegister = $conn->query($sqlRegister);
 if(!$resultRegister) {
     echo 1;
