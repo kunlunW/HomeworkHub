@@ -4,13 +4,47 @@ import {
   Container,
   Row,
   Col,
+  Carousel 
 } from "react-bootstrap";
+
+import img from "../Picture/UW.jpg";
+
 function Dashboard() {
   return (
     <>
+    
       <Container fluid>
+      <Carousel>
+            <Carousel.Item>
+              <img width={1200} height={400}  src={img} />
+              <Carousel.Caption>
+              <h3>Welcome to Homework Hub</h3>
+              <p>Build Bridge between teachers and parents</p>
+              </Carousel.Caption>
+            </Carousel.Item>
+            <Carousel.Item>
+              <img width={1000} height={300} src={img} />
+              <Carousel.Caption>
+              <h3>Welcome to Homework Hub</h3>
+              <p>Build Bridge between teachers and parents</p>
+              </Carousel.Caption>
+            </Carousel.Item>
+            <Carousel.Item>
+              <img width={1000} height={300} src={img} />
+              <Carousel.Caption>
+              <h3>Welcome to Homework Hub</h3>
+              <p>Build Bridge between teachers and parents</p>
+              </Carousel.Caption>
+            </Carousel.Item>
+          </Carousel>
+        
+        <br/>
         <Row>
           <Col lg="3" sm="6">
+            
+          
+
+
             <Card className="card-stats">
               <Card.Body>
                 <Row>
@@ -87,6 +121,10 @@ function Dashboard() {
                 </div>
               </Card.Footer>
             </Card>
+
+
+
+            
           </Col>       
         </Row> 
       </Container>

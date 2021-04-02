@@ -1,5 +1,4 @@
-import React from "react";
-import {
+import React, { useState } from 'react';import {
   Container,
   Row,
   Col,
@@ -8,8 +7,19 @@ import {
   Button,
   Carousel
 } from "react-bootstrap";
+import FormikForm from './FormikForm';
+
 
 function User() {
+
+  const [fields, updateFields] = useState(
+    {
+      name: 'TestUser_1',
+      email: 'test@example.com',
+      mobile_no: '012345678',
+      school: "Badger Primary School"
+    }
+  );
   return (
     <>
       <Container fluid>
@@ -32,6 +42,7 @@ function User() {
                         <Form.Control
                           defaultValue="Badger123"
                           type="text"
+
                         ></Form.Control>
                       </Form.Group>
                     </Col>
@@ -67,6 +78,8 @@ function User() {
                     Update Profile
                   </Button>
                 </Form>
+
+                <FormikForm fields={fields} updateFields={updateFields}/>
 
 
               </Card.Body>
