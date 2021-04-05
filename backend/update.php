@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
  include "sql_connection.php";
 
 // Create connection
@@ -40,6 +41,7 @@ if($newUserame === NULL || $newPassword === NULL || $newType === NULL) {
 }
 
 CloseCon($conn);
+// @codeCoverageIgnoreEnd
 ?>
 
 

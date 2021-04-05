@@ -1,11 +1,9 @@
 <?php
-include 'sql_connection.php';
+require_once 'sql_connection.php';
 
 function RetrieveUser($username, $password)
 {
     $conn = OpenCon();
-
-
     $sql = "SELECT * FROM users WHERE username='" . $username . "' AND password='" . $password . "';";
     $result = $conn->query($sql);
 
@@ -29,6 +27,8 @@ function AddUser($username, $password, $type)
     $result = $conn->query($sql);
     if ($result->num_rows != 0) {
         $ret = 2;
+        CloseCon($conn);
+        return $ret;
     }
 
     $sqlRegister = "INSERT INTO users (username, password, type) VALUES ('$username', '$password', '$type')";

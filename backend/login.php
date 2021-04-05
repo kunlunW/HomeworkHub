@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 include 'backend_functions.php';
 
 $data = $_POST['formData'];
@@ -8,4 +9,5 @@ $password = $json["password"];
 
 $ret = RetrieveUser($username, $password);
 echo $ret;
+// @codeCoverageIgnoreEnd
 ?>

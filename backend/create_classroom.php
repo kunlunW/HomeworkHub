@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 include 'backend_functions.php';
 
 $data = $_POST['formData'];
@@ -8,4 +9,5 @@ $tname = $json["teachername"];
 
 $ret = CreateClassroom($crname, $tname);
 echo $ret;
+// @codeCoverageIgnoreEnd
 ?>

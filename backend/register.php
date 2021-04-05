@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 include "backend_functions.php";
 
 // Retrieve data from the frontend
@@ -10,6 +11,7 @@ $type = $json["type"];
 
 $ret = AddUser($username, $password, $type);
 echo $ret;
+// @codeCoverageIgnoreStart
 ?>
 
 

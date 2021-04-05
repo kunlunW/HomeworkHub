@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit verbose="true">
+    <coverage pathCoverage="true">
+        <include>
+            <file>..\backend\backend_functions.php</file>
+        </include>
+    </coverage>
+    <logging>
+        <text outputFile="report.txt" />
+    </logging>
+</phpunit>

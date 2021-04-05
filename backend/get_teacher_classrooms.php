@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 include 'sql_connection.php';
 include 'backend_functions.php';
 
@@ -8,4 +9,5 @@ $username = $json["username"];
 
 $ret = GetTeacherClassrooms($username);
 echo $ret;
+// @codeCoverageIgnoreEnd
 ?>
