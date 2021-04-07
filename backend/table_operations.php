@@ -241,6 +241,58 @@ function TruncateEventsTable()
     }
 }
 
+function CreateTeachersTable()
+{
+    $conn = OpenCon();
+    $sql = "CREATE TABLE Teachers (
+    teacherUserName VARCHAR(255) PRIMARY KEY,
+    gender ENUM('male', 'female') NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    mobile_no INT NOT NULL,
+    school VARCHAR(255) NOT NULL,
+    FOREIGN KEY (teacherUserName) REFERENCES users(username)
+    )";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        echo "Teachers table was not created<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
+function DropTeachersTable() 
+{
+    $conn = OpenCon();
+    $sql = "DROP TABLE Teachers";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        echo "Teachers table was not dropped<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
+function TruncateTeachersTable() 
+{
+    $conn = OpenCon();
+    $sql = "TRUNCATE TABLE Teachers";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        echo "Teachers table was not truncated<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
 /**
  * @codeCoverageIgnore
  */
@@ -252,11 +304,13 @@ function ResetTables()
     DropEventsTable();
     DropClassroomsTable();
     DropUsersTable();
+    DropTeachersTable();
     
     CreateUsersTable();
     CreateClassroomsTable();
     CreateRequestsTable();
     CreateEventsTable();
+    CreateTeachersTable();
 
     CloseCon($conn);
 }
@@ -272,6 +326,7 @@ function DropAllTables()
     DropEventsTable();
     DropClassroomsTable();
     DropUsersTable();
+    DropTeachersTable();
 
     CloseCon($conn);
 }
@@ -287,6 +342,7 @@ function CreateAllTables()
     CreateClassroomsTable();
     CreateRequestsTable();
     CreateEventsTable();
+    CreateTeachersTable();
 
     CloseCon($conn);
 }
