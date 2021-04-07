@@ -43,6 +43,3 @@ if($newUserame === NULL || $newPassword === NULL || $newType === NULL) {
 CloseCon($conn);
 // @codeCoverageIgnoreEnd
 ?>
-
-
-

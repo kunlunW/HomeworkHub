@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
  include "sql_connection.php";
 
 // Create connection
@@ -41,6 +42,7 @@ if($sqlCheck) { // Entry already exists
 }
 
 CloseCon($conn);
+// @codeCoverageIgnoreEnd
 ?>
 
 
