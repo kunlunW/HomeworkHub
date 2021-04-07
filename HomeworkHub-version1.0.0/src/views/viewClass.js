@@ -30,9 +30,7 @@ export class viewClass extends React.Component {
       success: false
     };
     this.create_new_classroom = this.create_new_classroom.bind(this);
-   // this.get_classrooms = this.get_classrooms.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    //this.get_classrooms();
   }
   
   
@@ -42,9 +40,7 @@ export class viewClass extends React.Component {
     const url = "/HomeworkHub/backend/get_teacher_classrooms.php";
     let formData = new FormData();
     let data = '{"username":"' + /*this.state.username*/localStorage.getItem("username") + '"}';
-    //console.log(data);
     formData.append('formData', data);
-    //console.log(formData);
     axios.post(url, formData)
     .then(response => {
         var res = response["data"];
