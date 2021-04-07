@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @codeCoverageIgnore
+ */
 function OpenCon()
 {
     $dbhost = "localhost";
@@ -10,6 +14,9 @@ function OpenCon()
     return $conn;
 }
 
+/**
+ * @codeCoverageIgnore
+ */
 function CloseCon($conn)
 {
     $conn -> close();

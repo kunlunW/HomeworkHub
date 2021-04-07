@@ -1,4 +1,6 @@
 <?php
-include 'create_tables.php';
+// @codeCoverageIgnoreStart
+include 'table_operations.php';
 ResetTables();
+// @codeCoverageIgnoreEnd
 ?>

@@ -7,4 +7,5 @@ $username = $json["username"];
 
 $ret = GetTeacherClassrooms($username);
 echo $ret;
+// @codeCoverageIgnoreEnd
 ?>
