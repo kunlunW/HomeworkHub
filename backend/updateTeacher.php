@@ -1,5 +1,4 @@
 <?php
-// @codeCoverageIgnoreStart
  include "sql_connection.php";
 
 // Create connection
@@ -8,16 +7,16 @@ $conn = OpenCon();
 // Retrieve data from the frontend
 $data = $_POST['formData'];
 $json = json_decode($data, true);
-$username = $json["username"]; // Primary Key
+$username = $json["name"]; // Primary Key
 
 $gender = $json["gender"];
-$subject = $json["subject"];
-$address = $json["address"];
-$telephone = $json["telephone"];
+$email = $json["email"];
+$mobile_no = $json["mobile_no"];
+$school = $json["school"];
 
 $sqlCheck = "SELECT * FROM Teachers WHERE teacherUserName = '$username';";
 if($sqlCheck) { // Entry already exists
-    $sqlUpdate = "UPDATE Teachers t SET t.gender = '$gender', t.subject = '$subject', t.address = '$address', t.telephone = '$telephone' WHERE t.teacherUserName = '$username';";
+    $sqlUpdate = "UPDATE Teachers t SET t.gender = '$gender', t.email = '$email', t.mobile_no = '$mobile_no', t.school = '$school' WHERE t.teacherUserName = '$username';";
     $updateRes = $conn->query($sqlUpdate);
     if (!$updateRes) {
         echo "Update Failed\n";
@@ -27,7 +26,7 @@ if($sqlCheck) { // Entry already exists
         echo "Update Success\n";
     }
 } else { // Entry doesn't exist
-    $sqlInsert = "INSERT INTO Teachers (username, gender, subject, address, telephone) VALUES ('$username', '$gender', '$subject', '$address', '$telephone');";
+    $sqlInsert = "INSERT INTO Teachers (username, gender, email, mobile_no, school) VALUES ('$username', '$gender', '$email', '$mobile_no', '$school');";
     $insertRes = $conn->query($sqlInsert);
     if (!$insertRes) {
         echo "Insert Failed\n";
@@ -39,7 +38,6 @@ if($sqlCheck) { // Entry already exists
 }
 
 CloseCon($conn);
-// @codeCoverageIgnoreEnd
 ?>
 
 
