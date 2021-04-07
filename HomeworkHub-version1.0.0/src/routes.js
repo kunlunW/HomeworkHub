@@ -53,7 +53,7 @@ const routes = [
     layout: "/admin",
   },
   {
-    path: "/notifications",
+    path: "/classrooms",
     name: "View Classroom",
     icon: "nc-icon nc-circle-09",
     component: viewClass,

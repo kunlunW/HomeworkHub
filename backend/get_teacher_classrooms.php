@@ -1,5 +1,4 @@
 <?php
-include 'sql_connection.php';
 include 'backend_functions.php';
 
 $data = $_POST['formData'];

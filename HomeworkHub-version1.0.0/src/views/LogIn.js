@@ -18,6 +18,7 @@ export default class LogIn extends Component {
       empty: false,
     };
     this.handleChange = this.handleChange.bind(this);
+
   }
 
   handleLoginButtonClick = () => {
@@ -37,6 +38,7 @@ export default class LogIn extends Component {
         //Need to add else if ("parent") when implementing parent side
         if (res == "teacher") {
           console.log("teacher user found");
+          localStorage.setItem("username", this.state.username);
           this.setState({
             redirect: "/admin/dashboard",
           });
@@ -54,7 +56,7 @@ export default class LogIn extends Component {
     this.setState({
       [event.target.id]: event.target.value,
     });
-  };
+  }
 
   render() {
     if (this.state.redirect) {
@@ -68,7 +70,6 @@ export default class LogIn extends Component {
           <FormGroup controlId="username" size="lg">
            
             <FormControl
-              autoFocus
               placeholder="Enter Username"
               value={this.state.username}
               onChange={this.handleChange}
