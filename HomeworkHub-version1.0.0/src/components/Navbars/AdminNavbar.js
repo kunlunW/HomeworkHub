@@ -56,7 +56,7 @@ function Header() {
                 href="#pablo"
                 onClick={(e) => e.preventDefault()}
               >
-                <span className="no-icon">Account</span>
+                <span className="no-icon">{localStorage.getItem("username")}</span>
               </Nav.Link>
             </Nav.Item>
             

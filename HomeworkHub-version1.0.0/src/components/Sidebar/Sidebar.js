@@ -19,6 +19,7 @@ function Sidebar({ routes }) {
             HomeworkHub
           </a>
         </div>
+        
         <Nav>
           {routes.map((prop, key) => {
             if (!prop.redirect && prop.layout === "/admin")
