@@ -11,7 +11,6 @@ import {
 import Table from "./Table";
 import Table2 from "./Table2";
 
-import img from "../Picture/art.jpg";
 
 
 
