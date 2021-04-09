@@ -17,7 +17,7 @@ function CreateUsersTable()
         CloseCon($conn);
         return true;
     } else {
-        //echo "users table was not created<br>";
+        echo "users table was not created<br>";
         CloseCon($conn);
         return false;
     }
@@ -35,7 +35,7 @@ function DropUsersTable()
         CloseCon($conn);
         return true;
     } else {
-        //echo "users table was not dropped<br>";
+        echo "users table was not dropped<br>";
         CloseCon($conn);
         return false;
     }
@@ -53,7 +53,7 @@ function TruncateUsersTable()
         CloseCon($conn);
         return true;
     } else {
-        // echo "users table was not truncated<br>";
+        echo "users table was not truncated<br>";
         CloseCon($conn);
         return false;
     }
@@ -76,7 +76,7 @@ function CreateClassroomsTable()
         CloseCon($conn);
         return true;
     } else {
-        // echo "classrooms table was not created<br>";
+        echo "classrooms table was not created<br>";
         CloseCon($conn);
         return false;
     }
@@ -94,7 +94,7 @@ function DropClassroomsTable()
         CloseCon($conn);
         return true;
     } else {
-        // echo "classrooms table was not dropped<br>";
+        echo "classrooms table was not dropped<br>";
         CloseCon($conn);
         return false;
     }
@@ -112,7 +112,7 @@ function TruncateClassroomsTable()
         CloseCon($conn);
         return true;
     } else {
-        // echo "classrooms table was not truncated<br>";
+        echo "classrooms table was not truncated<br>";
         CloseCon($conn);
         return false;
     }
@@ -127,7 +127,6 @@ function CreateRequestsTable()
     $sql = "CREATE TABLE requests (
     username VARCHAR(255) NOT NULL,
     classroomid INT NOT NULL,
-    status ENUM('pending', 'accepted') NOT NULL DEFAULT 'pending',
     PRIMARY KEY (username, classroomid),
     FOREIGN KEY (username) REFERENCES users(username),
     FOREIGN KEY (classroomid) REFERENCES classrooms(classroomid)
@@ -137,7 +136,7 @@ function CreateRequestsTable()
         CloseCon($conn);
         return true;
     } else {
-        // echo "requests table was not created<br>";
+        echo "requests table was not created<br>";
         CloseCon($conn);
         return false;
     }
@@ -155,7 +154,7 @@ function DropRequestsTable()
         CloseCon($conn);
         return true;
     } else {
-        // echo "requests table was not dropped<br>";
+        echo "requests table was not dropped<br>";
         CloseCon($conn);
         return false;
     }
@@ -173,7 +172,7 @@ function TruncateRequestsTable()
         CloseCon($conn);
         return true;
     } else {
-        //echo "requests table was not truncated<br>";
+        echo "requests table was not truncated<br>";
         CloseCon($conn);
         return false;
     }
@@ -189,7 +188,7 @@ function CreateEventsTable()
     eventid INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
-    duedate DATETIME NOT NULL,
+    duedate DATE NOT NULL,
     classroomid INT NOT NULL,
     type ENUM('homework', 'test', 'announcement') NOT NULL,
     FOREIGN KEY (classroomid) REFERENCES classrooms(classroomid)
@@ -199,7 +198,7 @@ function CreateEventsTable()
         CloseCon($conn);
         return true;
     } else {
-        //echo "events table was not created<br>";
+        echo "events table was not created<br>";
         CloseCon($conn);
         return false;
     }
@@ -217,7 +216,7 @@ function DropEventsTable()
         CloseCon($conn);
         return true;
     } else {
-        //echo "events table was not dropped<br>";
+        echo "events table was not dropped<br>";
         CloseCon($conn);
         return false;
     }
@@ -235,7 +234,7 @@ function TruncateEventsTable()
         CloseCon($conn);
         return true;
     } else {
-        //echo "events table was not truncated<br>";
+        echo "events table was not truncated<br>";
         CloseCon($conn);
         return false;
     }
@@ -260,7 +259,7 @@ function CreateTeachersTable()
         CloseCon($conn);
         return true;
     } else {
-        //echo "Teachers table was not created<br>";
+        echo "Teachers table was not created<br>";
         CloseCon($conn);
         return false;
     }
@@ -278,7 +277,7 @@ function DropTeachersTable()
         CloseCon($conn);
         return true;
     } else {
-        //echo "Teachers table was not dropped<br>";
+        echo "Teachers table was not dropped<br>";
         CloseCon($conn);
         return false;
     }
@@ -296,7 +295,7 @@ function TruncateTeachersTable()
         CloseCon($conn);
         return true;
     } else {
-        //echo "Teachers table was not truncated<br>";
+        echo "Teachers table was not truncated<br>";
         CloseCon($conn);
         return false;
     }
