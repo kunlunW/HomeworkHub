@@ -15,6 +15,7 @@ function User() {
   const [fields, updateFields] = useState(
     {
       name: 'TestUser_1',
+      gender: "male",
       email: 'test@example.com',
       mobile_no: '012345678',
       school: "Badger Primary School"
@@ -41,6 +42,18 @@ function User() {
                         <label>Username</label>
                         <Form.Control
                           defaultValue="Badger123"
+                          type="text"
+
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+
+
+                    <Col md="3">
+                      <Form.Group>
+                        <label>Gender</label>
+                        <Form.Control
+                          defaultValue="Male"
                           type="text"
 
                         ></Form.Control>

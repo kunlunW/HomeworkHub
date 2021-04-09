@@ -49,6 +49,17 @@ class MaintenanceForm extends Component {
                         </label>
                     </div>
                 </div>
+
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">Gender</label>
+                    <div className="col-sm-10">
+                        <label type="text" name="name" className="form-control">
+                            {this?.props?.fields?.gender}
+                        </label>
+                    </div>
+                </div>
+
+
                 <div className="form-group row">
                     <label className="col-sm-2 col-form-label">Email</label>
                     <div className="col-sm-10">
@@ -57,6 +68,7 @@ class MaintenanceForm extends Component {
                         </label>
                     </div>
                 </div>
+
                 <div className="form-group row">
                     <label className="col-sm-2 col-form-label">Mobile No</label>
                     <div className="col-sm-10">
@@ -87,6 +99,15 @@ class MaintenanceForm extends Component {
                         <Field type="text" name="name" className="form-control" placeholder="Name" />
                     </div>
                 </div>
+
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">Gender</label>
+                    <div className="col-sm-10">
+                        <Field type="text" name="gender" className="form-control" placeholder="gender" />
+                    </div>
+                </div>
+
+
                 <div className="form-group row">
                     <label className="col-sm-2 col-form-label">Email</label>
                     <div className="col-sm-10">
@@ -145,6 +166,7 @@ const FormikForm = withFormik({
     mapPropsToValues: (props) => {
         return {
             name: props.fields.name,
+            gender: props.fields.gender,
             email: props.fields.email,
             mobile_no: props.fields.mobile_no,
             school: props.fields.school
