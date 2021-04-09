@@ -17,7 +17,7 @@ function CreateUsersTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "users table was not created<br>";
+        //echo "users table was not created<br>";
         CloseCon($conn);
         return false;
     }
@@ -35,7 +35,7 @@ function DropUsersTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "users table was not dropped<br>";
+        //echo "users table was not dropped<br>";
         CloseCon($conn);
         return false;
     }
@@ -53,7 +53,7 @@ function TruncateUsersTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "users table was not truncated<br>";
+        // echo "users table was not truncated<br>";
         CloseCon($conn);
         return false;
     }
@@ -76,7 +76,7 @@ function CreateClassroomsTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "classrooms table was not created<br>";
+        // echo "classrooms table was not created<br>";
         CloseCon($conn);
         return false;
     }
@@ -94,7 +94,7 @@ function DropClassroomsTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "classrooms table was not dropped<br>";
+        // echo "classrooms table was not dropped<br>";
         CloseCon($conn);
         return false;
     }
@@ -112,7 +112,7 @@ function TruncateClassroomsTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "classrooms table was not truncated<br>";
+        // echo "classrooms table was not truncated<br>";
         CloseCon($conn);
         return false;
     }
@@ -137,7 +137,7 @@ function CreateRequestsTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "requests table was not created<br>";
+        // echo "requests table was not created<br>";
         CloseCon($conn);
         return false;
     }
@@ -155,7 +155,7 @@ function DropRequestsTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "requests table was not dropped<br>";
+        // echo "requests table was not dropped<br>";
         CloseCon($conn);
         return false;
     }
@@ -173,7 +173,7 @@ function TruncateRequestsTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "requests table was not truncated<br>";
+        //echo "requests table was not truncated<br>";
         CloseCon($conn);
         return false;
     }
@@ -199,7 +199,7 @@ function CreateEventsTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "events table was not created<br>";
+        //echo "events table was not created<br>";
         CloseCon($conn);
         return false;
     }
@@ -217,7 +217,7 @@ function DropEventsTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "events table was not dropped<br>";
+        //echo "events table was not dropped<br>";
         CloseCon($conn);
         return false;
     }
@@ -235,12 +235,15 @@ function TruncateEventsTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "events table was not truncated<br>";
+        //echo "events table was not truncated<br>";
         CloseCon($conn);
         return false;
     }
 }
 
+/**
+ * @codeCoverageIgnore
+ */
 function CreateTeachersTable()
 {
     $conn = OpenCon();
@@ -257,12 +260,15 @@ function CreateTeachersTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "Teachers table was not created<br>";
+        //echo "Teachers table was not created<br>";
         CloseCon($conn);
         return false;
     }
 }
 
+/**
+ * @codeCoverageIgnore
+ */
 function DropTeachersTable() 
 {
     $conn = OpenCon();
@@ -272,12 +278,15 @@ function DropTeachersTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "Teachers table was not dropped<br>";
+        //echo "Teachers table was not dropped<br>";
         CloseCon($conn);
         return false;
     }
 }
 
+/**
+ * @codeCoverageIgnore
+ */
 function TruncateTeachersTable() 
 {
     $conn = OpenCon();
@@ -287,7 +296,7 @@ function TruncateTeachersTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "Teachers table was not truncated<br>";
+        //echo "Teachers table was not truncated<br>";
         CloseCon($conn);
         return false;
     }
@@ -298,21 +307,8 @@ function TruncateTeachersTable()
  */
 function ResetTables()
 {
-    $conn = OpenCon();
-
-    DropRequestsTable();
-    DropEventsTable();
-    DropClassroomsTable();
-    DropUsersTable();
-    DropTeachersTable();
-    
-    CreateUsersTable();
-    CreateClassroomsTable();
-    CreateRequestsTable();
-    CreateEventsTable();
-    CreateTeachersTable();
-
-    CloseCon($conn);
+    DropAllTables();
+    CreateAllTables();
 }
 
 /**
@@ -320,15 +316,11 @@ function ResetTables()
  */
 function DropAllTables()
 {
-    $conn = OpenCon();
-
     DropRequestsTable();
     DropEventsTable();
     DropClassroomsTable();
-    DropUsersTable();
     DropTeachersTable();
-
-    CloseCon($conn);
+    DropUsersTable();
 }
 
 /**
@@ -336,15 +328,11 @@ function DropAllTables()
  */
 function CreateAllTables()
 {
-    $conn = OpenCon();
-
     CreateUsersTable();
     CreateClassroomsTable();
     CreateRequestsTable();
     CreateEventsTable();
     CreateTeachersTable();
-
-    CloseCon($conn);
 }
 
 ?>

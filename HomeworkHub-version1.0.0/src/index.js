@@ -6,6 +6,8 @@ import "./assets/scss/light-bootstrap-dashboard-react.scss?v=2.0.0";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import AdminLayout from "layouts/Admin.js";
 import WelcomeLayout from "layouts/Welcome.js"
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+
 
 ReactDOM.render(
   <BrowserRouter>
