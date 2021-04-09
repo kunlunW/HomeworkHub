@@ -1,4 +1,5 @@
 import React, {useState, Link} from "react";
+import  { Redirect } from 'react-router-dom';
 import axios from "axios";
 import { 
   Card,
@@ -25,52 +26,35 @@ export class viewClass extends React.Component {
     super(props);
     this.state = {
       username: localStorage.getItem("username"),
-      classrooms: [this.get_classrooms()],
+      classrooms: [],
       new_classroom_name: "",
-      success: false
+      success: false,
+      chosen: null
     };
     this.create_new_classroom = this.create_new_classroom.bind(this);
+    this.get_classrooms = this.get_classrooms.bind(this);
+    this.chooseClassroom = this.chooseClassroom.bind(this);
+    this.create_card = this.create_card.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.get_classrooms();
   }
   
   
   //Retrieves each classroom for current user, called when creating cards
   get_classrooms() {
-
+    console.log("help");
     const url = "/HomeworkHub/backend/get_teacher_classrooms.php";
     let formData = new FormData();
-    let data = '{"username":"' + /*this.state.username*/localStorage.getItem("username") + '"}';
+    let data = '{"username":"' + localStorage.getItem("username") + '"}';
     formData.append('formData', data);
     axios.post(url, formData)
     .then(response => {
         var res = response["data"];
+        console.log(res)
         this.setState({classrooms: [...res]});
         console.log(this.state.classrooms);
     })
     .catch(err=>console.log(err));
-
-
-    return [];
-  }
-
-  create_cards() {
-    return this.state.classrooms.map(this.create_card);
-   }
-
-  create_card(classroom) {
-    return (
-    <div>
-      <Card>
-        <img class="card-img-top" src={default_img}  />
-        <Card.Body>
-          {classroom.classroomname}
-        </Card.Body>
-        <Card.Footer>
-          {classroom.teachername}
-        </Card.Footer>
-      </Card>
-    </div>
-    );
   }
 
   //Creates a new classroom in the db
@@ -93,11 +77,55 @@ export class viewClass extends React.Component {
      .catch(err=>console.log(err));
   }
 
+  create_cards() {
+    return this.state.classrooms.map(this.create_card);
+   }
+
+  create_card(classroom) {
+    return (
+    <div>
+      <Card>
+        <img class="card-img-top" src={default_img}  />
+        <Card.Body>
+          <Row>
+          <Col>
+            <a href = "/admin/classroom" onClick={() => this.setState({chosen: classroom})}> {classroom.classroomname}</a>
+         </Col>
+         <Col>
+            <div class="text-right">
+              <button className="btn btn-xs rounded">Edit</button>
+              <button className="btn btn-danger btn-xs rounded">Delete</button>
+            </div>
+         </Col>
+         </Row>
+        </Card.Body>
+        <Card.Footer>
+          {classroom.teachername}
+        </Card.Footer>
+      </Card>
+    </div>
+    );
+  }
+
+  chooseClassroom(classroom) {
+  //   // this.setState({chosen: true});
+  //    localStorage.setItem("classroomName", classroom.name);
+  //    localStorage.setItem("classroomId", classroom.id);
+  }
+
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
   render() {
+    if (this.state.chosen) {
+      localStorage.setItem("classroomName", this.state.chosen.classroomname);
+      localStorage.setItem("classroomId", this.state.chosen.classroomid);
+      window.location.href = "/admin/classroom";
+      return;
+      //return <Redirect to={"/admin/classroom"} />
+    }
+
     return (
     <Container fluid>
       <Row>

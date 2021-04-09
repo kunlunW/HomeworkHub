@@ -7,6 +7,7 @@ import viewStudent from "views/viewStudent.js";
 import viewClass from "views/viewClass.js";
 import LogIn from "views/LogIn.js";
 import Signup from "views/SignUp.js";
+import Classroom from "views/Classroom.js";
 
 const routes = [
   
@@ -72,6 +73,15 @@ const routes = [
     icon: "nc-icon nc-circle-09",
     component: Signup,
     layout: "/welcome",
+  },
+
+  //Might want to change this 
+  {
+    path: "/classroom",
+    name: "Classroom",
+    icon: "nc-icon nc-circle-09",
+    component: Classroom,
+    layout: "/admin",
   },
 ];
 
