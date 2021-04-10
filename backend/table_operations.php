@@ -69,6 +69,7 @@ function CreateClassroomsTable()
     classroomname VARCHAR(255) NOT NULL,
     classroomid INT PRIMARY KEY AUTO_INCREMENT,
     teachername VARCHAR(255) NOT NULL,
+    joincode INT NOT NULL,
     FOREIGN KEY (teachername) REFERENCES users(username)
     )";
 
