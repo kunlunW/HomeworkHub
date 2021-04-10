@@ -1,37 +1,36 @@
 import React from "react";
-import cellEditFactory from 'react-bootstrap-table2-editor';
-import BootstrapTable from 'react-bootstrap-table-next';
+
 import {
+  Badge,
+  Button,
+  Card,
+  Navbar,
+  Nav,
+  Table,
   Container,
   Row,
   Col,
+  Dropdown,
+  Pagination
 } from "react-bootstrap";
 
-const columns = [{
-  dataField: 'id',
-  text: 'Product ID',
-  sort: true
-}, {
-  dataField: 'name',
-  text: 'Product Name',
-  sort: true
-}, {
-  dataField: 'price',
-  text: 'Product Price'
-}];
-
+import EmployeeList from './components_test/EmployeeList';
+import EmployeeContextProvider from './contexts_test/EmployeeContext';
+import "./App.css";
 
 function addTest() {
   return (
-    <>
-      <Container fluid>
-        <Row>
-          <Col md="12">
-          
-          </Col>
-        </Row>
-      </Container>
-    </>
+    <div className="container-xl">
+      <div className="table-responsive">
+        <div className="table-wrapper">
+          <EmployeeContextProvider>
+            <EmployeeList />
+          </EmployeeContextProvider>
+        </div>
+      </div>
+    </div>
+
   );
 }
+
 export default addTest;
