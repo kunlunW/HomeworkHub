@@ -73,7 +73,7 @@ function GetTeacherClassrooms($username)
         while($row = $result->fetch_assoc()) {
             $ret .= '{"classroomid":' . $row["classroomid"] . 
                 ', "classroomname":"' . $row["classroomname"] . 
-                ', "joincode":"' . $row["joincode"] . 
+                '", "joincode":"' . $row["joincode"] . 
                 '", "teachername":"' . $row["teachername"] . '"},';
         }
     }
