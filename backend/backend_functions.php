@@ -84,72 +84,172 @@ function GetTeacherClassrooms($username)
     return $ret;
 }
 
+function GetJoinCode($cid)
+{
+    // @codeCoverageIgnoreStart
+    $conn = OpenCon();
+    $ret;
+    $sql = "SELECT joincode FROM classrooms WHERE classroomid='$cid'";
+
+    $result = $conn->query($conn);
+    if ($result->num_rows === 1)
+        $ret = $result->fetch_assoc()["joincode"];
+    else 
+        $ret = -1;
+
+    CloseCon($conn);
+    return $ret;
+    // @codeCoverageIgnoreEnd
+}
+
 /*
- * Return Values:
- * 0: Request submitted successfully
- * 1: username is not a valid username
- * 2: classroom id is not a valid id
- * 3: The user is already in the classroom
- * 4: The user has already requested to join the classroom
- * 5: Error occured when creating the request
+ * Returns:
+ * 0: On success
+ * 1: Join code does not correspond to any classroom
+ * 2: Username does not correspond to any user
+ * 3: If the user is already in the classroom
+ * 4: Other error
  */
-function CreateRequest($username, $cid)
+function JoinClassroom($username, $joincode)
 {
     $conn = OpenCon();
-    $queryCheckValidUserName = "SELECT * FROM users WHERE username='$username'";
-    $result = $conn->query($queryCheckValidUserName);
-
-    if ($result->num_rows === 0) {
+    
+    $sql = "SELECT * FROM classrooms WHERE joincode='$joincode'";
+    $result = $conn->query($sql);
+    if ($result->num_rows !== 1) {
         CloseCon($conn);
         return 1;
     }
 
-    $queryCheckValidCID = "SELECT * FROM classrooms WHERE classroomid='$cid'";
-    $result = $conn->query($queryCheckValidCID);
+    $cid = $result->fetch_assoc()["classroomid"];
 
+    $sql = "SELECT * FROM users WHERE username='$username'";
+    $result = $conn->query($sql);
+    if ($result->num_rows !== 1) {
+        CloseCon($conn);
+        return 2;
+    }
+
+    $sql = "SELECT * FROM  requests WHERE username='$username' AND classroomid='$cid'";
+    $result = $conn->query($sql);
+    if ($result->num_rows !== 0) {
+        CloseCon($conn);
+        return 3;
+    }
+
+    $sql = "INSERT INTO requests (username, classroomid) VALUES ('$username', '$cid')";
+    $result = $conn->query($sql);
+    if ($result === TRUE) {
+        CloseCon($conn);
+        return 0;
+    } else {
+        // @codeCoverageIgnoreStart
+        CloseCon($conn);
+        return 4;
+        // @codeCoverageIgnoreEnd
+    }
+}
+
+/*
+ * Returns:
+ * 0: Success
+ * 1: Failure
+ * 2: classroomid does not correspond to a classroom
+ * 3: invalid type
+ */
+function CreateEvent($name, $desc, $duedate, $cid, $type) 
+{
+    $conn = OpenCon();
+    
+    $sql = "SELECT * FROM classrooms WHERE classroomid='$cid'";
+    $result = $conn->query($sql);
     if ($result->num_rows === 0) {
         CloseCon($conn);
         return 2;
     }
 
-    $queryCheckUserInClassroom = "SELECT * FROM requests WHERE username='$username' AND classroomid='$cid'";
-    $result = $conn->query($queryCheckUserInClassroom);
+    if ($type !== "homework" and $type !== "test" and $type !== "announcement") {
+        CloseCon($conn);
+        return 3;
+    }
+    
+    $sql = "INSERT INTO events (name, description, duedate, classroomid, type) VALUES ('$name', '$desc', '$duedate', '$cid', '$type')";
+    $result = $conn->query($sql);
 
-    if ($result->num_rows === 1) {
-        $row = $result->fetch_assoc();
-        if ($row["status"] === "accepted") {
-            CloseCon($conn);
-            return 3;
-        } else {
-            CloseCon($conn);
-            return 4;
-        }
+    if ($result === TRUE) {
+        $lastId = $conn->insert_id;
+        CloseCon($conn);
+        return $lastId;
+    } else {
+        // @codeCoverageIgnoreStart
+        CloseCon($conn);
+        return 0;
+        // @codeCoverageIgnoreEnd
+    }
+}
+
+/*
+ * Returns:
+ * 0: On success
+ * 1: event id does not correspond to an event
+ * 2: Other failure
+ */
+function UpdateEvent($eid, $name, $desc, $duedate)
+{
+    $conn = OpenCon();
+    $sql = "SELECT * FROM events WHERE eventid='$eid'";
+    $result = $conn->query($sql);
+    if ($result->num_rows === 0) {
+        CloseCon($conn);
+        return 1;
     }
 
-    $sql = "INSERT INTO requests (username, classroomid) VALUES ('$username', '$cid')";
+    $sql = "UPDATE events SET name='$name', description='$desc', duedate='$duedate' WHERE eventid='$eid'";
+    $result = $conn->query($sql);
+    if ($result === TRUE) {
+        CloseCon($conn);
+        return 0;
+    } else {
+        // @codeCoverageIgnoreStart
+        CloseCon($conn);
+        return 2;
+        // @codeCoverageIgnoreEnd
+    }
+}
 
+/*
+ * Returns:
+ *  0: Success
+ *  1: Failure
+ */
+function DeleteEvent($eid)
+{
+    $conn = OpenCon();
+    $sql = "DELETE FROM events WHERE eventid='$eid'";
     if ($conn->query($sql) === TRUE) {
         CloseCon($conn);
         return 0;
     } else {
         // @codeCoverageIgnoreStart
         CloseCon($conn);
-        return 5;
+        return 1;
         // @codeCoverageIgnoreEnd
     }
 }
 
-function GetPendingRequests($cid)
+function GetEventList($cid, $type) 
 {
     $conn = OpenCon();
-    $sql = "SELECT * FROM requests WHERE  classroomid='$cid' AND status='pending'";
-
-    $result = $conn->query($sql);
+    $sql = "SELECT * FROM events WHERE classroomid='$cid' AND type='$type'";
     $ret = '[';
+    $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $ret .= '{"username":"' . $row["username"] . '"},';
+        while($row = $result->fetch_assoc()) {
+            $ret .= '{"eventid":' . $row["eventid"] . 
+                ', "name":"' . $row["name"] . 
+                '", "description":"' . $row["description"] . 
+                '", "duedate":"' . $row["duedate"] . '"},';
         }
     }
 
@@ -160,19 +260,28 @@ function GetPendingRequests($cid)
     return $ret;
 }
 
-function AcceptRequest($username, $cid)
+function GetAllEvents($cid) 
 {
     $conn = OpenCon();
-    $sql = "Update requests SET status='accepted' WHERE username='$username' AND classroomid='$cid'";
+    $sql = "SELECT * FROM events WHERE classroomid='$cid'";
+    $ret = '[';
+    $result = $conn->query($sql);
 
-    if ($conn->query($sql) == TRUE) {
-        CloseCon($conn);
-        return 0;
-    } else {
-        // @codeCoverageIgnoreStart
-        CloseCon($conn);
-        return 1;
-        // @codeCoverageIgnoreEnd
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $ret .= '{"eventid":' . $row["eventid"] . 
+                ', "name":"' . $row["name"] . 
+                '", "description":"' . $row["description"] . 
+                '", "duedate":"' . $row["duedate"] . 
+                '", "type":"' . $row["type"] . '"},';
+        }
     }
+
+    $ret = rtrim($ret, ",");
+    $ret .= ']';
+
+    CloseCon($conn);
+    return $ret;
 }
+
 ?>
