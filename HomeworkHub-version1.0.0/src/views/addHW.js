@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import React from "react";
 import {
   Container,
@@ -90,5 +89,4 @@ function AddHW() {
   );
 }
 export default AddHW;
-=======
->>>>>>> Stashed changes
+

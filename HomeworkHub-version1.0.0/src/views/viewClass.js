@@ -42,7 +42,6 @@ export class viewClass extends React.Component {
   
   //Retrieves each classroom for current user, called when creating cards
   get_classrooms() {
-    console.log("help");
     const url = "/HomeworkHub/backend/get_teacher_classrooms.php";
     let formData = new FormData();
     let data = '{"username":"' + localStorage.getItem("username") + '"}';
@@ -50,17 +49,13 @@ export class viewClass extends React.Component {
     axios.post(url, formData)
     .then(response => {
         var res = response["data"];
-        console.log(res)
         this.setState({classrooms: [...res]});
-        console.log(this.state.classrooms);
     })
     .catch(err=>console.log(err));
   }
 
   //Creates a new classroom in the db
   create_new_classroom() {
-    console.log(this.state.new_classroom_name);
-    
     const url = "/HomeworkHub/backend/create_classroom.php";
     let formData = new FormData();
     let data = '{"classroomname":"' + this.state.new_classroom_name + '", "teachername":"' + this.state.username + '"}';
@@ -68,7 +63,6 @@ export class viewClass extends React.Component {
     axios.post(url, formData)
       .then(response => {
          var res = response["data"];
-         console.log(res);
          if (res > 0) {
            this.setState({success: true});
            this.get_classrooms();
@@ -105,12 +99,6 @@ export class viewClass extends React.Component {
       </Card>
     </div>
     );
-  }
-
-  chooseClassroom(classroom) {
-  //   // this.setState({chosen: true});
-  //    localStorage.setItem("classroomName", classroom.name);
-  //    localStorage.setItem("classroomId", classroom.id);
   }
 
   handleChange = e => {
