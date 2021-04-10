@@ -43,11 +43,11 @@ function AddUser($username, $password, $type)
     return $ret; 
 }
 
-function CreateClassroom($crname, $tname)
+function CreateClassroom($crname, $tname, $joincode)
 {
     $conn = OpenCon();
 
-    $sql = "INSERT INTO classrooms (classroomname, teachername) VALUES ('$crname', '$tname')";
+    $sql = "INSERT INTO classrooms (classroomname, teachername, joincode) VALUES ('$crname', '$tname', '$joincode')";
 
     if ($conn->query($sql) === TRUE) {
         $lastId = $conn->insert_id;
@@ -282,6 +282,68 @@ function GetAllEvents($cid)
 
     CloseCon($conn);
     return $ret;
+}
+
+function UpdateUsersInfo($username, $newUserame, $newPassword, $newType)
+{
+    // Check if there are NULL values among the three attributes
+    if($newUserame === NULL || $newPassword === NULL || $newType === NULL) {
+        // echo "Invalid input\n";
+        CloseCon($conn);
+        return 1;
+    } else {
+        //Check if the updated username is already in database
+        $sql = "SELECT * FROM users WHERE username = '$newUsername';";
+        $newUsernameCheck = $conn->query($sql);
+        if ($newUsernameCheck->num_rows != 0) {
+            // echo "Duplicate username\n"; //duplicate username
+            CloseCon($conn);
+            return 1;
+        }
+
+        $sqlUpdate = "UPDATE users u SET u.username = '$newUsername', u.password = '$newPassword', u.type = '$newType' WHERE u.username = '$username';";
+        $updateRes = $conn->query($sqlUpdate);
+        if (!$updateRes) {
+            // echo "Update Failed\n";
+            CloseCon($conn);
+            return 1;
+        } else {
+            // echo "Update Success\n";
+            CloseCon($conn);
+            return 0;
+        }
+    }
+}
+
+function UpdateTeachersInfo($username, $gender, $email, $mobile_no, $school)
+{
+    $conn = OpenCon();
+    $sqlCheck = "SELECT * FROM Teachers WHERE teacherUserName = '$username';";
+    if($sqlCheck) { // Entry already exists
+        $sqlUpdate = "UPDATE Teachers t SET t.gender = '$gender', t.email = '$email', t.mobile_no = '$mobile_no', t.school = '$school' WHERE t.teacherUserName = '$username';";
+        $updateRes = $conn->query($sqlUpdate);
+        if (!$updateRes) {
+            // echo "Update Failed\n";
+            CloseCon($conn);
+            return 0;
+        } else {
+            // echo "Update Success\n";
+            CloseCon($conn);
+            return 1;
+        }
+    } else { // Entry doesn't exist
+        $sqlInsert = "INSERT INTO Teachers (username, gender, email, mobile_no, school) VALUES ('$username', '$gender', '$email', '$mobile_no', '$school');";
+        $insertRes = $conn->query($sqlInsert);
+        if (!$insertRes) {
+            // echo "Insert Failed\n";
+            CloseCon($conn);
+            return 1;
+        } else {
+            // echo "Insert Success\n";
+            CloseCon($conn);
+            return 0;
+        }
+    }
 }
 
 ?>
