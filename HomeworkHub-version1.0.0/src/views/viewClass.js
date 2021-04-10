@@ -33,7 +33,6 @@ export class viewClass extends React.Component {
     };
     this.create_new_classroom = this.create_new_classroom.bind(this);
     this.get_classrooms = this.get_classrooms.bind(this);
-    this.chooseClassroom = this.chooseClassroom.bind(this);
     this.create_card = this.create_card.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.get_classrooms();
