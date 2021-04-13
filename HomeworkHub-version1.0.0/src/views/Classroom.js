@@ -146,7 +146,7 @@ export class Classroom extends React.Component {
                 <Card>
                     <Card.Header>
                         <Card.Title>
-                            Tests
+                            Parents
                         </Card.Title>
                     </Card.Header>
                     <Card.Body>
