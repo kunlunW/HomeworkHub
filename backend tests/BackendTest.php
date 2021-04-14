@@ -187,7 +187,7 @@ final class BackendTest extends TestCase
         $actual = GetTeacherClassrooms("Tom");
         $this->assertEquals($expected, $actual);
     }
-// TODO start here
+
     public function testCreateTestEvent(): void
     {
         AddUser("Tom", "Stone", "teacher");
@@ -208,15 +208,15 @@ final class BackendTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-/*    public function testCreateAnnouncementEvent(): void
+    public function testCreateAnnouncementEvent(): void
     {
         AddUser("Tom", "Stone", "teacher");
         CreateClassroom("Science", "Tom", "a");
 
         $expected = 1;
-        $actual = CreateEvent("name", "desc", "2021-12-25", 1, "announcement");
+        $actual = CreateAnnouncement("name", "desc", "2021-12-25", 1);
         $this->assertEquals($expected, $actual);
-    } */
+    } 
 
     public function testCreateHomeworkWithInvalidCid(): void
     {
@@ -238,17 +238,15 @@ final class BackendTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /*
-    public function testCreateEventWithInvalidDueDate(): void
+    public function testCreateAnnouncementWithInvalidCid(): void
     {
         AddUser("Tom", "Stone", "teacher");
-        CreateClassroom("Science", "Tom");
+        CreateClassroom("Science", "Tom", "a");
 
-        $expected = 4;
-        $actual = CreateEvent("name", "desc", "2021-ref-4", 1, "announcement");
+        $expected = 2;
+        $actual = CreateAnnouncement("name", "desc", "2021-12-25", 2);
         $this->assertEquals($expected, $actual);
     }
-    */
 
     public function testCreateMultipleEvents(): void
     {
@@ -258,13 +256,13 @@ final class BackendTest extends TestCase
         $expected = 1;
         $actual = CreateTest("name", "desc", "2021-12-25", 20, 15, 1);
         $this->assertEquals($expected, $actual);
-        /* 
-        $expected = 2;
-        $actual = CreateEvent("name1", "desc1", "2021-11-25", 1, "announcement");
-        $this->assertEquals($expected, $actual); 
-        */
+        
         $expected = 1;
         $actual = CreateHomework("name2", "desc2", "2021-04-26", 50, 1);
+        $this->assertEquals($expected, $actual); 
+    
+        $expected = 1;
+        $actual = CreateAnnouncement("name2", "desc2", "2021-04-26", 1);
         $this->assertEquals($expected, $actual); 
     
     }
@@ -288,6 +286,17 @@ final class BackendTest extends TestCase
 
         $expected = '[{"testid":1, "name":"name", "description":"desc", "duedate":"2021-12-25", "points":30, "timelimit":30}]';
         $actual = GetEventList(1, "test");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testCreateAndGetAnnouncement(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        CreateClassroom("Science", "Tom", "a");
+        CreateAnnouncement("name", "desc", "2021-12-25", 1);
+
+        $expected = '[{"announcementid":1, "name":"name", "description":"desc", "duedate":"2021-12-25"}]';
+        $actual = GetEventList(1, "announcement");
         $this->assertEquals($expected, $actual);
     }
 
@@ -321,6 +330,21 @@ final class BackendTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testCreateAndGetMultipleAnnouncements(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        CreateClassroom("Science", "Tom", "a");
+        CreateAnnouncement("name1", "desc1", "2021-01-25", 1); 
+        CreateAnnouncement("name2", "desc2", "2021-02-25", 1);
+        CreateAnnouncement("name3", "desc3", "2021-03-25", 1);
+        
+        $expected = '[{"announcementid":1, "name":"name1", "description":"desc1", "duedate":"2021-01-25"},' .
+        '{"announcementid":2, "name":"name2", "description":"desc2", "duedate":"2021-02-25"},' .
+        '{"announcementid":3, "name":"name3", "description":"desc3", "duedate":"2021-03-25"}]';
+        $actual = GetEventList(1, "announcement");
+        $this->assertEquals($expected, $actual);
+    }
+
     public function testGetEmptyHomeworkList(): void
     {
         AddUser("Tom", "Stone", "teacher");
@@ -338,6 +362,16 @@ final class BackendTest extends TestCase
 
         $expected = '[]';
         $actual = GetEventList(1, "test");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetEmptyAnnouncementList(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        CreateClassroom("Science", "Tom", "a");
+
+        $expected = '[]';
+        $actual = GetEventList(1, "announcement");
         $this->assertEquals($expected, $actual);
     }
 
@@ -399,6 +433,26 @@ final class BackendTest extends TestCase
         
     }
 
+    public function testUpdateAnnouncement(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        CreateClassroom("Science", "Tom", "a");
+        CreateAnnouncement("name1", "desc1", "2021-01-25", 1); 
+        
+        $expected = '[{"announcementid":1, "name":"name1", "description":"desc1", "duedate":"2021-01-25"}]';
+        $actual = GetEventList(1, "announcement");
+        $this->assertEquals($expected, $actual);
+    
+        $expected = 0;
+        $actual = UpdateAnnouncement(1, "name2", "desc2", "2021-02-26");
+        $this->assertEquals($expected, $actual);
+    
+        $expected = '[{"announcementid":1, "name":"name2", "description":"desc2", "duedate":"2021-02-26"}]';
+        $actual = GetEventList(1, "announcement");
+        $this->assertEquals($expected, $actual);
+        
+    }
+
     public function testUpdateNonexistentHomework(): void
     {
         AddUser("Tom", "Stone", "teacher");
@@ -427,6 +481,22 @@ final class BackendTest extends TestCase
     
         $expected = '[{"testid":1, "name":"name1", "description":"desc1", "duedate":"2021-01-25", "points":50, "timelimit":100}]';
         $actual = GetEventList(1, "test");
+        $this->assertEquals($expected, $actual);
+        
+    }
+ 
+    public function testUpdateNonexistentAnnouncement(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        CreateClassroom("Science", "Tom", "a");
+        CreateAnnouncement("name1", "desc1", "2021-01-25", 1); 
+        
+        $expected = 1;
+        $actual = UpdateAnnouncement(2, "name2", "desc2", "2021-02-26");
+        $this->assertEquals($expected, $actual);
+    
+        $expected = '[{"announcementid":1, "name":"name1", "description":"desc1", "duedate":"2021-01-25"}]';
+        $actual = GetEventList(1, "announcement");
         $this->assertEquals($expected, $actual);
         
     }
@@ -470,6 +540,147 @@ final class BackendTest extends TestCase
         $this->assertEquals($expected, $actual);
         
     }
+
+    public function testDeleteAnnouncement(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        CreateClassroom("Science", "Tom", "a");
+        CreateAnnouncement("name1", "desc1", "2021-01-25", 1); 
+        
+        $expected = '[{"announcementid":1, "name":"name1", "description":"desc1", "duedate":"2021-01-25"}]';
+        $actual = GetEventList(1, "announcement");
+        $this->assertEquals($expected, $actual);
+    
+        $expected = 0;
+        $actual = DeleteEvent(1, "announcement");
+        $this->assertEquals($expected, $actual);
+    
+        $expected = '[]';
+        $actual = GetEventList(1, "announcement");
+        $this->assertEquals($expected, $actual);
+        
+    }
+
+    public function testJoinClassroom(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        AddUser("James", "Smith", "parent");
+        CreateClassroom("Science", "Tom", "a");
+
+        $expected = 0;
+        $actual = JoinClassroom("James", "a");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testMultiplePeopleJoinClassroom(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        AddUser("James", "Smith", "parent");
+        AddUser("Roger", "Kane", "parent");
+        AddUser("Ben", "Reas", "parent");
+        CreateClassroom("Science", "Tom", "a");
+
+        $expected = 0;
+        $actual = JoinClassroom("James", "a");
+        $this->assertEquals($expected, $actual);
+    
+        $expected = 0;
+        $actual = JoinClassroom("Roger", "a");
+        $this->assertEquals($expected, $actual);
+    
+        $expected = 0;
+        $actual = JoinClassroom("Ben", "a");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testJoinClassroomWithInvalidJoinCode(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        AddUser("James", "Smith", "parent");
+        CreateClassroom("Science", "Tom", "a");
+
+        $expected = 1;
+        $actual = JoinClassroom("James", "b");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testJoinClassroomWithInvalidUsername(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        AddUser("James", "Smith", "parent");
+        CreateClassroom("Science", "Tom", "a");
+
+        $expected = 2;
+        $actual = JoinClassroom("Charles", "a");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testJoinClassroomWithSameUserTwice(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        AddUser("James", "Smith", "parent");
+        CreateClassroom("Science", "Tom", "a");
+
+        $expected = 0;
+        $actual = JoinClassroom("James", "a");
+        $this->assertEquals($expected, $actual);
+    
+        $expected = 3;
+        $actual = JoinClassroom("James", "a");
+        $this->assertEquals($expected, $actual); 
+    }
+
+    public function testJoinClassroomWithTeacher(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        AddUser("James", "Smith", "parent");
+        CreateClassroom("Science", "Tom", "a");
+
+        $expected = 4;
+        $actual = JoinClassroom("Tom", "a");
+        $this->assertEquals($expected, $actual);
+    }
+ 
+
+    public function testRetrieveClassroomListWithOneParent(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        AddUser("James", "Smith", "parent");
+        CreateClassroom("Science", "Tom", "a");
+        JoinClassroom("James", "a");
+
+        $expected = '["James"]';
+        $actual = GetAllParentsInClassroom(1);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testRetrieveClassroomListWithMultipleParents(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        AddUser("James", "Smith", "parent");
+        AddUser("Roger", "Kane", "parent");
+        AddUser("Ben", "Reas", "parent");
+        CreateClassroom("Science", "Tom", "a");
+        JoinClassroom("James", "a");
+        JoinClassroom("Roger", "a");
+        JoinClassroom("Ben", "a");
+
+        $expected = '["Ben","James","Roger"]';
+        $actual = GetAllParentsInClassroom(1);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testRetrieveEmptyClassroomList(): void
+    {
+        AddUser("Tom", "Stone", "teacher");
+        AddUser("James", "Smith", "parent");
+        CreateClassroom("Science", "Tom", "a");
+
+        $expected = '[]';
+        $actual = GetAllParentsInClassroom(1);
+        $this->assertEquals($expected, $actual);
+    }
+
 
 }
 ?>

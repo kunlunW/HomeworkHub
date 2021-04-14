@@ -62,11 +62,8 @@ function CreateClassroom($crname, $tname, $joincode)
 function GetTeacherClassrooms($username)
 {
     $conn = OpenCon();
-
     $sql = "SELECT * FROM classrooms WHERE teachername='$username'";
-
     $ret = '[';
-
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -109,7 +106,8 @@ function GetJoinCode($cid)
  * 1: Join code does not correspond to any classroom
  * 2: Username does not correspond to any user
  * 3: If the user is already in the classroom
- * 4: Other error
+ * 4: If the user is not a parent
+ * 5: Other error
  */
 function JoinClassroom($username, $joincode)
 {
@@ -129,6 +127,12 @@ function JoinClassroom($username, $joincode)
     if ($result->num_rows !== 1) {
         CloseCon($conn);
         return 2;
+    } else {
+        $type = $result->fetch_assoc()["type"];
+        if ($type !== "parent") {
+            CloseCon($conn);
+            return 4;
+        }
     }
 
     $sql = "SELECT * FROM  requests WHERE username='$username' AND classroomid='$cid'";
@@ -146,9 +150,29 @@ function JoinClassroom($username, $joincode)
     } else {
         // @codeCoverageIgnoreStart
         CloseCon($conn);
-        return 4;
+        return 5;
         // @codeCoverageIgnoreEnd
     }
+}
+
+function GetAllParentsInClassroom($cid)
+{
+    $conn = OpenCon();
+    $sql = "SELECT * FROM requests WHERE classroomid='$cid' ORDER BY username ASC";
+    $ret = '[';
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $ret .= '"' . $row["username"]  . '",';
+        }
+    }
+
+    $ret = rtrim($ret, ",");
+    $ret .= ']';
+
+    CloseCon($conn);
+    return $ret;
 }
 
 /*
@@ -202,6 +226,39 @@ function CreateTest($name, $desc, $duedate, $points, $timelimit, $cid)
  
     $sql = "INSERT INTO tests (name, description, duedate, points, timelimit, classroomid) " . 
         "VALUES ('$name', '$desc', '$duedate', '$points', '$timelimit', '$cid')";
+    $result = $conn->query($sql);
+
+    if ($result === TRUE) {
+        $lastId = $conn->insert_id;
+        CloseCon($conn);
+        return $lastId;
+    } else {
+        // @codeCoverageIgnoreStart
+        CloseCon($conn);
+        return 0;
+        // @codeCoverageIgnoreEnd
+    }
+}
+
+/*
+ * Returns:
+ * 0: Success
+ * 1: Failure
+ * 2: classroomid does not correspond to a classroom
+ */
+function CreateAnnouncement($name, $desc, $duedate, $cid) 
+{
+    $conn = OpenCon();
+    
+    $sql = "SELECT * FROM classrooms WHERE classroomid='$cid'";
+    $result = $conn->query($sql);
+    if ($result->num_rows === 0) {
+        CloseCon($conn);
+        return 2;
+    }
+ 
+    $sql = "INSERT INTO announcements (name, description, duedate, classroomid) " . 
+        "VALUES ('$name', '$desc', '$duedate', '$cid')";
     $result = $conn->query($sql);
 
     if ($result === TRUE) {
@@ -276,6 +333,35 @@ function UpdateTest($tid, $name, $desc, $duedate, $points, $timelimit)
 
 /*
  * Returns:
+ * 0: On success
+ * 1: test id does not correspond to a test
+ * 2: Other failure
+ */
+function UpdateAnnouncement($aid, $name, $desc, $duedate)
+{
+    $conn = OpenCon();
+    $sql = "SELECT * FROM announcements WHERE announcementid='$aid'";
+    $result = $conn->query($sql);
+    if ($result->num_rows === 0) {
+        CloseCon($conn);
+        return 1;
+    }
+
+    $sql = "UPDATE announcements SET name='$name', description='$desc', duedate='$duedate' WHERE announcementid='$aid'";
+    $result = $conn->query($sql);
+    if ($result === TRUE) {
+        CloseCon($conn);
+        return 0;
+    } else {
+        // @codeCoverageIgnoreStart
+        CloseCon($conn);
+        return 2;
+        // @codeCoverageIgnoreEnd
+    }
+}
+
+/*
+ * Returns:
  *  0: Success
  *  1: Failure
  *  2: invalid type
@@ -289,7 +375,9 @@ function DeleteEvent($eid, $type)
         $sql = "DELETE FROM homeworks WHERE homeworkid='$eid'";
     } else if ($type == "test") {
         $sql = "DELETE FROM tests WHERE testid='$eid'"; 
-    } else{ 
+    } else if ($type == "announcement") {
+        $sql = "DELETE FROM announcements WHERE announcementid='$eid'";  
+    } else { 
         CloseCon($conn);
         return 2; 
     }
@@ -315,6 +403,8 @@ function GetEventList($cid, $type)
         $sql = "SELECT * FROM homeworks WHERE classroomid='$cid'";
     } else if ($type == "test") {
         $sql = "SELECT * FROM tests WHERE classroomid='$cid'";
+    } else if ($type == "announcement") {
+        $sql = "SELECT * FROM announcements WHERE classroomid='$cid'";
     } else {
     } // TODO add error code
 
@@ -336,6 +426,13 @@ function GetEventList($cid, $type)
                     '", "duedate":"' . $row["duedate"] . 
                     '", "points":' . $row["points"] . 
                     ', "timelimit":' . $row["timelimit"] . '},';
+            }
+        } else if ($type == "announcement") {
+            while($row = $result->fetch_assoc()) {
+                $ret .= '{"announcementid":' . $row["announcementid"] . 
+                    ', "name":"' . $row["name"] . 
+                    '", "description":"' . $row["description"] . 
+                    '", "duedate":"' . $row["duedate"] . '"},';
             }
         }
     }

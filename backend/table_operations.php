@@ -70,7 +70,7 @@ function CreateClassroomsTable()
     classroomid INT PRIMARY KEY AUTO_INCREMENT,
     teachername VARCHAR(255) NOT NULL,
     joincode VARCHAR(255) NOT NULL,
-    FOREIGN KEY (teachername) REFERENCES users(username)
+    FOREIGN KEY (teachername) REFERENCES users(username) ON UPDATE CASCADE
     )";
 
     if ($conn->query($sql) === TRUE) {
@@ -129,7 +129,7 @@ function CreateRequestsTable()
     username VARCHAR(255) NOT NULL,
     classroomid INT NOT NULL,
     PRIMARY KEY (username, classroomid),
-    FOREIGN KEY (username) REFERENCES users(username),
+    FOREIGN KEY (username) REFERENCES users(username) ON UPDATE CASCADE,
     FOREIGN KEY (classroomid) REFERENCES classrooms(classroomid)
     )";
 
@@ -307,6 +307,67 @@ function TruncateTestsTable()
 /**
  * @codeCoverageIgnore
  */
+function CreateAnnouncementsTable()
+{
+    $conn = OpenCon();
+    $sql = "CREATE TABLE announcements (
+    announcementid INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    duedate DATE NOT NULL,
+    classroomid INT NOT NULL,
+    FOREIGN KEY (classroomid) REFERENCES classrooms(classroomid)
+    )";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        echo "announcements table was not created<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
+/**
+ * @codeCoverageIgnore
+ */
+function DropAnnouncementsTable() 
+{
+    $conn = OpenCon();
+    $sql = "DROP TABLE announcements";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        echo "announcements table was not dropped<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
+/**
+ * @codeCoverageIgnore
+ */
+function TruncateAnnouncementsTable() 
+{
+    $conn = OpenCon();
+    $sql = "TRUNCATE TABLE announcements";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        echo "announcements table was not truncated<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
+/**
+ * @codeCoverageIgnore
+ */
 function CreateTeachersTable()
 {
     $conn = OpenCon();
@@ -316,7 +377,7 @@ function CreateTeachersTable()
     email VARCHAR(255) NOT NULL,
     mobile_no INT NOT NULL,
     school VARCHAR(255) NOT NULL,
-    FOREIGN KEY (teacherUserName) REFERENCES users(username)
+    FOREIGN KEY (teacherUserName) REFERENCES users(username) ON UPDATE CASCADE 
     )";
 
     if ($conn->query($sql) === TRUE) {
@@ -380,6 +441,7 @@ function ResetTables()
 function DropAllTables()
 {
     DropRequestsTable();
+    DropAnnouncementsTable();
     DropTestsTable();
     DropHomeworksTable();
     DropClassroomsTable();
@@ -397,6 +459,7 @@ function CreateAllTables()
     CreateRequestsTable();
     CreateHomeworksTable();
     CreateTestsTable();
+    CreateAnnouncementsTable();
     CreateTeachersTable();
 }
 
