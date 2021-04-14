@@ -429,6 +429,69 @@ function TruncateTeachersTable()
 /**
  * @codeCoverageIgnore
  */
+function CreateParentsTable()
+{
+    $conn = OpenCon();
+    $sql = "CREATE TABLE Parents (
+    parentUserName VARCHAR(255) PRIMARY KEY,
+    studentName VARCHAR(255) NOT NULL,
+    studentID INT NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    mobile_no INT NOT NULL,
+    school VARCHAR(255) NOT NULL,
+    classroomID INT NOT NULL,
+    FOREIGN KEY (parentUserName) REFERENCES users(username)
+    )";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        //echo "Parents table was not created<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
+/**
+ * @codeCoverageIgnore
+ */
+function DropParentsTable() 
+{
+    $conn = OpenCon();
+    $sql = "DROP TABLE Parents";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        //echo "Parents table was not dropped<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
+/**
+ * @codeCoverageIgnore
+ */
+function TruncateParentsTable() 
+{
+    $conn = OpenCon();
+    $sql = "TRUNCATE TABLE Parents";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        //echo "Parents table was not truncated<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
+/**
+ * @codeCoverageIgnore
+ */
 function ResetTables()
 {
     DropAllTables();
