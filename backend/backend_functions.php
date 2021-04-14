@@ -156,9 +156,8 @@ function JoinClassroom($username, $joincode)
  * 0: Success
  * 1: Failure
  * 2: classroomid does not correspond to a classroom
- * 3: invalid type
  */
-function CreateEvent($name, $desc, $duedate, $cid, $type) 
+function CreateHomework($name, $desc, $duedate, $points, $cid) 
 {
     $conn = OpenCon();
     
@@ -168,13 +167,41 @@ function CreateEvent($name, $desc, $duedate, $cid, $type)
         CloseCon($conn);
         return 2;
     }
+ 
+    $sql = "INSERT INTO homeworks (name, description, duedate, points, classroomid) VALUES ('$name', '$desc', '$duedate', '$points', '$cid')";
+    $result = $conn->query($sql);
 
-    if ($type !== "homework" and $type !== "test" and $type !== "announcement") {
+    if ($result === TRUE) {
+        $lastId = $conn->insert_id;
         CloseCon($conn);
-        return 3;
+        return $lastId;
+    } else {
+        // @codeCoverageIgnoreStart
+        CloseCon($conn);
+        return 0;
+        // @codeCoverageIgnoreEnd
     }
+}
+
+/*
+ * Returns:
+ * 0: Success
+ * 1: Failure
+ * 2: classroomid does not correspond to a classroom
+ */
+function CreateTest($name, $desc, $duedate, $points, $timelimit, $cid) 
+{
+    $conn = OpenCon();
     
-    $sql = "INSERT INTO events (name, description, duedate, classroomid, type) VALUES ('$name', '$desc', '$duedate', '$cid', '$type')";
+    $sql = "SELECT * FROM classrooms WHERE classroomid='$cid'";
+    $result = $conn->query($sql);
+    if ($result->num_rows === 0) {
+        CloseCon($conn);
+        return 2;
+    }
+ 
+    $sql = "INSERT INTO tests (name, description, duedate, points, timelimit, classroomid) " . 
+        "VALUES ('$name', '$desc', '$duedate', '$points', '$timelimit', '$cid')";
     $result = $conn->query($sql);
 
     if ($result === TRUE) {
@@ -192,20 +219,49 @@ function CreateEvent($name, $desc, $duedate, $cid, $type)
 /*
  * Returns:
  * 0: On success
- * 1: event id does not correspond to an event
+ * 1: homework id does not correspond to a homework
  * 2: Other failure
  */
-function UpdateEvent($eid, $name, $desc, $duedate)
+function UpdateHomework($hid, $name, $desc, $duedate, $points)
 {
     $conn = OpenCon();
-    $sql = "SELECT * FROM events WHERE eventid='$eid'";
+    $sql = "SELECT * FROM homeworks WHERE homeworkid='$hid'";
     $result = $conn->query($sql);
     if ($result->num_rows === 0) {
         CloseCon($conn);
         return 1;
     }
 
-    $sql = "UPDATE events SET name='$name', description='$desc', duedate='$duedate' WHERE eventid='$eid'";
+    $sql = "UPDATE homeworks SET name='$name', description='$desc', duedate='$duedate', points='$points' WHERE homeworkid='$hid'";
+    $result = $conn->query($sql);
+    if ($result === TRUE) {
+        CloseCon($conn);
+        return 0;
+    } else {
+        // @codeCoverageIgnoreStart
+        CloseCon($conn);
+        return 2;
+        // @codeCoverageIgnoreEnd
+    }
+}
+
+/*
+ * Returns:
+ * 0: On success
+ * 1: test id does not correspond to a test
+ * 2: Other failure
+ */
+function UpdateTest($tid, $name, $desc, $duedate, $points, $timelimit)
+{
+    $conn = OpenCon();
+    $sql = "SELECT * FROM tests WHERE testid='$tid'";
+    $result = $conn->query($sql);
+    if ($result->num_rows === 0) {
+        CloseCon($conn);
+        return 1;
+    }
+
+    $sql = "UPDATE tests SET name='$name', description='$desc', duedate='$duedate', points='$points', timelimit='$timelimit' WHERE testid='$tid'";
     $result = $conn->query($sql);
     if ($result === TRUE) {
         CloseCon($conn);
@@ -222,11 +278,22 @@ function UpdateEvent($eid, $name, $desc, $duedate)
  * Returns:
  *  0: Success
  *  1: Failure
+ *  2: invalid type
  */
-function DeleteEvent($eid)
+function DeleteEvent($eid, $type)
 {
     $conn = OpenCon();
-    $sql = "DELETE FROM events WHERE eventid='$eid'";
+    $sql;
+
+    if ($type == "homework") {
+        $sql = "DELETE FROM homeworks WHERE homeworkid='$eid'";
+    } else if ($type == "test") {
+        $sql = "DELETE FROM tests WHERE testid='$eid'"; 
+    } else{ 
+        CloseCon($conn);
+        return 2; 
+    }
+    
     if ($conn->query($sql) === TRUE) {
         CloseCon($conn);
         return 0;
@@ -243,38 +310,33 @@ function GetEventList($cid, $type)
     $conn = OpenCon();
     $sql = "SELECT * FROM events WHERE classroomid='$cid' AND type='$type'";
     $ret = '[';
+
+    if ($type == "homework") { 
+        $sql = "SELECT * FROM homeworks WHERE classroomid='$cid'";
+    } else if ($type == "test") {
+        $sql = "SELECT * FROM tests WHERE classroomid='$cid'";
+    } else {
+    } // TODO add error code
+
     $result = $conn->query($sql);
-
     if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $ret .= '{"eventid":' . $row["eventid"] . 
-                ', "name":"' . $row["name"] . 
-                '", "description":"' . $row["description"] . 
-                '", "duedate":"' . $row["duedate"] . '"},';
-        }
-    }
-
-    $ret = rtrim($ret, ",");
-    $ret .= ']';
-
-    CloseCon($conn);
-    return $ret;
-}
-
-function GetAllEvents($cid) 
-{
-    $conn = OpenCon();
-    $sql = "SELECT * FROM events WHERE classroomid='$cid'";
-    $ret = '[';
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $ret .= '{"eventid":' . $row["eventid"] . 
-                ', "name":"' . $row["name"] . 
-                '", "description":"' . $row["description"] . 
-                '", "duedate":"' . $row["duedate"] . 
-                '", "type":"' . $row["type"] . '"},';
+        if ($type == "homework") {
+            while($row = $result->fetch_assoc()) {
+                $ret .= '{"homeworkid":' . $row["homeworkid"] . 
+                    ', "name":"' . $row["name"] . 
+                    '", "description":"' . $row["description"] . 
+                    '", "duedate":"' . $row["duedate"] .
+                    '", "points":' . $row["points"] . '},';
+            }
+        } else if ($type == "test") {
+            while($row = $result->fetch_assoc()) {
+                $ret .= '{"testid":' . $row["testid"] . 
+                    ', "name":"' . $row["name"] . 
+                    '", "description":"' . $row["description"] . 
+                    '", "duedate":"' . $row["duedate"] . 
+                    '", "points":' . $row["points"] . 
+                    ', "timelimit":' . $row["timelimit"] . '},';
+            }
         }
     }
 
