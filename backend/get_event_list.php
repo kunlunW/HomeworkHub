@@ -7,7 +7,7 @@ $json = json_decode($data, true);
 $cid = $json["classroomid"];
 $type = $json["type"];
 
-$ret = GetEventsList($cid, $type);
+$ret = GetEventList($cid, $type);
 echo $ret;
 // @codeCoverageIgnoreEnd
 ?>
