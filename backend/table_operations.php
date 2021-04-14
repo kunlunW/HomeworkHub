@@ -182,16 +182,16 @@ function TruncateRequestsTable()
 /**
  * @codeCoverageIgnore
  */
-function CreateEventsTable()
+function CreateHomeworksTable()
 {
     $conn = OpenCon();
-    $sql = "CREATE TABLE events (
-    eventid INT PRIMARY KEY AUTO_INCREMENT,
+    $sql = "CREATE TABLE homeworks (
+    homeworkid INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     duedate DATE NOT NULL,
+    points INT NOT NULL,
     classroomid INT NOT NULL,
-    type ENUM('homework', 'test', 'announcement') NOT NULL,
     FOREIGN KEY (classroomid) REFERENCES classrooms(classroomid)
     )";
 
@@ -199,7 +199,7 @@ function CreateEventsTable()
         CloseCon($conn);
         return true;
     } else {
-        echo "events table was not created<br>";
+        echo "homeworks table was not created<br>";
         CloseCon($conn);
         return false;
     }
@@ -208,16 +208,16 @@ function CreateEventsTable()
 /**
  * @codeCoverageIgnore
  */
-function DropEventsTable() 
+function DropHomeworksTable() 
 {
     $conn = OpenCon();
-    $sql = "DROP TABLE events";
+    $sql = "DROP TABLE homeworks";
 
     if ($conn->query($sql) === TRUE) {
         CloseCon($conn);
         return true;
     } else {
-        echo "events table was not dropped<br>";
+        echo "homeworks table was not dropped<br>";
         CloseCon($conn);
         return false;
     }
@@ -226,16 +226,79 @@ function DropEventsTable()
 /**
  * @codeCoverageIgnore
  */
-function TruncateEventsTable() 
+function TruncateHomeworksTable() 
 {
     $conn = OpenCon();
-    $sql = "TRUNCATE TABLE events";
+    $sql = "TRUNCATE TABLE homeworks";
 
     if ($conn->query($sql) === TRUE) {
         CloseCon($conn);
         return true;
     } else {
-        echo "events table was not truncated<br>";
+        echo "homeworks table was not truncated<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
+/**
+ * @codeCoverageIgnore
+ */
+function CreateTestsTable()
+{
+    $conn = OpenCon();
+    $sql = "CREATE TABLE tests (
+    testid INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    duedate DATE NOT NULL,
+    points INT NOT NULL,
+    timelimit INT NOT NULL,
+    classroomid INT NOT NULL,
+    FOREIGN KEY (classroomid) REFERENCES classrooms(classroomid)
+    )";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        echo "tests table was not created<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
+/**
+ * @codeCoverageIgnore
+ */
+function DropTestsTable() 
+{
+    $conn = OpenCon();
+    $sql = "DROP TABLE tests";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        echo "tests table was not dropped<br>";
+        CloseCon($conn);
+        return false;
+    }
+}
+
+/**
+ * @codeCoverageIgnore
+ */
+function TruncateTestsTable() 
+{
+    $conn = OpenCon();
+    $sql = "TRUNCATE TABLE tests";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return true;
+    } else {
+        echo "tests table was not truncated<br>";
         CloseCon($conn);
         return false;
     }
@@ -317,7 +380,8 @@ function ResetTables()
 function DropAllTables()
 {
     DropRequestsTable();
-    DropEventsTable();
+    DropTestsTable();
+    DropHomeworksTable();
     DropClassroomsTable();
     DropTeachersTable();
     DropUsersTable();
@@ -331,7 +395,8 @@ function CreateAllTables()
     CreateUsersTable();
     CreateClassroomsTable();
     CreateRequestsTable();
-    CreateEventsTable();
+    CreateHomeworksTable();
+    CreateTestsTable();
     CreateTeachersTable();
 }
 
