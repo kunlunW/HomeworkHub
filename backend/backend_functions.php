@@ -155,6 +155,21 @@ function JoinClassroom($username, $joincode)
     }
 }
 
+function LeaveClassroom($username, $cid)
+{
+    $conn = OpenCon();
+    $sql = "DELETE FROM requests WHERE username='$username' AND classroomid='$cid'";
+    $ret;
+
+    if ($conn->query($sql) === TRUE) 
+        $ret = 0;
+    else
+        $ret = 1;
+
+    CloseCon($conn);
+    return $ret;
+}
+
 function GetAllParentsInClassroom($cid)
 {
     $conn = OpenCon();
