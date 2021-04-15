@@ -499,7 +499,8 @@ function UpdateTeachersInfo($username, $gender, $email, $mobile_no, $school)
 {
     $conn = OpenCon();
     $sqlCheck = "SELECT * FROM Teachers WHERE teacherUserName = '$username';";
-    if($sqlCheck) { // Entry already exists
+    $newTeacherCheck = $conn->query($sql);
+    if($newTeacherCheck) { // Entry already exists
         $sqlUpdate = "UPDATE Teachers t SET t.gender = '$gender', t.email = '$email', t.mobile_no = '$mobile_no', t.school = '$school' WHERE t.teacherUserName = '$username';";
         $updateRes = $conn->query($sqlUpdate);
         if (!$updateRes) {
@@ -523,6 +524,20 @@ function UpdateTeachersInfo($username, $gender, $email, $mobile_no, $school)
             CloseCon($conn);
             return 0;
         }
+    }
+}
+
+function DisplayTeacherInfo($username)
+{
+    $conn = OpenCon();
+    $sqlDisplay = "SELECT * FROM Teachers WHERE teacherUserName = '$username';";
+    $ret = $conn->query($sqlDisplay);
+    if($ret) { // Entry already exists
+        CloseCon($conn);
+        return $ret;
+    } else { // Entry doesn't exist
+        CloseCon($conn);
+        return 1;
     }
 }
 
