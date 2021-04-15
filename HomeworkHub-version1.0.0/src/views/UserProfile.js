@@ -14,7 +14,7 @@ function User() {
 
   const [fields, updateFields] = useState(
     {
-      name: 'TestUser_1',
+      name: "",
       gender: "male",
       email: 'test@example.com',
       mobile_no: '012345678',

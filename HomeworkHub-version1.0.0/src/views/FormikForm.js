@@ -1,8 +1,67 @@
 import React, { Component } from 'react';
+import axios from "axios";
 import { withFormik, Form, Field } from 'formik';
 
 const form_id = 'form_id';
 class MaintenanceForm extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+          name: localStorage.getItem("username"),
+          gender: "",
+          email: "",
+          mobile_no: "",
+          school: ""
+        };
+        this.save = this.save.bind(this);
+
+        this.getUserInfo();
+
+    }
+
+    //This part is good and working
+    getUserInfo() {
+
+        const url = "/HomeworkHub/backend/displayTeacher.php";
+        let formData = new FormData();
+        let data = '{"username":"' + this.state.name + '"}';
+        formData.append("formData", data);
+        axios.post(url, formData)
+        .then(response => {
+            var res = response["data"][0];
+            this.setState({
+                gender: res["gender"],
+                email: res["email"],
+                mobile_no: res["mobile_no"],
+                school: res["school"]
+            });
+        })
+        .catch(err=>console.log(err.response, err.request));
+
+    }
+
+
+    //need to work on this
+    save() {
+      
+        const url = "/HomeworkHub/backend/updateTeacher.php";
+        let formData = new FormData();
+        let data = '{"username":"' + this.state.name + '", "gender":"' + this.state.gender 
+                                   + '", "email":"' + this.state.email 
+                                   + '", "mobile_no":"' + this.state.mobile_no 
+                                   + '", "school":"' + this.state.school + '"}';
+        formData.append("formData", data);
+        console.log(data);
+        axios.post(url, formData)
+        .then(response => {
+            var res = response["data"];
+            console.log(res);
+            
+        })
+        .catch(err=>console.log(err.response, err.request));
+
+    }
 
     editOnClick = (event) => {
         event.preventDefault()
@@ -27,7 +86,7 @@ class MaintenanceForm extends Component {
                     {
                         this?.props?.status?.edit ? 
                         <React.Fragment>
-                            <button className="btn btn-primary btn-sm" type="submit" form={form_id}>Save</button> 
+                            <button className="btn btn-primary btn-sm" form={form_id} type="submit" onClick={this.save}>Save</button> 
                             <button className="btn btn-danger btn-sm" onClick={this.cancelOnClick} style={{marginLeft: "8px"}}>Cancel</button>
                         </React.Fragment>
                         : 
@@ -45,7 +104,7 @@ class MaintenanceForm extends Component {
                     <label className="col-sm-2 col-form-label">UserName</label>
                     <div className="col-sm-10">
                         <label type="text" name="name" className="form-control">
-                            {this?.props?.fields?.name}
+                            {/* {this?.props?.fields?.name} */this.state.name}
                         </label>
                     </div>
                 </div>
@@ -54,7 +113,7 @@ class MaintenanceForm extends Component {
                     <label className="col-sm-2 col-form-label">Gender</label>
                     <div className="col-sm-10">
                         <label type="text" name="name" className="form-control">
-                            {this?.props?.fields?.gender}
+                            {/* {this?.props?.fields?.gender} */this.state.gender}
                         </label>
                     </div>
                 </div>
@@ -64,7 +123,7 @@ class MaintenanceForm extends Component {
                     <label className="col-sm-2 col-form-label">Email</label>
                     <div className="col-sm-10">
                         <label type="text" name="brand_name" className="form-control"> 
-                            {this?.props?.fields?.email}
+                            {/* {this?.props?.fields?.email} */this.state.email}
                         </label>
                     </div>
                 </div>
@@ -73,7 +132,7 @@ class MaintenanceForm extends Component {
                     <label className="col-sm-2 col-form-label">Mobile No</label>
                     <div className="col-sm-10">
                         <label type="text" name="device_type" className="form-control">
-                            {this?.props?.fields?.mobile_no}
+                            {/* {this?.props?.fields?.mobile_no} */this.state.mobile_no}
                         </label>
                     </div>
                 </div>
@@ -82,7 +141,7 @@ class MaintenanceForm extends Component {
                     <label className="col-sm-2 col-form-label">School</label>
                     <div className="col-sm-10">
                         <label type="text" name="device_type" className="form-control">
-                            {this?.props?.fields?.school}
+                            {/* {this?.props?.fields?.school} */this.state.school}
                         </label>
                     </div>
                 </div>
@@ -96,17 +155,16 @@ class MaintenanceForm extends Component {
                 <div className="form-group row">
                     <label className="col-sm-2 col-form-label">UserName</label>
                     <div className="col-sm-10">
-                        <Field type="text" name="name" className="form-control" placeholder="Name" />
+                        <Field type="text" name="name" className="form-control" placeholder="Name" ref={(n) => this.name = n}/> 
                     </div>
                 </div>
 
                 <div className="form-group row">
                     <label className="col-sm-2 col-form-label">Gender</label>
                     <div className="col-sm-10">
-                        <Field type="text" name="gender" className="form-control" placeholder="gender" />
+                        <Field type="text" name="gender" className="form-control" placeholder="Gender" />
                     </div>
                 </div>
-
 
                 <div className="form-group row">
                     <label className="col-sm-2 col-form-label">Email</label>
@@ -149,7 +207,7 @@ class MaintenanceForm extends Component {
                 <h4>Confirm your information</h4>
                 <div>
                     <pre>
-                        <code>{JSON.stringify(this.props.fields, null, 2)}</code>
+                        <code>{JSON.stringify(this.state, null, 2)}</code>
                     </pre>
                 </div>
             </React.Fragment>
