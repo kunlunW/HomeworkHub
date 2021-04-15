@@ -155,6 +155,21 @@ function JoinClassroom($username, $joincode)
     }
 }
 
+function LeaveClassroom($username, $cid)
+{
+    $conn = OpenCon();
+    $sql = "DELETE FROM requests WHERE username='$username' AND classroomid='$cid'";
+    $ret;
+
+    if ($conn->query($sql) === TRUE) 
+        $ret = 0;
+    else
+        $ret = 1;
+
+    CloseCon($conn);
+    return $ret;
+}
+
 function GetAllParentsInClassroom($cid)
 {
     $conn = OpenCon();
@@ -165,6 +180,26 @@ function GetAllParentsInClassroom($cid)
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
             $ret .= '"' . $row["username"]  . '",';
+        }
+    }
+
+    $ret = rtrim($ret, ",");
+    $ret .= ']';
+
+    CloseCon($conn);
+    return $ret;
+}
+
+function GetAllClassroomsForParent($pname)
+{
+    $conn = OpenCon();
+    $sql = "SELECT * FROM requests WHERE username='$pname' ORDER BY classroomid ASC";
+    $ret = '[';
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $ret .= '' . $row["classroomid"]  . ',';
         }
     }
 

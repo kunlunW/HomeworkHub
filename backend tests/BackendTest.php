@@ -642,14 +642,14 @@ final class BackendTest extends TestCase
     }
  
 
-    public function testRetrieveClassroomListWithOneParent(): void
+    public function testretrieveclassroomlistwithoneparent(): void
     {
-        AddUser("Tom", "Stone", "teacher");
-        AddUser("James", "Smith", "parent");
-        CreateClassroom("Science", "Tom", "a");
-        JoinClassroom("James", "a");
+        AddUser("tom", "stone", "teacher");
+        AddUser("james", "smith", "parent");
+        CreateClassroom("science", "tom", "a");
+        JoinClassroom("james", "a");
 
-        $expected = '["James"]';
+        $expected = '["james"]';
         $actual = GetAllParentsInClassroom(1);
         $this->assertEquals($expected, $actual);
     }
@@ -678,6 +678,47 @@ final class BackendTest extends TestCase
 
         $expected = '[]';
         $actual = GetAllParentsInClassroom(1);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testretrieveParentClassroomListWithOneClassroom(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        AddUser("james", "smith", "parent");
+        CreateClassroom("science", "tom", "a");
+        JoinClassroom("james", "a");
+
+        $expected = '[1]';
+        $actual = GetAllClassroomsForParent("james");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testretrieveParentClassroomListWithMultipleClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        AddUser("james", "smith", "parent");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("math", "tom", "b");
+        CreateClassroom("history", "tom", "c");
+        JoinClassroom("james", "a");
+        JoinClassroom("james", "b");
+        JoinClassroom("james", "c");
+
+        $expected = '[1,2,3]';
+        $actual = GetAllClassroomsForParent("james");
+        $this->assertEquals($expected, $actual);
+    }
+    
+    public function testretrieveEmptyParentClassroomList(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        AddUser("james", "smith", "parent");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("math", "tom", "b");
+        CreateClassroom("history", "tom", "c");
+
+        $expected = '[]';
+        $actual = GetAllClassroomsForParent("james");
         $this->assertEquals($expected, $actual);
     }
 
