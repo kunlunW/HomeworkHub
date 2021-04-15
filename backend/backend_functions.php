@@ -175,6 +175,26 @@ function GetAllParentsInClassroom($cid)
     return $ret;
 }
 
+function GetAllClassroomsForParent($pname)
+{
+    $conn = OpenCon();
+    $sql = "SELECT * FROM requests WHERE username='$pname' ORDER BY classroomid ASC";
+    $ret = '[';
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $ret .= '' . $row["classroomid"]  . ',';
+        }
+    }
+
+    $ret = rtrim($ret, ",");
+    $ret .= ']';
+
+    CloseCon($conn);
+    return $ret;
+}
+
 /*
  * Returns:
  * 0: Success

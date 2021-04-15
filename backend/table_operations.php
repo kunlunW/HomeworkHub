@@ -440,7 +440,7 @@ function CreateParentsTable()
     mobile_no INT NOT NULL,
     school VARCHAR(255) NOT NULL,
     classroomID INT NOT NULL,
-    FOREIGN KEY (parentUserName) REFERENCES users(username)
+    FOREIGN KEY (parentUserName) REFERENCES users(username) ON UPDATE CASCADE
     )";
 
     if ($conn->query($sql) === TRUE) {
@@ -509,6 +509,7 @@ function DropAllTables()
     DropHomeworksTable();
     DropClassroomsTable();
     DropTeachersTable();
+    DropParentsTable();
     DropUsersTable();
 }
 
@@ -524,6 +525,7 @@ function CreateAllTables()
     CreateTestsTable();
     CreateAnnouncementsTable();
     CreateTeachersTable();
+    CreateParentsTable();
 }
 
 ?>
