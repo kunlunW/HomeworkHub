@@ -60,19 +60,12 @@ class User extends React.Component {
       .then(response => {
         var res = response["data"];
         console.log("res: " +res);    
-        ret = res
+        if (res === 1 || res === 3) {
+          this.getInfo();
+        }
       })
       .catch(err=>console.log(err.response, err.request));
 
-      //if insert is successful, set state
-      if (ret === 1 || ret === 3) {
-        this.setState({
-          gender: values.gender,
-          email: values.email,
-          mobile_no: values.mobile_no,
-          school: values.school
-        });
-      }
   }
 
   render() {
