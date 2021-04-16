@@ -46,26 +46,23 @@ class User extends React.Component {
 
   }
 
-  updateFields(values) { 
-    this.setState({
-      gender: values.gender,
-      email: values.email,
-      mobile_no: values.mobile_no,
-      school: values.school
-    });
-    
-    const url = "/HomeworkHub/backend/updateTeacher.php";
+  updateFields(values) {   
+      var ret;
+      const url = "/HomeworkHub/backend/updateTeacher.php";
       let formData = new FormData();
-      let data = '{"username":"' + this.state.name + '", "gender":"' + this.state.gender 
-                                 + '", "email":"' + this.state.email 
-                                 + '", "mobile_no":"' + this.state.mobile_no 
-                                 + '", "school":"' + this.state.school + '"}';          
+      let data = '{"username":"' + values.name + '", "gender":"' + values.gender 
+                                 + '", "email":"' + values.email 
+                                 + '", "mobile_no":"' + values.mobile_no 
+                                 + '", "school":"' + values.school + '"}';          
       formData.append("formData", data);
       console.log(data);
       axios.post(url, formData)
       .then(response => {
         var res = response["data"];
-        console.log(res);    
+        console.log("res: " +res);    
+        if (res === 1 || res === 3) {
+          this.getInfo();
+        }
       })
       .catch(err=>console.log(err.response, err.request));
 

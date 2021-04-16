@@ -371,7 +371,7 @@ function TruncateAnnouncementsTable()
 function CreateTeachersTable()
 {
     $conn = OpenCon();
-    $sql = "CREATE TABLE Teachers (
+    $sql = "CREATE TABLE teachers (
     teacherUserName VARCHAR(255) PRIMARY KEY,
     gender ENUM('male', 'female') NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -432,7 +432,7 @@ function TruncateTeachersTable()
 function CreateParentsTable()
 {
     $conn = OpenCon();
-    $sql = "CREATE TABLE Parents (
+    $sql = "CREATE TABLE parents (
     parentUserName VARCHAR(255) PRIMARY KEY,
     studentName VARCHAR(255) NOT NULL,
     studentID INT NOT NULL,

@@ -7,7 +7,7 @@ $json = json_decode($data, true);
 $crname = $json["classroomname"];
 $tname = $json["teachername"];
 
-$ret = CreateClassroom($crname, $tname);
+$ret = CreateClassroom($crname, $tname, 1);
 echo $ret;
 // @codeCoverageIgnoreEnd
 ?>

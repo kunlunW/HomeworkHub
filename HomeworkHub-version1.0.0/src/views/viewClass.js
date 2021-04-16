@@ -34,6 +34,7 @@ export class viewClass extends React.Component {
     this.create_new_classroom = this.create_new_classroom.bind(this);
     this.get_classrooms = this.get_classrooms.bind(this);
     this.create_card = this.create_card.bind(this);
+    this.delete_classroom = this.delete_classroom.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.get_classrooms();
   }
@@ -70,6 +71,21 @@ export class viewClass extends React.Component {
      .catch(err=>console.log(err));
   }
 
+  delete_classroom(classroom_name) {
+    this.setState({success: false});
+    const url = "/HomeworkHub/backend/deleteClassroom.php";
+    let formData = new FormData();
+    let data = '{"classroomname":"' + classroom_name +'"}';
+    formData.append("formData", data);
+    axios.post(url, formData)
+      .then(response => {
+        var res = response["data"];
+        console.log(res);
+        this.get_classrooms();
+     })
+     .catch(err=>console.log(err));
+  }
+
   create_cards() {
     return this.state.classrooms.map(this.create_card);
    }
@@ -87,7 +103,7 @@ export class viewClass extends React.Component {
          <Col>
             <div class="text-right">
               <button className="btn btn-xs rounded">Edit</button>
-              <button className="btn btn-danger btn-xs rounded">Delete</button>
+              <button className="btn btn-danger btn-xs rounded" onClick={()=>{this.delete_classroom(classroom.classroomname)}}>Delete</button>
             </div>
          </Col>
          </Row>
