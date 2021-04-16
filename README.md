@@ -23,4 +23,5 @@ Now, the database should be created and populated with several tables
 #### Run the application
     1. Open a terminal
     2. Navigate to /HomeworkHub/HomeworkHub-version1.0.0
-    3. Run 'npm start'
+    3. Run 'npm install' to get all updates
+    4. Run 'npm start'
