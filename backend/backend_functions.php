@@ -530,9 +530,11 @@ function UpdateTeachersInfo($username, $gender, $email, $mobile_no, $school)
             CloseCon($conn);
             return 0;
         } else {
+            // @codeCoverageIgnoreStart
             // echo "Update Success\n";
             CloseCon($conn);
             return 1;
+            // @codeCoverageIgnoreEnd
         }
     } else { // Entry doesn't exist
         $sqlInsert = "INSERT INTO teachers (teacherUserName, gender, email, mobile_no, school) VALUES ('$username', '$gender', '$email', '$mobile_no', '$school');";
