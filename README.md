@@ -12,7 +12,7 @@
 ### To run the app...
 #### For XAMPP
     1. Open the XAMPP manager
-    2. Start the XAMPP server
+    2. Start the MySQL Database and Apache Web Server
     3. Mount the volumes
     4. Click 'Go to Application' in the XAMPP manager
     5. Once in the XAMPP web application, click phpMyAdmin
