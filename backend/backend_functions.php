@@ -510,13 +510,20 @@ function UpdateUsersInfo($username, $newUserame, $newPassword, $newType)
     }
 }
 
+/*
+ * Returns:
+ * 0: Failed to update teacher info
+ * 1: Successfully updated teacher info
+ * 2: Failed to insert teacher info
+ * 3: Successfully inserted teacher info
+ */
 function UpdateTeachersInfo($username, $gender, $email, $mobile_no, $school)
 {
     $conn = OpenCon();
-    $sqlCheck = "SELECT * FROM Teachers WHERE teacherUserName = '$username';";
+    $sqlCheck = "SELECT * FROM teachers WHERE teacherUserName = '$username';";
     $newTeacherCheck = $conn->query($sqlCheck);
-    if($newTeacherCheck) { // Entry already exists
-        $sqlUpdate = "UPDATE Teachers t SET t.gender = '$gender', t.email = '$email', t.mobile_no = '$mobile_no', t.school = '$school' WHERE t.teacherUserName = '$username';";
+    if($newTeacherCheck->num_rows !== 0) { // Entry already exists
+        $sqlUpdate = "UPDATE teachers t SET t.gender = '$gender', t.email = '$email', t.mobile_no = '$mobile_no', t.school = '$school' WHERE t.teacherUserName = '$username';";
         $updateRes = $conn->query($sqlUpdate);
         if (!$updateRes) {
             // echo "Update Failed\n";
@@ -528,16 +535,16 @@ function UpdateTeachersInfo($username, $gender, $email, $mobile_no, $school)
             return 1;
         }
     } else { // Entry doesn't exist
-        $sqlInsert = "INSERT INTO Teachers (username, gender, email, mobile_no, school) VALUES ('$username', '$gender', '$email', '$mobile_no', '$school');";
+        $sqlInsert = "INSERT INTO teachers (teacherUserName, gender, email, mobile_no, school) VALUES ('$username', '$gender', '$email', '$mobile_no', '$school');";
         $insertRes = $conn->query($sqlInsert);
         if (!$insertRes) {
             // echo "Insert Failed\n";
             CloseCon($conn);
-            return 1;
+            return 2;
         } else {
             // echo "Insert Success\n";
             CloseCon($conn);
-            return 0;
+            return 3;
         }
     }
 }
