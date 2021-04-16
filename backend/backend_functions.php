@@ -59,6 +59,21 @@ function CreateClassroom($crname, $tname, $joincode)
     }
 }
 
+function DeleteClassroom($crname)
+{
+    $conn = OpenCon();
+
+    $sql = "DELETE FROM classrooms WHERE classroomname = '$crname';";
+
+    if ($conn->query($sql) === TRUE) {
+        CloseCon($conn);
+        return 1;
+    } else {
+        CloseCon($conn);
+        return 0;
+    }
+}
+
 function GetTeacherClassrooms($username)
 {
     $conn = OpenCon();
