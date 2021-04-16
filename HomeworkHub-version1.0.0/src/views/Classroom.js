@@ -24,7 +24,7 @@ export class Classroom extends React.Component {
       username: localStorage.getItem("username"),
       classroomName: localStorage.getItem("classroomName"),
       classroomId: localStorage.getItem("classroomId"),
-      parents: [...mock_parents], //parents enrolled in this class
+      parents: [], //parents enrolled in this class
       homeworks: [], //homework assignments for this class
       announcements: [], //announcements for this class
       tests: [] //tests for this class
@@ -36,8 +36,8 @@ export class Classroom extends React.Component {
     this.getTests = this.getTests.bind(this);
 
     this.getEventsHomework();
-    // this.getEventsAnnouncement();
     this.getEventsTest();
+    this.getEventsAnnouncement();
   }
 
   getEventsHomework() { 
@@ -68,6 +68,34 @@ export class Classroom extends React.Component {
      .catch(err=>console.log(err));
   }
 
+  getEventsAnnouncement() {
+    const url = "/HomeworkHub/backend/get_event_list.php";
+    let formData = new FormData();
+    let data = '{"classroomid":"' + this.state.classroomId + '", "type":"announcements"}';
+    formData.append("formData", data);
+    axios.post(url, formData)
+      .then(response => {
+         var res = response["data"];
+        //  console.log(res);
+         this.setState({announcements: [...res]});
+     })
+     .catch(err=>console.log(err));
+  }
+
+  loadParents() {
+    const url = "/HomeworkHub/backend/get_all_parents_in_classroom.php";
+    let formData = new FormData();
+    let data = '{"classroomid":"' + this.state.classroomId + '"}';
+    formData.append("formData", data);
+    axios.post(url, formData)
+      .then(response => {
+         var res = response["data"];
+        //  console.log(res);
+         this.setState({parents: [...res]});
+     })
+     .catch(err=>console.log(err));
+  }
+
   getParents() {
     return this.state.parents.map(this.getParent);
   }
@@ -83,7 +111,10 @@ export class Classroom extends React.Component {
                 {parent.email}
             </Col>
             <Col>
-                {parent.phone}
+                {parent.mobile_no}
+            </Col>
+            <Col>
+                {parent.school}
             </Col>
         </Row>
     </div>
@@ -124,7 +155,10 @@ export class Classroom extends React.Component {
                 {announcement.name}
             </Col>
             <Col>
-                {announcement.desc}
+                {announcement.description}
+            </Col>
+            <Col>
+                {announcement.duedate}
             </Col>
         </Row>
     </div>
@@ -176,6 +210,21 @@ export class Classroom extends React.Component {
                         </Card.Title>
                     </Card.Header>
                     <Card.Body>
+                        <Row>
+                            <Col>
+                                <h6>Name</h6>
+                            </Col>
+                            <Col>
+                                <h6>Email</h6>
+                            </Col>
+                            <Col>
+                                <h6>Mobile No</h6>
+                            </Col>
+                            <Col>
+                                <h6>School</h6>
+                            </Col>
+                        </Row>
+                        <br/>
                         {this.getParents()}
                      </Card.Body>
     
@@ -189,6 +238,18 @@ export class Classroom extends React.Component {
                             </Card.Title>
                         </Card.Header>
                         <Card.Body>
+                            <Row>
+                                <Col>
+                                    <h6>Name</h6>
+                                </Col>
+                                <Col>
+                                    <h6>Description</h6>
+                                </Col>
+                                <Col>
+                                    <h6>Date</h6>
+                                </Col>
+                            </Row>
+                            <br/>
                             {this.getAnnouncements()}
                         </Card.Body>
     

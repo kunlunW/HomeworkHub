@@ -108,9 +108,7 @@ export class viewClass extends React.Component {
     if (this.state.chosen) {
       localStorage.setItem("classroomName", this.state.chosen.classroomname);
       localStorage.setItem("classroomId", this.state.chosen.classroomid);
-      window.location.href = "/admin/classroom";
-      return null;
-      //return <Redirect to={"/admin/classroom"} />
+      return <Redirect to={"/admin/classroom"} />
     }
 
     return (
