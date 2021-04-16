@@ -27,7 +27,7 @@ const routes = [
   },
   {
     path: "/table",
-    name: "View Homework",
+    name: "Calendar View",
     icon: "nc-icon nc-circle-09",
     component: addHW,
     layout: "/admin",
