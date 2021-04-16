@@ -13,10 +13,11 @@
 #### For XAMPP
     1. Open the XAMPP manager
     2. Start the XAMPP server
-    3. Click 'Go to Application' in the XAMPP manager
-    4. Once in the XAMPP web application, click phpMyAdmin
-    5. Create a database called "homework hub"
-    6. Open a browser and type http://localhost/HomeworkHub/backend/reset_tables.php
+    3. Mount the volumes
+    4. Click 'Go to Application' in the XAMPP manager
+    5. Once in the XAMPP web application, click phpMyAdmin
+    6. Create a database called "homework hub"
+    7. Open a browser and type http://localhost/HomeworkHub/backend/reset_tables.php
 
 Now, the database should be created and populated with several tables
 
