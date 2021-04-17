@@ -60,8 +60,10 @@ const EmployeeList = (props) => {
     <table className="table table-striped table-hover">
         <thead>
             <tr>
+                <th>ClassID</th>
                 <th>Name</th>
-                <th>Time</th>
+                <th>Desc</th>
+                <th>Date</th>
                 <th>Limit</th>
                 <th>Points</th>
                 <th>Actions</th>

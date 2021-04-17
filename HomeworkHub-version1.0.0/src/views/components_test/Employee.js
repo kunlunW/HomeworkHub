@@ -20,8 +20,10 @@ const Employee = (props) => {
 
     return (
         <>
+            <td>{props.employee.id}</td> 
             <td>{props.employee.name}</td>
-            <td>{props.employee.time}</td>
+            <td>{props.employee.desc}</td>
+            <td>{props.employee.date}</td>
             <td>{props.employee.limit}</td>
             <td>{props.employee.points}</td>
             <td>

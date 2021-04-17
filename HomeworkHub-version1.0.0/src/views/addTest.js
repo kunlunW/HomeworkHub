@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 import {
   Badge,
   Button,
@@ -24,19 +24,45 @@ class addTest extends React.Component {
       super(props);
       this.state = {
         username: localStorage.getItem("username"),
-        tests: [{name: "hello", points: 11, date: "2021-04-03", limit: 140},{name: "hello", points: 11, date: "2021-04-03", limit: 140},{name: "hello", points: 11, date: "2021-04-03", limit: 140}]
+        tests: []
       }
 
       this.deleteTest = this.deleteTest.bind(this);
       this.addTest = this.addTest.bind(this);
+      this.getTests = this.getTests.bind(this);
+
+      this.getTests();
     }
 
     getTests() {
-      //just need to add fetching the tests
+      const url = "/HomeworkHub/backend/get_event_list.php";
+      let formData = new FormData();
+      let data = '{"classroomid":"' + this.state.classroomId + '", "type":"test"}';
+      formData.append("formData", data);
+      axios.post(url, formData)
+      .then(response => {
+        var res = response["data"];
+        //  console.log(res);
+        this.setState({tests: [...res]});
+     })
+     .catch(err=>console.log(err.response, err.request));
     }
 
-    addTest(name, time, limit, points) {
-      //wired up
+    addTest(id, name, date, limit, points, desc) {
+      const url = "/HomeworkHub/backend/create_event.php";
+      let formData = new FormData();
+      //let data = '{"type":"test", "name":"'+name+'", "description":"'+desc+'", "duedate":"'+date+'", "classroomid":"'+id+'", "points":"'+points+'", "limit:"'+limit+'"}';
+      let data = '{"type":"test", "name":"' + name + '", "description":"' + desc + '", "duedate":"' + date + '", "classroomid":"' + id + '", "points":"' + points + '", "timelimit":"' + limit + '"}';
+      console.log(data);
+      formData.set("formData", data);
+    
+      axios.post(url, formData)
+      .then(response => {
+         var res = response["data"];
+         console.log(res);
+         //this.setState({announcements: [...res]});
+      })
+      .catch(err=>console.log(err));
     }
 
     deleteTest() {

@@ -59,6 +59,7 @@ export class Classroom extends React.Component {
     let formData = new FormData();
     let data = '{"classroomid":"' + this.state.classroomId + '", "type":"test"}';
     formData.append("formData", data);
+    console.log(data);
     axios.post(url, formData)
       .then(response => {
          var res = response["data"];
@@ -199,6 +200,9 @@ export class Classroom extends React.Component {
           <Container fluid>
             <Row>
                 <h1>{this.state.classroomName}</h1>
+            </Row>
+            <Row>
+                <h5>{"ClassroomID: " + this.state.classroomId}</h5>
                 <br/><br/>
             </Row>
             <Row>

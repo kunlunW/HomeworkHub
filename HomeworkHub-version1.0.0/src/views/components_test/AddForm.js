@@ -6,23 +6,33 @@ import {useContext, useState} from 'react';
 const AddForm = (props) =>{
     
     const [newEmployee, setNewEmployee] = useState({
-        name:"", time:"", limit:"", points:""
+        id:"", name:"", date:"", limit:"", points:"", desc: ""
     });
 
     const onInputChange = (e) => {
         setNewEmployee({...newEmployee,[e.target.name]: e.target.value})
     }
 
-    const {name, time, limit, points} = newEmployee;
+    const {id, name, date, limit, points, desc} = newEmployee;
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.addTest(name, time, limit, points);
+        props.addTest(id, name, date, limit, points, desc);
     }
 
      return (
 
         <Form onSubmit={handleSubmit} >
+            <Form.Group>
+                <Form.Control
+                    type="text"
+                    placeholder="Classrom ID *"
+                    name="id"
+                    value={id}
+                    onChange = { (e) => onInputChange(e)}
+                    // required
+                />
+            </Form.Group>
             <Form.Group>
                 <Form.Control
                     type="text"
@@ -36,9 +46,19 @@ const AddForm = (props) =>{
             <Form.Group>
                 <Form.Control
                     type="text"
-                    placeholder="Due Time *"
-                    name="time"
-                    value={time}
+                    placeholder="Description *"
+                    name="desc"
+                    value={desc}
+                    onChange = { (e) => onInputChange(e)}
+                    // required
+                />
+            </Form.Group>
+            <Form.Group>
+                <Form.Control
+                    type="text"
+                    placeholder="Test Date *"
+                    name="date"
+                    value={date}
                     onChange = { (e) => onInputChange(e)}
                     // required
                 />
