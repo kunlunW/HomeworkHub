@@ -5,9 +5,9 @@ import Employee from './Employee';
 import AddForm from './AddForm';
 import Pagination from './Pagination';
 
-const EmployeeList = () => {
+const EmployeeList = (props) => {
 
-    const {sortedEmployees} = useContext(EmployeeContext);
+    var sortedEmployees = props.homeworks;
 
     const [showAlert, setShowAlert] = useState(false);
 
@@ -60,9 +60,10 @@ const EmployeeList = () => {
     <table className="table table-striped table-hover">
         <thead>
             <tr>
+                <th>Class ID</th>
                 <th>Name</th>
-                <th>Due Dates</th>
-                <th>Available Until</th>
+                <th>Description</th>
+                <th>Due Date</th>
                 <th>Points</th>
                 <th>Actions</th>
             </tr>
@@ -72,7 +73,7 @@ const EmployeeList = () => {
                 {
                   currentEmployees.map(employee => (
                       <tr key={employee.id}>
-                        <Employee employee={employee} />
+                        <Employee employee={employee} deleteHomework={props.deleteHomework}/>
                     </tr>
                   ))  
                 }
@@ -93,7 +94,7 @@ const EmployeeList = () => {
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <AddForm />
+            <AddForm addHomework={props.addHomework}/>
         </Modal.Body>
         <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>

@@ -5,9 +5,9 @@ import EditForm from './EditForm'
 
 
 
-const Employee = ({employee}) => {
+const Employee = (props) => {
 
-    const {deleteEmployee} = useContext(EmployeeContext)
+    //const {deleteEmployee} = useContext(EmployeeContext)
 
     const [show, setShow] = useState(false);
     
@@ -16,14 +16,15 @@ const Employee = ({employee}) => {
 
     useEffect(() => {
         handleClose()
-    }, [employee])
+    }, [props.employee])
 
     return (
         <>
-            <td>{employee.name}</td>
-            <td>{employee.time}</td>
-            <td>{employee.limit}</td>
-            <td>{employee.points}</td>
+            <td>{props.employee.id}</td>
+            <td>{props.employee.name}</td>
+            <td>{props.employee.desc}</td>
+            <td>{props.employee.date}</td>
+            <td>{props.employee.points}</td>
             <td>
                 <OverlayTrigger
                     overlay={
@@ -39,7 +40,7 @@ const Employee = ({employee}) => {
                             Delete Homework
                         </Tooltip>
                     }>
-                    <button onClick={() => deleteEmployee(employee.id)}  className="btn text-danger btn-act" data-toggle="modal">Delete</button>
+                    <button onClick={() => deleteHomework(props.employee.id)}  className="btn text-danger btn-act" data-toggle="modal">Delete</button>
                 </OverlayTrigger>
                 
                 
@@ -52,7 +53,7 @@ const Employee = ({employee}) => {
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <EditForm theEmployee={employee} />
+            <EditForm theEmployee={props.employee} />
         </Modal.Body>
         <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>

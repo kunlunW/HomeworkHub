@@ -139,6 +139,9 @@ export class Classroom extends React.Component {
             <Col>
                 {homework.duedate}
             </Col>
+            <Col>
+                {homework.points}
+            </Col>
         </Row>
     </div>
     );
@@ -279,6 +282,9 @@ export class Classroom extends React.Component {
                                 </Col>
                                 <Col>
                                     <h6>Due date</h6>
+                                </Col>
+                                <Col>
+                                    <h6>Points</h6>
                                 </Col>
                             </Row>
                             <br/>

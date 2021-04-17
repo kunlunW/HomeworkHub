@@ -3,28 +3,36 @@ import { Form, Button } from "react-bootstrap"
 import {EmployeeContext} from '../contexts_due/EmployeeContext';
 import {useContext, useState} from 'react';
 
-const AddForm = () =>{
-
-    const {addEmployee} = useContext(EmployeeContext);
+const AddForm = (props) =>{
 
     const [newEmployee, setNewEmployee] = useState({
-        name:"", time:"", limit:"", points:""
+        id: "", name:"", desc:"", date:"", points:""
     });
 
     const onInputChange = (e) => {
         setNewEmployee({...newEmployee,[e.target.name]: e.target.value})
     }
 
-    const {name, time, limit, points} = newEmployee;
+    const {id, name, desc, date, points} = newEmployee;
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addEmployee(name, time, limit, points);
+        props.addHomework(id, name, desc, date, points);
     }
 
      return (
 
         <Form onSubmit={handleSubmit}>
+            <Form.Group>
+                <Form.Control
+                    type="text"
+                    placeholder="Classroom ID *"
+                    name="id"
+                    value={id}
+                    onChange = { (e) => onInputChange(e)}
+                    // required
+                />
+            </Form.Group>
             <Form.Group>
                 <Form.Control
                     type="text"
@@ -38,9 +46,9 @@ const AddForm = () =>{
             <Form.Group>
                 <Form.Control
                     type="text"
-                    placeholder="Due Dates *"
-                    name="time"
-                    value={time}
+                    placeholder="Description *"
+                    name="desc"
+                    value={desc}
                     onChange = { (e) => onInputChange(e)}
                     // required
                 />
@@ -48,9 +56,9 @@ const AddForm = () =>{
             <Form.Group>
                 <Form.Control
                     type="text"
-                    placeholder="Available Until *"
-                    name="limit"
-                    value={limit}
+                    placeholder="Due Date *"
+                    name="date"
+                    value={date}
                     onChange = { (e) => onInputChange(e)}
                     // required
                 />

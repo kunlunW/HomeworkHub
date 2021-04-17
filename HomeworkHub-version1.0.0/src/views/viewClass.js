@@ -97,19 +97,23 @@ export class viewClass extends React.Component {
         <img class="card-img-top" src={default_img}  />
         <Card.Body>
           <Row>
-          <Col>
-            <a href = "/admin/classroom" onClick={() => this.setState({chosen: classroom})}> {classroom.classroomname}</a>
-         </Col>
-         <Col>
-            <div class="text-right">
-              <button className="btn btn-xs rounded">Edit</button>
-              <button className="btn btn-danger btn-xs rounded" onClick={()=>{this.delete_classroom(classroom.classroomname)}}>Delete</button>
-            </div>
-         </Col>
+            <Col>
+              <Row>
+                <a href = "/admin/classroom" onClick={() => this.setState({chosen: classroom})}> {classroom.classroomname}</a>
+              </Row>
+            </Col>
+            <Col>
+              <div class="text-right">
+                <button className="btn btn-xs rounded">Edit</button>
+                <button className="btn btn-danger btn-xs rounded" onClick={()=>{this.delete_classroom(classroom.classroomname)}}>Delete</button>
+              </div>
+            </Col>
          </Row>
         </Card.Body>
         <Card.Footer>
-          {classroom.teachername}
+        <Row>
+          <h6>{"ClassroomId: " + classroom.classroomid}</h6>
+        </Row>
         </Card.Footer>
       </Card>
     </div>
@@ -129,6 +133,10 @@ export class viewClass extends React.Component {
 
     return (
     <Container fluid>
+      <Row>
+        <h3>{"My Classrooms"}</h3>
+      </Row>
+      <br/>
       <Row>
         <Col>
           {this.create_cards(this.state.classrooms)}
