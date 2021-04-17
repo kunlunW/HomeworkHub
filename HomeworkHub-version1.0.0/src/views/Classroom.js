@@ -207,7 +207,129 @@ export class Classroom extends React.Component {
             <Row>
                 <h5>{"ClassroomID: " + this.state.classroomId}</h5>
                 <br/><br/>
+
             </Row>
+            
+
+            <Row>
+                <Card style={{width:"90%", margin: "0 auto", float: "none", "margin-bottom": "40px"}}>
+                    <Card.Header>
+                        <Card.Title>
+                            Parents
+                        </Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                        <Row>
+                            <Col>
+                                <h6>Name</h6>
+                            </Col>
+                            <Col>
+                                <h6>Email</h6>
+                            </Col>
+                            <Col>
+                                <h6>Mobile No</h6>
+                            </Col>
+                            <Col>
+                                <h6>School</h6>
+                            </Col>
+                        </Row>
+                        <br/>
+                        {this.getParents()}
+                     </Card.Body>
+    
+                    </Card>
+
+            </Row>
+
+            <Row>
+                <Card style={{width:"90%", margin: "0 auto", float: "none", "margin-bottom": "40px"}}>
+                    <Card.Header>
+                        <Card.Title>
+                            Homework
+                        </Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                        <Row>
+                            <Col>
+                                <h6>Name</h6>
+                            </Col>
+                            <Col>
+                                <h6>Description</h6>
+                            </Col>
+                            <Col>
+                                <h6>Due date</h6>
+                            </Col>
+                            <Col>
+                                <h6>Points</h6>
+                            </Col>
+                        </Row>
+                        <br/>
+                        {this.getHomeworks()}
+                    </Card.Body>
+                </Card>
+            </Row>
+
+            <Row>
+                <Card style={{width:"90%", margin: "0 auto", float: "none", "margin-bottom": "40px"}}>
+                    <Card.Header>
+                        <Card.Title>
+                            Test Dates
+                        </Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                        <Row>
+                            <Col>
+                                <h6>Name</h6>
+                            </Col>
+                            <Col>
+                                <h6>Description</h6>
+                            </Col>
+                            <Col>
+                                <h6>Date</h6>
+                            </Col>
+                            <Col>
+                                <h6>Points</h6>
+                            </Col>
+                            <Col>
+                                <h6>Time Limit</h6>
+                            </Col>
+                        </Row>
+                        <br/>
+                        {this.getTests()}
+                    </Card.Body>
+                </Card>
+
+            </Row>
+
+            <Row>
+                <Card style={{width:"90%", margin: "0 auto", float: "none", "margin-bottom": "40px"}}>
+                    <Card.Header>
+                        <Card.Title>
+                            Announcements
+                        </Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                        <Row>
+                            <Col>
+                                <h6>Name</h6>
+                            </Col>
+                            <Col>
+                                <h6>Description</h6>
+                            </Col>
+                            <Col>
+                                <h6>Date</h6>
+                            </Col>
+                        </Row>
+                        <br/>
+                        {this.getAnnouncements()}
+                    </Card.Body>
+                </Card>    
+            </Row>
+
+
+
+
+{/* 
             <Row>
                 <Col>
                 <Card>
@@ -324,7 +446,10 @@ export class Classroom extends React.Component {
     
                     </Card>
                 </Col>
-            </Row>
+            </Row> */}
+
+
+
           </Container>
         </>
       );
