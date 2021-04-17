@@ -446,7 +446,7 @@ function DeleteEvent($eid, $type)
 function GetEventList($cid, $type) 
 {
     $conn = OpenCon();
-    $sql = "SELECT * FROM events WHERE classroomid='$cid' AND type='$type'";
+    $sql;
     $ret = '[';
 
     if ($type == "homework") { 
@@ -456,7 +456,9 @@ function GetEventList($cid, $type)
     } else if ($type == "announcement") {
         $sql = "SELECT * FROM announcements WHERE classroomid='$cid'";
     } else {
-    } // TODO add error code
+        CloseCon($conn);
+        return -1;
+    }
 
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -492,6 +494,67 @@ function GetEventList($cid, $type)
 
     CloseCon($conn);
     return $ret;
+}
+
+function GetEventListForAllClassrooms($username, $type)
+{
+    $conn = OpenCon();
+    $sql;
+    $ret = '[';
+
+    if ($type == "homework") { 
+        $sql = "SELECT * FROM homeworks h, requests r WHERE r.username='$username' AND r.classroomid=h.classroomid ORDER BY homeworkid ASC";
+    } else if ($type == "test") {
+        $sql = "SELECT * FROM tests t, requests r WHERE r.username='$username' AND r.classroomid=t.classroomid ORDER BY testid ASC";
+    } else if ($type == "announcement") {
+        $sql = "SELECT * FROM announcements a, requests r WHERE r.username='$username' AND r.classroomid=a.classroomid ORDER BY announcementid ASC";
+    } else {
+        CloseCon($conn);
+        return -1;
+    }
+
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        if ($type == "homework") {
+            while($row = $result->fetch_assoc()) {
+                $ret .= '{"homeworkid":' . $row["homeworkid"] . 
+                    ', "name":"' . $row["name"] . 
+                    '", "description":"' . $row["description"] . 
+                    '", "duedate":"' . $row["duedate"] .
+                    '", "points":' . $row["points"] .
+                    ', "classroomid":' . $row["classroomid"] . '},';
+            }
+        } else if ($type == "test") {
+            while($row = $result->fetch_assoc()) {
+                $ret .= '{"testid":' . $row["testid"] . 
+                    ', "name":"' . $row["name"] . 
+                    '", "description":"' . $row["description"] . 
+                    '", "duedate":"' . $row["duedate"] . 
+                    '", "points":' . $row["points"] . 
+                    ', "timelimit":' . $row["timelimit"] .
+                    ', "classroomid":' . $row["classroomid"] . '},';
+            }
+        } else if ($type == "announcement") {
+            while($row = $result->fetch_assoc()) {
+                $ret .= '{"announcementid":' . $row["announcementid"] . 
+                    ', "name":"' . $row["name"] . 
+                    '", "description":"' . $row["description"] . 
+                    '", "duedate":"' . $row["duedate"] . 
+                    '", "classroomid":' . $row["classroomid"] . '},';
+            }
+        }
+    }
+
+    $ret = rtrim($ret, ",");
+    $ret .= ']';
+
+    CloseCon($conn);
+    return $ret;
+}
+
+function GetAllParentsInAllClassesOfUser($username)
+{
+    return -1;
 }
 
 function UpdateUsersInfo($username, $newUserame, $newPassword, $newType)
