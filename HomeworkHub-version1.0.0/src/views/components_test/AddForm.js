@@ -3,10 +3,8 @@ import { Form, Button } from "react-bootstrap"
 import {EmployeeContext} from '../contexts_test/EmployeeContext';
 import {useContext, useState} from 'react';
 
-const AddForm = () =>{
-
-    const {addEmployee} = useContext(EmployeeContext);
-
+const AddForm = (props) =>{
+    
     const [newEmployee, setNewEmployee] = useState({
         name:"", time:"", limit:"", points:""
     });
@@ -19,12 +17,12 @@ const AddForm = () =>{
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addEmployee(name, time, limit, points);
+        props.addTest(name, time, limit, points);
     }
 
      return (
 
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} >
             <Form.Group>
                 <Form.Control
                     type="text"
@@ -65,7 +63,7 @@ const AddForm = () =>{
                     // required
                 />
             </Form.Group>
-            <Button variant="success" type="submit" block>
+            <Button variant="success" type = "submit">
                 Add New Tests
             </Button>
         </Form>

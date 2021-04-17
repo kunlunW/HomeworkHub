@@ -5,9 +5,9 @@ import Employee from './Employee';
 import AddForm from './AddForm';
 import Pagination from './Pagination';
 
-const EmployeeList = () => {
+const EmployeeList = (props) => {
 
-    const {sortedEmployees} = useContext(EmployeeContext);
+    var sortedEmployees = props.tests;
 
     const [showAlert, setShowAlert] = useState(false);
 
@@ -72,7 +72,7 @@ const EmployeeList = () => {
                 {
                   currentEmployees.map(employee => (
                       <tr key={employee.id}>
-                        <Employee employee={employee} />
+                        <Employee employee={employee} deleteTest={props.deleteTest}/>
                     </tr>
                   ))  
                 }
@@ -93,7 +93,7 @@ const EmployeeList = () => {
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <AddForm />
+            <AddForm addTest={props.addTest}/>
         </Modal.Body>
         <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
