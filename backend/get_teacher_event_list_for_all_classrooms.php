@@ -5,8 +5,10 @@ include 'backend_functions.php';
 $data = $_POST['formData'];
 $json = json_decode($data, true);
 $username = $json["username"];
+$type = $json["type"];
 
-$ret = GetTeacherClassrooms($username);
+$ret = GetParentEventListForAllClassrooms($username, $type);
 echo $ret;
 // @codeCoverageIgnoreEnd
 ?>
+
