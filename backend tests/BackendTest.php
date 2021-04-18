@@ -12,7 +12,7 @@ final class BackendTest extends TestCase
     {
         ResetTables();
     }   
-/*
+
     public function testRetrieveUserFromEmptyTable(): void
     {
         $expected = 2;
@@ -778,7 +778,7 @@ final class BackendTest extends TestCase
         $actual = DisplayTeacherInfo("tom");
         $this->assertEquals($expected, $actual);
     }
-*/
+
     public function testGetHomeworkListWithOneElementFromAllClassrooms(): void
     {
         AddUser("tom", "stone", "teacher");
@@ -1102,5 +1102,260 @@ final class BackendTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
  */
+
+    public function testGetTeacherHomeworkListWithOneElementFromAllClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateClassroom("math", "tom", "c");
+        CreateHomework("name2", "desc2", "2021-12-26", 20, 2);
+        
+        $expected = '[{"homeworkid":1, "name":"name2", "description":"desc2", "duedate":"2021-12-26", "points":20, "classroomid":2}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "homework");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetTeacherHomeworkListWithMultipleElementsFromAllClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateClassroom("math", "tom", "c");
+        CreateHomework("name1", "desc1", "2021-12-25", 10, 1);
+        CreateHomework("name2", "desc2", "2021-12-26", 20, 2);
+        CreateHomework("name3", "desc3", "2021-12-27", 30, 3);
+        
+        $expected = '[{"homeworkid":1, "name":"name1", "description":"desc1", "duedate":"2021-12-25", "points":10, "classroomid":1},' .
+            '{"homeworkid":2, "name":"name2", "description":"desc2", "duedate":"2021-12-26", "points":20, "classroomid":2},' . 
+            '{"homeworkid":3, "name":"name3", "description":"desc3", "duedate":"2021-12-27", "points":30, "classroomid":3}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "homework");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetEmptyTeacherHomeworkListFromAllClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateClassroom("math", "tom", "c");
+        
+        $expected = '[]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "homework");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetTeacherTestListWithOneElementFromAllClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateClassroom("math", "tom", "c");
+        CreateTest("name2", "desc2", "2021-12-26", 20, 45, 2);
+        
+        $expected = '[{"testid":1, "name":"name2", "description":"desc2", "duedate":"2021-12-26", "points":20, "timelimit":45, "classroomid":2}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "test");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetTeacherTestListWithMultipleElementsFromAllClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateClassroom("math", "tom", "c");
+        CreateTest("name1", "desc1", "2021-12-25", 10, 30, 1);
+        CreateTest("name2", "desc2", "2021-12-26", 20, 45, 2);
+        CreateTest("name3", "desc3", "2021-12-27", 30, 60, 3);
+        
+        $expected = '[{"testid":1, "name":"name1", "description":"desc1", "duedate":"2021-12-25", "points":10, "timelimit":30, "classroomid":1},' .
+            '{"testid":2, "name":"name2", "description":"desc2", "duedate":"2021-12-26", "points":20, "timelimit":45, "classroomid":2},' . 
+            '{"testid":3, "name":"name3", "description":"desc3", "duedate":"2021-12-27", "points":30, "timelimit":60, "classroomid":3}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "test");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetEmptyTeacherTestListFromAllClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateClassroom("math", "tom", "c");
+        
+        $expected = '[]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "test");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetTeacherAnnouncementListWithOneElementFromAllClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateClassroom("math", "tom", "c");
+        CreateAnnouncement("name2", "desc2", "2021-12-26", 2);
+        
+        $expected = '[{"announcementid":1, "name":"name2", "description":"desc2", "duedate":"2021-12-26", "classroomid":2}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "announcement");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetTeacherAnnouncementListWithMultipleElementsFromAllClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateClassroom("math", "tom", "c");
+        CreateAnnouncement("name1", "desc1", "2021-12-25", 1);
+        CreateAnnouncement("name2", "desc2", "2021-12-26", 2);
+        CreateAnnouncement("name3", "desc3", "2021-12-27", 3);
+        
+        $expected = '[{"announcementid":1, "name":"name1", "description":"desc1", "duedate":"2021-12-25", "classroomid":1},' .
+            '{"announcementid":2, "name":"name2", "description":"desc2", "duedate":"2021-12-26", "classroomid":2},' . 
+            '{"announcementid":3, "name":"name3", "description":"desc3", "duedate":"2021-12-27", "classroomid":3}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "announcement");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetEmptyTeacherAnnouncementListFromAllClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateClassroom("math", "tom", "c");
+        
+        $expected = '[]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "announcement");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetTeacherEventListFromAllClassroomsReturnsCorrectEvents(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateClassroom("math", "tom", "c");
+        CreateAnnouncement("a_name1", "a_desc1", "2021-10-25", 1);
+        CreateAnnouncement("a_name2", "a_desc2", "2021-10-26", 2);
+        CreateAnnouncement("a_name3", "a_desc3", "2021-10-27", 3);
+        CreateTest("t_name1", "t_desc1", "2021-11-25", 10, 30, 1);
+        CreateTest("t_name2", "t_desc2", "2021-11-26", 20, 45, 2);
+        CreateTest("t_name3", "t_desc3", "2021-11-27", 30, 60, 3);
+        CreateHomework("h_name1", "h_desc1", "2021-12-25", 10, 1);
+        CreateHomework("h_name2", "h_desc2", "2021-12-26", 20, 2);
+        CreateHomework("h_name3", "h_desc3", "2021-12-27", 30, 3);
+        
+        $expected = '[{"announcementid":1, "name":"a_name1", "description":"a_desc1", "duedate":"2021-10-25", "classroomid":1},' .
+            '{"announcementid":2, "name":"a_name2", "description":"a_desc2", "duedate":"2021-10-26", "classroomid":2},' . 
+            '{"announcementid":3, "name":"a_name3", "description":"a_desc3", "duedate":"2021-10-27", "classroomid":3}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "announcement");
+        $this->assertEquals($expected, $actual);
+        
+        $expected = '[{"testid":1, "name":"t_name1", "description":"t_desc1", "duedate":"2021-11-25", "points":10, "timelimit":30, "classroomid":1},' .
+            '{"testid":2, "name":"t_name2", "description":"t_desc2", "duedate":"2021-11-26", "points":20, "timelimit":45, "classroomid":2},' . 
+            '{"testid":3, "name":"t_name3", "description":"t_desc3", "duedate":"2021-11-27", "points":30, "timelimit":60, "classroomid":3}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "test");
+        $this->assertEquals($expected, $actual);
+        
+        $expected = '[{"homeworkid":1, "name":"h_name1", "description":"h_desc1", "duedate":"2021-12-25", "points":10, "classroomid":1},' .
+            '{"homeworkid":2, "name":"h_name2", "description":"h_desc2", "duedate":"2021-12-26", "points":20, "classroomid":2},' . 
+            '{"homeworkid":3, "name":"h_name3", "description":"h_desc3", "duedate":"2021-12-27", "points":30, "classroomid":3}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "homework");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetTeacherEventListFromAllClassroomsDoesNotReturnEventsInOtherClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        AddUser("james", "smith", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateClassroom("math", "tom", "c");
+        CreateClassroom("english", "james", "d");
+        CreateAnnouncement("a_name1", "a_desc1", "2021-10-25", 1);
+        CreateAnnouncement("a_name2", "a_desc2", "2021-10-26", 2);
+        CreateAnnouncement("a_name3", "a_desc3", "2021-10-27", 3);
+        CreateAnnouncement("a_name4", "a_desc4", "2021-10-28", 4);
+        CreateTest("t_name1", "t_desc1", "2021-11-25", 10, 30, 1);
+        CreateTest("t_name2", "t_desc2", "2021-11-26", 20, 45, 2);
+        CreateTest("t_name3", "t_desc3", "2021-11-27", 30, 60, 3);
+        CreateTest("t_name4", "t_desc4", "2021-11-28", 40, 75, 4);
+        CreateHomework("h_name1", "h_desc1", "2021-12-25", 10, 1);
+        CreateHomework("h_name2", "h_desc2", "2021-12-26", 20, 2);
+        CreateHomework("h_name3", "h_desc3", "2021-12-27", 30, 3);
+        CreateHomework("h_name4", "h_desc4", "2021-12-28", 40, 4);
+        
+        $expected = '[{"announcementid":1, "name":"a_name1", "description":"a_desc1", "duedate":"2021-10-25", "classroomid":1},' .
+            '{"announcementid":2, "name":"a_name2", "description":"a_desc2", "duedate":"2021-10-26", "classroomid":2},' . 
+            '{"announcementid":3, "name":"a_name3", "description":"a_desc3", "duedate":"2021-10-27", "classroomid":3}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "announcement");
+        $this->assertEquals($expected, $actual);
+        
+        $expected = '[{"testid":1, "name":"t_name1", "description":"t_desc1", "duedate":"2021-11-25", "points":10, "timelimit":30, "classroomid":1},' .
+            '{"testid":2, "name":"t_name2", "description":"t_desc2", "duedate":"2021-11-26", "points":20, "timelimit":45, "classroomid":2},' . 
+            '{"testid":3, "name":"t_name3", "description":"t_desc3", "duedate":"2021-11-27", "points":30, "timelimit":60, "classroomid":3}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "test");
+        $this->assertEquals($expected, $actual);
+        
+        $expected = '[{"homeworkid":1, "name":"h_name1", "description":"h_desc1", "duedate":"2021-12-25", "points":10, "classroomid":1},' .
+            '{"homeworkid":2, "name":"h_name2", "description":"h_desc2", "duedate":"2021-12-26", "points":20, "classroomid":2},' . 
+            '{"homeworkid":3, "name":"h_name3", "description":"h_desc3", "duedate":"2021-12-27", "points":30, "classroomid":3}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "homework");
+        $this->assertEquals($expected, $actual);
+
+        $expected = '[{"announcementid":4, "name":"a_name4", "description":"a_desc4", "duedate":"2021-10-28", "classroomid":4}]';
+        $actual = GetTeacherEventListForAllClassrooms("james", "announcement");
+        $this->assertEquals($expected, $actual);
+        
+        $expected = '[{"testid":4, "name":"t_name4", "description":"t_desc4", "duedate":"2021-11-28", "points":40, "timelimit":75, "classroomid":4}]';
+        $actual = GetTeacherEventListForAllClassrooms("james", "test");
+        $this->assertEquals($expected, $actual);
+        
+        $expected = '[{"homeworkid":4, "name":"h_name4", "description":"h_desc4", "duedate":"2021-12-28", "points":40, "classroomid":4}]';
+        $actual = GetTeacherEventListForAllClassrooms("james", "homework");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetTeacherEventListFromAllClassroomsReturnsMultipleEventsInSameClassroom(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("history", "tom", "b");
+        CreateAnnouncement("a_name1", "a_desc1", "2021-10-25", 1);
+        CreateAnnouncement("a_name2", "a_desc2", "2021-10-26", 2);
+        CreateAnnouncement("a_name3", "a_desc3", "2021-10-27", 1);
+        CreateTest("t_name1", "t_desc1", "2021-11-25", 10, 30, 1);
+        CreateTest("t_name2", "t_desc2", "2021-11-26", 20, 45, 2);
+        CreateTest("t_name3", "t_desc3", "2021-11-27", 30, 60, 1);
+        CreateHomework("h_name1", "h_desc1", "2021-12-25", 10, 1);
+        CreateHomework("h_name2", "h_desc2", "2021-12-26", 20, 2);
+        CreateHomework("h_name3", "h_desc3", "2021-12-27", 30, 1);
+        
+        $expected = '[{"announcementid":1, "name":"a_name1", "description":"a_desc1", "duedate":"2021-10-25", "classroomid":1},' .
+            '{"announcementid":2, "name":"a_name2", "description":"a_desc2", "duedate":"2021-10-26", "classroomid":2},' . 
+            '{"announcementid":3, "name":"a_name3", "description":"a_desc3", "duedate":"2021-10-27", "classroomid":1}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "announcement");
+        $this->assertEquals($expected, $actual);
+        
+        $expected = '[{"testid":1, "name":"t_name1", "description":"t_desc1", "duedate":"2021-11-25", "points":10, "timelimit":30, "classroomid":1},' .
+            '{"testid":2, "name":"t_name2", "description":"t_desc2", "duedate":"2021-11-26", "points":20, "timelimit":45, "classroomid":2},' . 
+            '{"testid":3, "name":"t_name3", "description":"t_desc3", "duedate":"2021-11-27", "points":30, "timelimit":60, "classroomid":1}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "test");
+        $this->assertEquals($expected, $actual);
+        
+        $expected = '[{"homeworkid":1, "name":"h_name1", "description":"h_desc1", "duedate":"2021-12-25", "points":10, "classroomid":1},' .
+            '{"homeworkid":2, "name":"h_name2", "description":"h_desc2", "duedate":"2021-12-26", "points":20, "classroomid":2},' . 
+            '{"homeworkid":3, "name":"h_name3", "description":"h_desc3", "duedate":"2021-12-27", "points":30, "classroomid":1}]';
+        $actual = GetTeacherEventListForAllClassrooms("tom", "homework");
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetTeacherEventListFromAllClassroomsWithInvalidEventType(): void
+    {
+        $expected = -1;
+        $actual = GetTeacherEventListForAllClassrooms("tom", "event");
+        $this->assertEquals($expected, $actual);
+    }
+
 }
 ?>

@@ -562,9 +562,9 @@ function GetTeacherEventListForAllClassrooms($username, $type)
     if ($type == "homework") { 
         $sql = "SELECT * FROM homeworks h, classrooms c WHERE c.teachername='$username' AND c.classroomid=h.classroomid ORDER BY homeworkid ASC";
     } else if ($type == "test") {
-        $sql = "SELECT * FROM tests t, classrooms c WHERE c.username='$username' AND c.classroomid=t.classroomid ORDER BY testid ASC";
+        $sql = "SELECT * FROM tests t, classrooms c WHERE c.teachername='$username' AND c.classroomid=t.classroomid ORDER BY testid ASC";
     } else if ($type == "announcement") {
-        $sql = "SELECT * FROM announcements a, classrooms c WHERE c.username='$username' AND c.classroomid=a.classroomid ORDER BY announcementid ASC";
+        $sql = "SELECT * FROM announcements a, classrooms c WHERE c.teachername='$username' AND c.classroomid=a.classroomid ORDER BY announcementid ASC";
     } else {
         CloseCon($conn);
         return -1;
