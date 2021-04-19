@@ -7,15 +7,14 @@ $data = $_POST['formData'];
 $json = json_decode($data, true);
 $username = $json["username"]; // Primary Key
 
-$studentID = $json["studentID"];
 $studentName = $json["studentName"];
-$studentGender = $json["studentGender"];
-$grade = $json["grade"];
-$gpa = $json["gpa"];
-$address = $json["address"];
-$telephone = $json["telephone"];
+$studentID = $json["studentID"];
+$email = $json["email"];
+$mobile_no = $json["mobile_no"];
+$school = $json["school"];
+$classroomID = $json["classroomID"];
 
-$ret = UpdateParentsInfo($username, $studentID, $studentName, $studentGender, $grade, $gpa, $address, $telephone);
+$ret = UpdateParentsInfo($username, $studentName, $studentID, $email, $mobile_no, $school, $classroomID);
 echo $ret;
 
 // @codeCoverageIgnoreEnd

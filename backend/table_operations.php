@@ -459,7 +459,7 @@ function CreateParentsTable()
 function DropParentsTable() 
 {
     $conn = OpenCon();
-    $sql = "DROP TABLE Parents";
+    $sql = "DROP TABLE parents";
 
     if ($conn->query($sql) === TRUE) {
         CloseCon($conn);
@@ -477,7 +477,7 @@ function DropParentsTable()
 function TruncateParentsTable() 
 {
     $conn = OpenCon();
-    $sql = "TRUNCATE TABLE Parents";
+    $sql = "TRUNCATE TABLE parents";
 
     if ($conn->query($sql) === TRUE) {
         CloseCon($conn);
