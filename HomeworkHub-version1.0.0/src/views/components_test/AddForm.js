@@ -45,7 +45,8 @@ const AddForm = (props) =>{
             </Form.Group>
             <Form.Group>
                 <Form.Control
-                    type="text"
+                    as="textarea"
+                    rows="3"
                     placeholder="Description *"
                     name="desc"
                     value={desc}

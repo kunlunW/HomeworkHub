@@ -5,26 +5,34 @@ import {useContext, useState} from 'react';
 
 const AddForm = () =>{
 
-    const {addEmployee} = useContext(EmployeeContext);
-
     const [newEmployee, setNewEmployee] = useState({
-        name:"", email:"", phone:"", address:""
+        id: "", name:"", email:"", mobile_no:"", school:""
     });
 
     const onInputChange = (e) => {
         setNewEmployee({...newEmployee,[e.target.name]: e.target.value})
     }
 
-    const {name, email, phone, address} = newEmployee;
+    const {id, name, email, mobile_no, school} = newEmployee;
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addEmployee(name, email, phone, address);
+        props.addParent(id, name, email, mobile_no, school);
     }
 
      return (
 
         <Form onSubmit={handleSubmit}>
+            <Form.Group>
+                <Form.Control
+                    type="text"
+                    placeholder="Classroom ID *"
+                    name="id"
+                    value={id}
+                    onChange = { (e) => onInputChange(e)}
+                    required
+                />
+            </Form.Group>
             <Form.Group>
                 <Form.Control
                     type="text"
@@ -47,20 +55,19 @@ const AddForm = () =>{
             </Form.Group>
             <Form.Group>
                 <Form.Control
-                    as="textarea"
-                    placeholder="Address"
-                    rows={3}
-                    name="address"
-                    value={address}
+                    type="text"
+                    placeholder="Mobile No"
+                    name="mobile_no"
+                    value={mobile_no}
                     onChange = { (e) => onInputChange(e)}
                 />
             </Form.Group>
             <Form.Group>
                 <Form.Control
                     type="text"
-                    placeholder="Phone"
-                    name="phone"
-                    value={phone}
+                    placeholder="School"
+                    name="school"
+                    value={school}
                     onChange = { (e) => onInputChange(e)}
                 />
             </Form.Group>

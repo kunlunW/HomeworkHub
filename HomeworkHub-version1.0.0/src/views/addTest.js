@@ -35,14 +35,14 @@ class addTest extends React.Component {
     }
 
     getTests() {
-      const url = "/HomeworkHub/backend/get_event_list.php";
+      const url = "/HomeworkHub/backend/get_teacher_event_list_for_all_classrooms.php";
       let formData = new FormData();
-      let data = '{"classroomid":"' + this.state.classroomId + '", "type":"test"}';
+      let data = '{"username":"' + this.state.username + '", "type":"test"}';
+      //console.log(data);
       formData.append("formData", data);
       axios.post(url, formData)
       .then(response => {
         var res = response["data"];
-        //  console.log(res);
         this.setState({tests: [...res]});
      })
      .catch(err=>console.log(err.response, err.request));
@@ -51,7 +51,6 @@ class addTest extends React.Component {
     addTest(id, name, date, limit, points, desc) {
       const url = "/HomeworkHub/backend/create_event.php";
       let formData = new FormData();
-      //let data = '{"type":"test", "name":"'+name+'", "description":"'+desc+'", "duedate":"'+date+'", "classroomid":"'+id+'", "points":"'+points+'", "limit:"'+limit+'"}';
       let data = '{"type":"test", "name":"' + name + '", "description":"' + desc + '", "duedate":"' + date + '", "classroomid":"' + id + '", "points":"' + points + '", "timelimit":"' + limit + '"}';
       console.log(data);
       formData.set("formData", data);
@@ -60,13 +59,24 @@ class addTest extends React.Component {
       .then(response => {
          var res = response["data"];
          console.log(res);
-         //this.setState({announcements: [...res]});
       })
       .catch(err=>console.log(err));
+      this.getTests();
     }
 
-    deleteTest() {
-      //wired up
+    deleteTest(testid) {
+      const url = "/HomeworkHub/backend/delete_event.php";
+      let formData = new FormData();
+      let data = '{"eventid":"' + testid + '", "type":"test"}';
+      //console.log(data);
+      formData.append("formData", data);
+      axios.post(url, formData)
+      .then(response => {
+        var res = response["data"];
+        console.log(res);
+     })
+     .catch(err=>console.log(err.response, err.request));
+    this.getTests();
     }
 
     updateTest() {

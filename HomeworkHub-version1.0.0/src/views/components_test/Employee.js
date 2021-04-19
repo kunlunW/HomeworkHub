@@ -7,8 +7,6 @@ import EditForm from './EditForm'
 
 const Employee = (props) => {
 
-   // const {deleteEmployee} = props.deleteTest;
-
     const [show, setShow] = useState(false);
     
     const handleShow = () => setShow(true);
@@ -20,11 +18,11 @@ const Employee = (props) => {
 
     return (
         <>
-            <td>{props.employee.id}</td> 
+            <td>{props.employee.classroomid}</td> 
             <td>{props.employee.name}</td>
-            <td>{props.employee.desc}</td>
-            <td>{props.employee.date}</td>
-            <td>{props.employee.limit}</td>
+            <td>{props.employee.description}</td>
+            <td>{props.employee.duedate}</td>
+            <td>{props.employee.timelimit}</td>
             <td>{props.employee.points}</td>
             <td>
                 <OverlayTrigger
@@ -41,7 +39,7 @@ const Employee = (props) => {
                             Delete Tests
                         </Tooltip>
                     }>
-                    <button onClick={() => props.deleteTest(props.employee.id)}  className="btn text-danger btn-act" data-toggle="modal">Delete</button>
+                    <button onClick={() => props.deleteTest(props.employee.testid)}  type="submit" className="btn text-danger btn-act" data-toggle="modal">Delete</button>
                 </OverlayTrigger>
                 
                 

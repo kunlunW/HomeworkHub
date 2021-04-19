@@ -5,9 +5,9 @@ import Employee from './Employee';
 import AddForm from './AddForm';
 import Pagination from './Pagination';
 
-const EmployeeList = () => {
+const EmployeeList = (props) => {
 
-    const {sortedEmployees} = useContext(EmployeeContext);
+    var sortedEmployees = props.parents
 
     const [showAlert, setShowAlert] = useState(false);
 
@@ -60,10 +60,11 @@ const EmployeeList = () => {
     <table className="table table-striped table-hover">
         <thead>
             <tr>
+                <th>Class ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Address</th>
-                <th>Phone</th>
+                <th>Mobile No.</th>
+                <th>School</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -93,7 +94,7 @@ const EmployeeList = () => {
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <AddForm />
+            <AddForm addParent={props.addParent}/>
         </Modal.Body>
         <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>

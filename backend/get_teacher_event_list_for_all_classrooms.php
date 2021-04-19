@@ -7,7 +7,7 @@ $json = json_decode($data, true);
 $username = $json["username"];
 $type = $json["type"];
 
-$ret = GetParentEventListForAllClassrooms($username, $type);
+$ret = GetTeacherEventListForAllClassrooms($username, $type);
 echo $ret;
 // @codeCoverageIgnoreEnd
 ?>

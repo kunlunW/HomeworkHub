@@ -5,9 +5,7 @@ import EditForm from './EditForm'
 
 
 
-const Employee = ({employee}) => {
-
-    const {deleteEmployee} = useContext(EmployeeContext)
+const Employee = (props) => {
 
     const [show, setShow] = useState(false);
     
@@ -16,14 +14,15 @@ const Employee = ({employee}) => {
 
     useEffect(() => {
         handleClose()
-    }, [employee])
+    }, [props.employee])
 
     return (
         <>
-            <td>{employee.name}</td>
-            <td>{employee.email}</td>
-            <td>{employee.address}</td>
-            <td>{employee.phone}</td>
+            <td>{props.employee.classroomid}</td>
+            <td>{props.employee.parentUserName}</td>
+            <td>{props.employee.email}</td>
+            <td>{props.employee.mobile_no}</td>
+            <td>{props.employee.school}</td>
             <td>
                 <OverlayTrigger
                     overlay={
@@ -39,7 +38,7 @@ const Employee = ({employee}) => {
                             Delete Student/Parent Information
                         </Tooltip>
                     }>
-                    <button onClick={() => deleteEmployee(employee.id)}  className="btn text-danger btn-act" data-toggle="modal">Delete</button>
+                    <button onClick={() => props.deleteParent(props.employee.parentUserName)}  className="btn text-danger btn-act" data-toggle="modal">Delete</button>
                 </OverlayTrigger>
                 
                 

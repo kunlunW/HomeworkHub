@@ -72,7 +72,7 @@ export class Classroom extends React.Component {
   getEventsAnnouncement() {
     const url = "/HomeworkHub/backend/get_event_list.php";
     let formData = new FormData();
-    let data = '{"classroomid":"' + this.state.classroomId + '", "type":"announcements"}';
+    let data = '{"classroomid":"' + this.state.classroomId + '", "type":"announcement"}';
     formData.append("formData", data);
     axios.post(url, formData)
       .then(response => {

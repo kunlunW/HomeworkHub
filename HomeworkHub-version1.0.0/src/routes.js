@@ -33,24 +33,24 @@ const routes = [
     layout: "/admin",
   },
   {
+    path: "/maps",
+    name: "View Parents",
+    icon: "nc-icon nc-circle-09",
+    component: viewStudent,
+    layout: "/admin",
+  },
+  {
     path: "/typography",
-    name: "View Due Dates",
+    name: "View Homework",
     icon: "nc-icon nc-circle-09",
     component: addDue,
     layout: "/admin",
   },
   {
     path: "/icons",
-    name: "View Test",
+    name: "View Tests",
     icon: "nc-icon nc-circle-09",
     component: addTest,
-    layout: "/admin",
-  },
-  {
-    path: "/maps",
-    name: "View Students",
-    icon: "nc-icon nc-circle-09",
-    component: viewStudent,
     layout: "/admin",
   },
   {
