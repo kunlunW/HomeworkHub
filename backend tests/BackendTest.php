@@ -1087,22 +1087,7 @@ final class BackendTest extends TestCase
         $actual = GetEventList(1, "event");
         $this->assertEquals($expected, $actual);
     }
-/*
-    public function testGetAllParentsInAllClassesOfUser(): void
-    {
-        AddUser("tom", "stone", "teacher");
-        AddUser("james", "smith", "parent");
-        AddUser("Al", "Jordan", "parent");
-        CreateClassroom("science", "tom", "a");
-        JoinClassroom("james", "a");
-        JoinClassroom("Al", "a");
-        
-        $expected = '[{"homeworkid":4, "name":"h_name4", "description":"h_desc4", "duedate":"2021-12-28", "points":40, "classroomid":4}]';
-        $actual = GetEventListForAllClassrooms("Al", "homework");
-        $this->assertEquals($expected, $actual);
-    }
- */
-
+    
     public function testGetTeacherHomeworkListWithOneElementFromAllClassrooms(): void
     {
         AddUser("tom", "stone", "teacher");
@@ -1356,6 +1341,135 @@ final class BackendTest extends TestCase
         $actual = GetTeacherEventListForAllClassrooms("tom", "event");
         $this->assertEquals($expected, $actual);
     }
+ 
+    public function testUpdateParentInfo(): void
+    {
+        AddUser("tom", "stone", "parent");
 
-}
+        $expected = 1;
+        $actual = UpdateParentsInfo("tom", "sam", 1, "tom@gmail.com", 1234567890, "Madison School", 1);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testInsertParentInfoWithInvalidUsername(): void
+    {
+        AddUser("tom", "stone", "parent");
+
+        $expected = 2;
+        $actual = UpdateParentsInfo("morgan", "sam", 1, "tom@gmail.com", 1234567890, "Madison School", 1);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testUpdateParentInfoTwice(): void
+    {
+        AddUser("tom", "stone", "parent");
+
+        $expected = 1;
+        $actual = UpdateParentsInfo("tom", "sam", 1, "tom@gmail.com", 1234567890, "Madison School", 1);
+        $this->assertEquals($expected, $actual);
+    
+        $expected = 1;
+        $actual = UpdateParentsInfo("tom", "sammy", 2, "tom@charter.net", 9876543210, "Florida School", 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetSingleParentFromSingleClassroom(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        AddUser("james", "mays", "parent");
+        UpdateParentsInfo("james", "sam", 1, "tom@gmail.com", 1234567890, "Madison School", 1);
+        CreateClassroom("science", "tom", "a");
+        JoinClassroom("james", "a");
+
+        $expected = '[{"parentUserName":"james", "studentName":"sam", "studentID":1, "email":"tom@gmail.com", ' . 
+            '"mobile_no":1234567890, "school":"Madison School", "classroomid":1}]';
+        $actual = GetAllParentsInTeachersClassrooms("tom"); 
+        $this->assertEquals($expected, $actual);
+    }
+ 
+    public function testGetOneParentFromMultipleClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        AddUser("james", "mays", "parent");
+        AddUser("frank", "smith", "parent");
+        UpdateParentsInfo("james", "sam", 1, "tom@gmail.com", 1234567890, "Madison School", 1);
+        UpdateParentsInfo("frank", "jim", 2, "frank@hotmail.com", 1112223333, "Madison School", 2);
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("art", "tom", "b");
+        JoinClassroom("james", "a");
+        JoinClassroom("frank", "b");
+
+        $expected = '[{"parentUserName":"james", "studentName":"sam", "studentID":1, "email":"tom@gmail.com", ' . 
+            '"mobile_no":1234567890, "school":"Madison School", "classroomid":1},' . 
+            '{"parentUserName":"frank", "studentName":"jim", "studentID":2, "email":"frank@hotmail.com", ' . 
+            '"mobile_no":1112223333, "school":"Madison School", "classroomid":2}]';
+        $actual = GetAllParentsInTeachersClassrooms("tom"); 
+        $this->assertEquals($expected, $actual);
+    }
+ 
+    public function testGetSingleParentFromTwoClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        AddUser("james", "mays", "parent");
+        UpdateParentsInfo("james", "sam", 1, "tom@gmail.com", 1234567890, "Madison School", 1);
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("art", "tom", "b");
+        JoinClassroom("james", "a");
+        JoinClassroom("james", "b");
+
+        $expected = '[{"parentUserName":"james", "studentName":"sam", "studentID":1, "email":"tom@gmail.com", ' . 
+            '"mobile_no":1234567890, "school":"Madison School", "classroomid":1}]';
+        $actual = GetAllParentsInTeachersClassrooms("tom"); 
+        $this->assertEquals($expected, $actual);
+    }
+ 
+    public function testGetManyParentsFromMultipleClassrooms(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        AddUser("james", "mays", "parent");
+        AddUser("frank", "smith", "parent");
+        AddUser("ben", "reas", "parent");
+        AddUser("matt", "denny", "parent");
+        UpdateParentsInfo("james", "sam", 1, "tom@gmail.com", 123, "Madison School", 1);
+        UpdateParentsInfo("frank", "jim", 2, "frank@hotmail.com", 111, "Madison School", 2);
+        UpdateParentsInfo("ben", "ken", 3, "ben@hotmail.com", 444, "Madison School", 1);
+        UpdateParentsInfo("matt", "elliot", 4, "matt@hotmail.com", 555, "Madison School", 2);
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("art", "tom", "b");
+        JoinClassroom("james", "a");
+        JoinClassroom("frank", "b");
+        JoinClassroom("ben", "a");
+        JoinClassroom("matt", "b");
+
+        $expected = '[{"parentUserName":"ben", "studentName":"ken", "studentID":3, "email":"ben@hotmail.com", ' . 
+            '"mobile_no":444, "school":"Madison School", "classroomid":1},' . 
+            '{"parentUserName":"james", "studentName":"sam", "studentID":1, "email":"tom@gmail.com", ' . 
+            '"mobile_no":123, "school":"Madison School", "classroomid":1},' . 
+            '{"parentUserName":"frank", "studentName":"jim", "studentID":2, "email":"frank@hotmail.com", ' . 
+            '"mobile_no":111, "school":"Madison School", "classroomid":2},' .
+            '{"parentUserName":"matt", "studentName":"elliot", "studentID":4, "email":"matt@hotmail.com", ' . 
+            '"mobile_no":555, "school":"Madison School", "classroomid":2}]';
+        $actual = GetAllParentsInTeachersClassrooms("tom"); 
+        $this->assertEquals($expected, $actual);
+    }
+ 
+    public function testGetEmptyParentsList(): void
+    {
+        AddUser("tom", "stone", "teacher");
+        AddUser("james", "mays", "parent");
+        AddUser("frank", "smith", "parent");
+        AddUser("ben", "reas", "parent");
+        AddUser("matt", "denny", "parent");
+        UpdateParentsInfo("james", "sam", 1, "tom@gmail.com", 1234567890, "Madison School", 1);
+        UpdateParentsInfo("frank", "jim", 2, "frank@hotmail.com", 1112223333, "Madison School", 2);
+        UpdateParentsInfo("ben", "ken", 3, "ben@hotmail.com", 4444444444, "Madison School", 1);
+        UpdateParentsInfo("matt", "elliot", 4, "matt@hotmail.com", 5555555555, "Madison School", 2);
+        CreateClassroom("science", "tom", "a");
+        CreateClassroom("art", "tom", "b");
+
+        $expected = '[]';
+        $actual = GetAllParentsInTeachersClassrooms("tom"); 
+        $this->assertEquals($expected, $actual);
+    }
+ }
 ?>
