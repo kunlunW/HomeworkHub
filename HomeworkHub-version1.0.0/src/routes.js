@@ -8,6 +8,7 @@ import viewClass from "views/viewClass.js";
 import LogIn from "views/LogIn.js";
 import Signup from "views/SignUp.js";
 import Classroom from "views/Classroom.js";
+import addAnnouncement from "views/addAnnouncement";
 
 const routes = [
   
@@ -40,6 +41,13 @@ const routes = [
     layout: "/admin",
   },
   {
+    path: "/announcements",
+    name: "View Announcements",
+    icon: "nc-icon nc-circle-09",
+    component: addAnnouncement,
+    layout: "/admin",
+  },
+  {
     path: "/typography",
     name: "View Homework",
     icon: "nc-icon nc-circle-09",
@@ -55,7 +63,7 @@ const routes = [
   },
   {
     path: "/classrooms",
-    name: "View Classroom",
+    name: "View Classrooms",
     icon: "nc-icon nc-circle-09",
     component: viewClass,
     layout: "/admin",
