@@ -770,4 +770,15 @@ function DisplayTeacherInfo($username)
     }
 }
 
+// UNION all names from three tables of different events
+// ORDER BY name
+function GetAllEventsByDate($duedate)
+{
+    $conn = OpenCon();
+    $sql = "SELECT name FROM homework WHERE duedate = '$duedate' UNION SELECT name FROM test WHERE duedate = '$duedate' UNION SELECT name FROM announcement WHERE duedate = '$duedate' ORDER BY name;";
+    $result = $conn->query($sql);
+    CloseCon($conn);
+    return $result; // Contains situations where no event exist at that date
+}
+
 ?>
