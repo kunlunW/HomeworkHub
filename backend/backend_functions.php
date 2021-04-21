@@ -776,9 +776,20 @@ function GetAllEventsByDate($duedate)
 {
     $conn = OpenCon();
     $sql = "SELECT name FROM homework WHERE duedate = '$duedate' UNION SELECT name FROM test WHERE duedate = '$duedate' UNION SELECT name FROM announcement WHERE duedate = '$duedate' ORDER BY name;";
+    $ret = '[';
     $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $ret .= '"' . $row["name"]  . '",';
+        }
+    }
+
+    $ret = rtrim($ret, ",");
+    $ret .= ']';
+
     CloseCon($conn);
-    return $result; // Contains situations where no event exist at that date
+    return $ret; // Contains situations where no event exist at that date
 }
 
 ?>
