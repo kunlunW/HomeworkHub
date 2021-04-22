@@ -126,7 +126,7 @@ function GetJoinCode($cid)
  * 0: On success
  * 1: Join code does not correspond to any classroom
  * 2: Username does not correspond to any user
- * 3: If the user is already in the classroom
+ * 3: If the user is already in a classroom
  * 4: If the user is not a parent
  * 5: Other error
  */
@@ -156,7 +156,7 @@ function JoinClassroom($username, $joincode)
         }
     }
 
-    $sql = "SELECT * FROM  requests WHERE username='$username' AND classroomid='$cid'";
+    $sql = "SELECT * FROM requests WHERE username='$username'";
     $result = $conn->query($sql);
     if ($result->num_rows !== 0) {
         CloseCon($conn);
@@ -206,6 +206,20 @@ function GetAllParentsInClassroom($cid)
 
     $ret = rtrim($ret, ",");
     $ret .= ']';
+
+    CloseCon($conn);
+    return $ret;
+}
+
+function GetParentCID($pname)
+{
+    $conn = OpenCon();
+    $sql = "SELECT * FROM requests WHERE username='$pname' ORDER BY classroomid ASC";
+    $ret = 0;
+    $result = $conn->query($sql);
+
+    if ($result->num_rows === 1) 
+        $ret = $result->fetch_assoc()["classroomid"];
 
     CloseCon($conn);
     return $ret;
