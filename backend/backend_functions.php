@@ -34,17 +34,23 @@ function AddUser($username, $password, $type)
     $sqlRegister = "INSERT INTO users (username, password, type) VALUES ('$username', '$password', '$type')";
     $resultRegister = $conn->query($sqlRegister);
     if(!$resultRegister) {
-        $ret = 1;
-    } else {
+        CloseCon($conn);
+        return 1;
+    }
+    
+    if ($type === "parent") {
         $sql = "INSERT INTO Parents (parentUserName, studentName, studentID, email, mobile_no, school, classroomID) " . 
             "VALUES ('$username', '0', 0, '0', 0, '0', 0);";
         $result = $conn->query($sql);
-        if ($result === TRUE) 
+        if ($result === TRUE) {
             $ret = 0;
-        else
+        } else {
             $ret = 3;
+        }
+    } else {
+        $ret = 0;
     }
-
+    
     CloseCon($conn);
     return $ret; 
 }
@@ -166,6 +172,8 @@ function JoinClassroom($username, $joincode)
     $sql = "INSERT INTO requests (username, classroomid) VALUES ('$username', '$cid')";
     $result = $conn->query($sql);
     if ($result === TRUE) {
+        $sql = "UPDATE parents SET classroomID='$cid' WHERE parentUserName='$username'";
+        $conn->query($sql);
         CloseCon($conn);
         return 0;
     } else {
