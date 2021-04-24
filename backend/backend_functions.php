@@ -771,23 +771,46 @@ function UpdateParentsInfo($username, $studentName, $studentID, $email, $mobile_
     }
 }
 
-function DisplayTeacherInfo($username)
+function displayteacherinfo($username)
 {
-    $conn = OpenCon();
-    $sqlDisplay = "SELECT * FROM Teachers WHERE teacherUserName = '$username';";
-    $result = $conn->query($sqlDisplay);
+    $conn = opencon();
+    $sqldisplay = "select * from teachers where teacherusername = '$username';";
+    $result = $conn->query($sqldisplay);
     $ret = "[";
     
-    if($result->num_rows > 0) { // Entry already exists
+    if($result->num_rows > 0) { // entry already exists
         $row = $result->fetch_assoc();
         $ret .= '{"gender":"' . $row["gender"] . 
             '", "email":"' . $row["email"] . 
             '", "mobile_no":"' . $row["mobile_no"] . 
             '", "school":"' . $row["school"] . '"}]';
-        CloseCon($conn);
+        closecon($conn);
         return $ret;
-    } else { // Entry doesn't exist
-        CloseCon($conn);
+    } else { // entry doesn't exist
+        closecon($conn);
+        return 1;
+    }
+}
+
+function DisplayParentInfo($username)
+{
+    $conn = opencon();
+    $sqldisplay = "select * from parents where parentUserName='$username';";
+    $result = $conn->query($sqldisplay);
+    
+    if($result->num_rows > 0) { // entry already exists
+        $row = $result->fetch_assoc();
+        $ret = '{"parentUserName":"' . $row["parentUserName"] . 
+            '", "studentName":"' . $row["studentName"] . 
+            '", "studentID":' . $row["studentID"] . 
+            ', "email":"' . $row["email"] .
+            '", "mobile_no":' . $row["mobile_no"] .
+            ', "school":"' . $row["school"] .
+            '", "classroomID":' . $row["classroomID"] . '}';
+        closecon($conn);
+        return $ret;
+    } else { // entry doesn't exist
+        closecon($conn);
         return 1;
     }
 }
