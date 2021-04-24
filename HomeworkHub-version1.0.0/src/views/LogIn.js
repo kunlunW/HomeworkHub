@@ -17,8 +17,23 @@ export default class LogIn extends Component {
       wrongPass: false,
       empty: false,
     };
+    this.getClassroomId = this.getClassroomId.bind(this);
     this.handleChange = this.handleChange.bind(this);
 
+  }
+
+  getClassroomId() {
+    const url = "/HomeworkHub/backend/get_parent_cid.php";
+    let formData = new FormData();
+    let data = '{"username":"' + this.state.username + '"}';
+    formData.append("formData", data);
+    axios.post(url, formData)
+    .then(response => {
+        var res = response["data"];
+       // console.log(res);
+        localStorage.setItem("parentclassroomId", res);
+    })
+    .catch(err=>console.log(err.response, err.request));
   }
 
   handleLoginButtonClick = () => {
@@ -39,13 +54,14 @@ export default class LogIn extends Component {
         if (res == "teacher") {
           console.log("teacher user found");
           localStorage.setItem("username", this.state.username);
-          this.setState({
-            redirect: "/admin/dashboard",
-          });
+          this.setState({ redirect: "/admin/dashboard" });
+        } else if(res === "parent") {
+          console.log("parent user found");
+          localStorage.setItem("parentusername", this.state.username);
+          this.getClassroomId();
+          this.setState({ redirect: "/parent/dashboard" });
         } else {
-          this.setState({
-            wrongPass: true,
-          });
+          this.setState({ wrongPass: true });
           console.log("user not found")
         }
     })

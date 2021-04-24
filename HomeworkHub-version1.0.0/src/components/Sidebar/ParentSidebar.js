@@ -4,7 +4,7 @@ import { useLocation, NavLink } from "react-router-dom";
 
 import { Nav } from "react-bootstrap";
 
-function Sidebar({ routes }) {
+function ParentSidebar({ routes }) {
   const location = useLocation();
   const activeRoute = (routeName) => {
     return location.pathname.indexOf(routeName) > -1 ? "active" : "";
@@ -16,13 +16,13 @@ function Sidebar({ routes }) {
         <div className="logo d-flex align-items-center justify-content-start">
           
           <a className="simple-text" >
-            TeacherHub
+            ParentHub
           </a>
         </div>
         
         <Nav>
           {routes.map((prop, key) => {
-            if (!prop.redirect && prop.layout === "/admin" && prop.name != "Classroom")
+            if (!prop.redirect && prop.layout === "/parent" && prop.name != "Classroom")
               return (
                 <li className={ activeRoute(prop.layout + prop.path) } >
                   <NavLink
@@ -43,4 +43,4 @@ function Sidebar({ routes }) {
   );
 }
 
-export default Sidebar;
+export default ParentSidebar;

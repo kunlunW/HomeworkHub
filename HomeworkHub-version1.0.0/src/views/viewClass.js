@@ -28,6 +28,7 @@ export class viewClass extends React.Component {
       username: localStorage.getItem("username"),
       classrooms: [],
       new_classroom_name: "",
+      joincode: "",
       success: false,
       chosen: null
     };
@@ -58,7 +59,7 @@ export class viewClass extends React.Component {
   create_new_classroom() {
     const url = "/HomeworkHub/backend/create_classroom.php";
     let formData = new FormData();
-    let data = '{"classroomname":"' + this.state.new_classroom_name + '", "teachername":"' + this.state.username + '"}';
+    let data = '{"classroomname":"' + this.state.new_classroom_name + '", "teachername":"' + this.state.username + '", "joincode":"'+this.state.joincode+'"}';
     formData.append("formData", data);
     axios.post(url, formData)
       .then(response => {
@@ -99,7 +100,7 @@ export class viewClass extends React.Component {
           <Row>
             <Col>
               <Row>
-                <a href = "/admin/classroom" onClick={() => this.setState({chosen: classroom})}> {classroom.classroomname}</a>
+                <a href = "" onClick={() => this.setState({chosen: classroom})}> {classroom.classroomname}</a>
               </Row>
             </Col>
             <Col>
@@ -149,6 +150,14 @@ export class viewClass extends React.Component {
                 onChange={this.handleChange}
                 placeholder="Enter name"
                 name = "new_classroom_name"
+            />
+          </FormGroup>
+          <FormGroup controlId = "code" size = "lg">
+            <FormControl
+                value={this.state.joincode}
+                onChange={this.handleChange}
+                placeholder="Enter a joincode"
+                name = "joincode"
             />
           </FormGroup>
           <Button onClick={this.create_new_classroom}>Create</Button>

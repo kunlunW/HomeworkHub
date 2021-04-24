@@ -8,10 +8,20 @@ import viewClass from "views/viewClass.js";
 import LogIn from "views/LogIn.js";
 import Signup from "views/SignUp.js";
 import Classroom from "views/Classroom.js";
-import addAnnouncement from "views/addAnnouncement";
+import addAnnouncement from "views/addAnnouncement.js";
+
+import ParentDashboard from "views/ParentDashboard.js";
+import ParentUserProfile from "views/ParentUserProfile.js";
+import ParentCalendar from "views/ParentCalendar.js";
+import ParentViewTest from "views/ParentViewTest.js";
+import ParentViewAnnouncement from "views/ParentViewAnnouncement.js";
+import ParentViewHomework from "views/ParentViewHomework.js";
+import ParentClassroom from "views/ParentClassroom.js";
+import ParentJoinClass from "views/ParentJoinClass.js";
 
 const routes = [
   
+  //Teacher Portal Routes Start
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -82,8 +92,6 @@ const routes = [
     component: Signup,
     layout: "/welcome",
   },
-
-  //Might want to change this 
   {
     path: "/classroom",
     name: "Classroom",
@@ -91,6 +99,67 @@ const routes = [
     component: Classroom,
     layout: "/admin",
   },
+  //Teacher Portal Routes Stop
+
+
+  //Parent Portal Routes Start
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: "nc-icon nc-circle-09",
+    component: ParentDashboard,
+    layout: "/parent",
+  },
+  {
+    path: "/user",
+    name: "User Profile",
+    icon: "nc-icon nc-circle-09",
+    component: ParentUserProfile,
+    layout: "/parent",
+  },
+  {
+    path: "/calendar",
+    name: "Calendar View",
+    icon: "nc-icon nc-circle-09",
+    component: ParentCalendar,
+    layout: "/parent",
+  },
+  {
+    path: "/announcements",
+    name: "View Announcements",
+    icon: "nc-icon nc-circle-09",
+    component: ParentViewAnnouncement,
+    layout: "/parent",
+  },
+  {
+    path: "/homework",
+    name: "View Homework",
+    icon: "nc-icon nc-circle-09",
+    component: ParentViewHomework,
+    layout: "/parent",
+  },
+  {
+    path: "/tests",
+    name: "View Tests",
+    icon: "nc-icon nc-circle-09",
+    component: ParentViewTest,
+    layout: "/parent",
+  },
+  {
+    path: "/classroom",
+    name: "View Classroom",
+    icon: "nc-icon nc-circle-09",
+    component: ParentClassroom,
+    layout: "/parent",
+  },
+  {
+    path: "/join",
+    name: "Classroom",
+    icon: "nc-icon nc-circle-09",
+    component: ParentJoinClass,
+    layout: "/parent",
+  },
+
 ];
 
 
