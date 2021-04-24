@@ -34,36 +34,14 @@ export class ParentClassroom extends React.Component {
     }
   }
 
-//   getClassroomId() {
-//     const url = "/HomeworkHub/backend/get_parent_cid.php";
-//     let formData = new FormData();
-//     let data = '{"username":"' + this.state.username + '"}';
-//     formData.append("formData", data);
-//     axios.post(url, formData)
-//     .then(response => {
-//         var res = response["data"];
-//        // console.log(res);
-//         if (res === 0) {
-//             this.setState({join: "/parent/join"});
-//         } else {
-//             this.setState({join: null});
-//             localStorage.setItem("classroomId", res);
-//             this.setState({classroomId: res});
-//         }
-//     })
-//     .catch(err=>console.log(err.response, err.request));
-//   }
-
   getEventHomeworks() { 
     const url = "/HomeworkHub/backend/get_event_list.php";
     let formData = new FormData();
     let data = '{"classroomid":"' + this.state.classroomId + '", "type":"homework"}';
     formData.append("formData", data);
-    console.log(data);
     axios.post(url, formData)
       .then(response => {
          var res = response["data"];
-        //  console.log(res);
          this.setState({homeworks: [...res]});
      })
      .catch(err=>console.log(err.response, err.request));
@@ -74,11 +52,9 @@ export class ParentClassroom extends React.Component {
     let formData = new FormData();
     let data = '{"classroomid":"' + this.state.classroomId + '", "type":"test"}';
     formData.append("formData", data);
-    console.log(data);
     axios.post(url, formData)
       .then(response => {
          var res = response["data"];
-        //  console.log(res);
          this.setState({tests: [...res]});
      })
      .catch(err=>console.log(err));
@@ -89,11 +65,9 @@ export class ParentClassroom extends React.Component {
     let formData = new FormData();
     let data = '{"classroomid":"' + this.state.classroomId + '", "type":"announcement"}';
     formData.append("formData", data);
-    console.log(data);
     axios.post(url, formData)
       .then(response => {
          var res = response["data"];
-        //  console.log(res);
          this.setState({announcements: [...res]});
      })
      .catch(err=>console.log(err));

@@ -39,7 +39,7 @@ function AddUser($username, $password, $type)
     }
     
     if ($type === "parent") {
-        $sql = "INSERT INTO Parents (parentUserName, studentName, studentID, email, mobile_no, school, classroomID) " . 
+        $sql = "INSERT INTO parents (parentUserName, studentName, studentID, email, mobile_no, school, classroomID) " . 
             "VALUES ('$username', '0', 0, '0', 0, '0', 0);";
         $result = $conn->query($sql);
         if ($result === TRUE) {
@@ -743,28 +743,24 @@ function UpdateParentsInfo($username, $studentName, $studentID, $email, $mobile_
     $conn = OpenCon();
     $sqlCheck = "SELECT * FROM parents WHERE parentUserName='$username';";
     if($conn->query($sqlCheck)->num_rows !== 0) { // Entry already exists
-        $sqlUpdate = "UPDATE Parents p SET p.studentName = '$studentName', p.studentID = '$studentID', p.email = '$email', p.mobile_no = '$mobile_no', p.school = '$school', p.classroomID = '$classroomID' WHERE p.parentUserName = '$username';";
+        $sqlUpdate = "UPDATE parents p SET p.studentName = '$studentName', p.studentID = '$studentID', p.email = '$email', p.mobile_no = '$mobile_no', p.school = '$school', p.classroomID = '$classroomID' WHERE p.parentUserName = '$username';";
         $updateRes = $conn->query($sqlUpdate);
         if (!$updateRes) {
             // @codeCoverageIgnoreStart
-            // echo "Update Failed\n";
             CloseCon($conn);
             return 0;
             // @codeCoverageIgnoreEnd
         } else {
-            // echo "Update Success\n";
             CloseCon($conn);
             return 1;
         }
     } else { // Entry doesn't exist
-        $sqlInsert = "INSERT INTO Parents (parentUserName, studentName, studentID, email, mobile_no, school, classroomID) VALUES ('$username', '$studentName', '$studentID', '$email', '$mobile_no', '$school', '$classroomID');";
+        $sqlInsert = "INSERT INTO parents (parentUserName, studentName, studentID, email, mobile_no, school, classroomID) VALUES ('$username', '$studentName', '$studentID', '$email', '$mobile_no', '$school', '$classroomID');";
         $insertRes = $conn->query($sqlInsert);
         if (!$insertRes) {
-            // echo "Insert Failed\n";
             CloseCon($conn);
             return 2;
         } else {
-            // echo "Insert Success\n";
             CloseCon($conn);
             return 3;
         }

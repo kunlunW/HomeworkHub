@@ -47,7 +47,6 @@ class User extends React.Component {
   }
 
   updateFields(values) {   
-      var ret;
       const url = "/HomeworkHub/backend/updateTeacher.php";
       let formData = new FormData();
       let data = '{"username":"' + values.name + '", "gender":"' + values.gender 
@@ -55,7 +54,6 @@ class User extends React.Component {
                                  + '", "mobile_no":"' + values.mobile_no 
                                  + '", "school":"' + values.school + '"}';          
       formData.append("formData", data);
-      console.log(data);
       axios.post(url, formData)
       .then(response => {
         var res = response["data"];
