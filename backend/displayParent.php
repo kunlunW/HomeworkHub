@@ -7,7 +7,7 @@ $data = $_POST['formData'];
 $json = json_decode($data, true);
 $username = $json["username"]; // Primary Key
 
-$ret = DisplayTeacherInfo($username);
+$ret = DisplayParentInfo($username);
 echo $ret; 
 // @codeCoverageIgnoreEnd
 ?>
