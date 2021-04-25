@@ -11,6 +11,11 @@ import {
 export class ParentClassroom extends React.Component {
   constructor(props) {
     super(props);
+    var classroom = localStorage.getItem("parentclassroomId");
+    var tojoin = null;
+    if (classroom == 0) {
+        tojoin = "/parent/join";
+    }
     this.state = {
       username: localStorage.getItem("parentusername"),
       classroomId: localStorage.getItem("parentclassroomId"),
@@ -18,16 +23,14 @@ export class ParentClassroom extends React.Component {
       homeworks: [], //homework assignments for this class
       announcements: [], //announcements for this class
       tests: [], //tests for this class
-      join: null
+      join: tojoin
     };
 
     this.getEventHomeworks = this.getEventHomeworks.bind(this);
     this.getEventAnnouncements = this.getEventAnnouncements.bind(this);
     this.getEventTests = this.getEventTests.bind(this);
 
-    if (this.state.classroomId === 0) {
-        this.setState({join: "/parent/join"});
-    } else {
+    if (this.state.classroomId != 0) {
         this.getEventHomeworks();
         this.getEventAnnouncements();
         this.getEventTests();
