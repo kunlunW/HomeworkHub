@@ -655,7 +655,8 @@ final class BackendTest extends TestCase
         CreateClassroom("science", "tom", "a");
         JoinClassroom("james", "a");
 
-        $expected = '["james"]';
+        $expected = '[{"parentUserName":"james", "studentName":"Enter your student name here", "studentID":0, ' . 
+            '"email":"Enter your email here", "mobile_no":0, "school":"Enter your school here", "classroomid":1}]';
         $actual = GetAllParentsInClassroom(1);
         $this->assertEquals($expected, $actual);
     }
@@ -671,7 +672,12 @@ final class BackendTest extends TestCase
         JoinClassroom("Roger", "a");
         JoinClassroom("Ben", "a");
 
-        $expected = '["Ben","James","Roger"]';
+        $expected = '[{"parentUserName":"Ben", "studentName":"Enter your student name here", "studentID":0, ' . 
+            '"email":"Enter your email here", "mobile_no":0, "school":"Enter your school here", "classroomid":1},' . 
+            '{"parentUserName":"James", "studentName":"Enter your student name here", "studentID":0, ' . 
+            '"email":"Enter your email here", "mobile_no":0, "school":"Enter your school here", "classroomid":1},'. 
+            '{"parentUserName":"Roger", "studentName":"Enter your student name here", "studentID":0, ' . 
+            '"email":"Enter your email here", "mobile_no":0, "school":"Enter your school here", "classroomid":1}]';
         $actual = GetAllParentsInClassroom(1);
         $this->assertEquals($expected, $actual);
     }
@@ -769,16 +775,17 @@ final class BackendTest extends TestCase
         $actual = DisplayParentInfo("tom");
         $this->assertEquals($expected, $actual);
     }
-
+ 
     public function testGetNonUpdatedParentInformation(): void
     {
         AddUser("tom", "stone", "parent");
 
-        $expected = '{"parentUserName":"tom", "studentName":"0", "studentID":0, "email":"0", "mobile_no":0, "school":"0", "classroomID":0}';
+        $expected = '{"parentUserName":"tom", "studentName":"Enter your student name here", "studentID":0, ' . 
+            '"email":"Enter your email here", "mobile_no":0, "school":"Enter your school here", "classroomID":0}';
         $actual = DisplayParentInfo("tom");
         $this->assertEquals($expected, $actual);
     }
-    
+ 
     public function testGetUpdatedParentInformation(): void
     {
         AddUser("tom", "stone", "parent");
@@ -1450,6 +1457,6 @@ final class BackendTest extends TestCase
         $actual = GetParentCID("james"); 
         $this->assertEquals($expected, $actual);
     }
-  
+ 
  }
 ?>

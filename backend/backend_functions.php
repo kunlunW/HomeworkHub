@@ -40,7 +40,7 @@ function AddUser($username, $password, $type)
     
     if ($type === "parent") {
         $sql = "INSERT INTO parents (parentUserName, studentName, studentID, email, mobile_no, school, classroomID) " . 
-            "VALUES ('$username', '0', 0, '0', 0, '0', 0);";
+            "VALUES ('$username', 'Enter your student name here', 0, 'Enter your email here', 0, 'Enter your school here', 0);";
         $result = $conn->query($sql);
         if ($result === TRUE) {
             $ret = 0;
@@ -202,13 +202,18 @@ function LeaveClassroom($username, $cid)
 function GetAllParentsInClassroom($cid)
 {
     $conn = OpenCon();
-    $sql = "SELECT * FROM requests WHERE classroomid='$cid' ORDER BY username ASC";
-    $ret = '[';
+    $sql = "SELECT * FROM parents WHERE classroomID='$cid' ORDER BY parentUserName ASC"; 
+    $ret = "[";
     $result = $conn->query($sql);
-
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            $ret .= '"' . $row["username"]  . '",';
+            $ret .= '{"parentUserName":"' . $row["parentUserName"] . 
+                '", "studentName":"' . $row["studentName"] . 
+                '", "studentID":' . $row["studentID"] . 
+                ', "email":"' . $row["email"] .
+                '", "mobile_no":' . $row["mobile_no"] .
+                ', "school":"' . $row["school"] .
+                '", "classroomid":' . $row["classroomID"] . '},';
         }
     }
 
