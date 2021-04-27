@@ -35,6 +35,7 @@ export class Classroom extends React.Component {
     this.getAnnouncements = this.getAnnouncements.bind(this);
     this.getTests = this.getTests.bind(this);
 
+    this.loadParents();
     this.getEventsHomework();
     this.getEventsTest();
     this.getEventsAnnouncement();
@@ -91,7 +92,7 @@ export class Classroom extends React.Component {
     axios.post(url, formData)
       .then(response => {
          var res = response["data"];
-        //  console.log(res);
+         console.log(res);
          this.setState({parents: [...res]});
      })
      .catch(err=>console.log(err));
@@ -106,7 +107,7 @@ export class Classroom extends React.Component {
     <div>
         <Row>
             <Col>
-                {parent.name}
+                {parent.parentUserName}
             </Col>
             <Col>
                 {parent.email}

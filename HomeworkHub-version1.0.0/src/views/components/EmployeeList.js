@@ -47,9 +47,6 @@ const EmployeeList = (props) => {
             <div className="col-sm-6">
                 <h2>Manage<b> Student/Parents</b></h2>
             </div>
-            <div className="col-sm-6">
-                <Button onClick={handleShow} className="btn btn-success" data-toggle="modal"> <span>Add New Student/Parent</span></Button>					
-            </div>
         </div>
     </div>
 
@@ -86,22 +83,6 @@ const EmployeeList = (props) => {
                 setCurrentPage={setCurrentPage}
                 currentEmployees ={currentEmployees}
                 sortedEmployees = {sortedEmployees} />
-
-    <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-            <Modal.Title>
-                Add Student/Parent
-            </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <AddForm addParent={props.addParent}/>
-        </Modal.Body>
-        <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-        </Modal.Footer>
-    </Modal>
     </>
     )
 }

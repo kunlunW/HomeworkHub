@@ -645,11 +645,11 @@ function GetTeacherEventListForAllClassrooms($username, $type)
 function GetAllParentsInTeachersClassrooms($username)
 {
     $conn = OpenCon();
-    $sql = "SELECT DISTINCT p.parentUserName AS username, p.studentName AS studentname, p.studentID AS studentid, " . 
-        "p.email AS email, p.mobile_no AS phonenumber, p.school AS school, p.classroomid AS classroomid " . 
-        "FROM classrooms c, parents p, requests r " . 
-        "WHERE c.teachername='$username' AND c.classroomid=r.classroomid AND p.parentUserName=r.username " .
-        "ORDER BY p.classroomid ASC, p.parentUserName ASC";
+    $sql = "SELECT p.parentUserName AS username, p.studentName AS studentname, p.studentID AS studentid, " . 
+        "p.email AS email, p.mobile_no AS phonenumber, p.school AS school, p.classroomID AS classroomid " . 
+        "FROM classrooms c, parents p " . 
+        "WHERE c.teachername='$username' AND c.classroomid=p.classroomID " .
+        "ORDER BY p.classroomID ASC, p.parentUserName ASC";
     $ret = "[";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {

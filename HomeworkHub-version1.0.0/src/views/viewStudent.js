@@ -35,24 +35,16 @@ class viewStudent extends React.Component {
     const url = "/HomeworkHub/backend/get_all_parents_in_all_classrooms_of_a_teacher.php";
     let formData = new FormData();
     let data = '{"username":"' + this.state.username + '"}';
-    //console.log(data);
+    // console.log(data);
     formData.append("formData", data);
     axios.post(url, formData)
     .then(response => {
       var res = response["data"];
-     // console.log(res);
+      console.log(res);
       this.setState({parents: [...res]});
-      //console.log(this.state.tests);
+      console.log(this.state.parents);
    })
    .catch(err=>console.log(err.response, err.request));
-  }
-
-  addParent(id, name, date, limit, points, desc) {
-    //TODO
-  }
-
-  deleteParent() {
-    //TODO
   }
   
   render() {

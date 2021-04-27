@@ -27,14 +27,6 @@ const Employee = (props) => {
                 <OverlayTrigger
                     overlay={
                         <Tooltip id={`tooltip-top`}>
-                            Edit Student/Parent Information
-                        </Tooltip>
-                    }>
-                    <button onClick={handleShow}  className="btn text-warning btn-act" data-toggle="modal">Edit</button>
-                </OverlayTrigger>
-                <OverlayTrigger
-                    overlay={
-                        <Tooltip id={`tooltip-top`}>
                             Delete Student/Parent Information
                         </Tooltip>
                     }>
@@ -43,22 +35,6 @@ const Employee = (props) => {
                 
                 
             </td>
-
-            <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-            <Modal.Title>
-                Edit Student/Parent
-            </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <EditForm theEmployee={employee} />
-        </Modal.Body>
-        <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-        </Modal.Footer>
-    </Modal>
         </>
     )
 }

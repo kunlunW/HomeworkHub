@@ -6,7 +6,7 @@ $data = $_POST['formData'];
 $json = json_decode($data, true);
 $username = $json["username"];
 
-$ret = GetAllParentsInTeachersClassrooms($cid);
+$ret = GetAllParentsInTeachersClassrooms($username);
 echo $ret;
 // @codeCoverageIgnoreEnd
 ?>
