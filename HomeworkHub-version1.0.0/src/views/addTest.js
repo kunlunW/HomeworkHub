@@ -30,6 +30,7 @@ class addTest extends React.Component {
       this.deleteTest = this.deleteTest.bind(this);
       this.addTest = this.addTest.bind(this);
       this.getTests = this.getTests.bind(this);
+      this.updateTest = this.updateTest.bind(this);
 
       this.getTests();
     }
@@ -79,8 +80,18 @@ class addTest extends React.Component {
     this.getTests();
     }
 
-    updateTest() {
-      //TODO
+    updateTest(eventid, name, desc, date, limit, points) {
+      const url = "/HomeworkHub/backend/update_event.php";
+      let formData = new FormData();
+      let data = '{"type":"test", "eventid":"'+eventid+'", "name":"' + name + '", "description":"' + desc + '", "duedate":"' + date + '", "points":"' + points + '", "timelimit": "' + limit + '"}';
+      formData.set("formData", data);
+      axios.post(url, formData)
+      .then(response => {
+         var res = response["data"];
+         if (res == 0) {console.log("success");}
+      })
+      .catch(err=>console.log(err));
+      this.getTests();
     }
   
     render() {

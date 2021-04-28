@@ -1,25 +1,21 @@
 import { Form, Button } from "react-bootstrap"
+import {useState} from 'react';
 
-import {EmployeeContext} from '../contexts_test/EmployeeContext';
-import {useContext, useState} from 'react';
+const EditForm = (props) =>{
 
-const EditForm = ({theEmployee}) =>{
+    const [newEmployee, setNewEmployee] = useState({
+        name:props.theEmployee.name, desc: props.theEmployee.description, date: props.theEmployee.duedate
+    });
 
-    const id = theEmployee.id;
+    const onInputChange = (e) => {
+        setNewEmployee({...newEmployee,[e.target.name]: e.target.value})
+    }
 
-    const [name, setName] = useState(theEmployee.name);
-    const [time, setEmail] = useState(theEmployee.time);
-    const [limit, setAddress] = useState(theEmployee.limit);
-    const [points, setPhone] = useState(theEmployee.points);
-
-
-    const {updateEmployee} = useContext(EmployeeContext);
-
-    const updatedEmployee = {id, name, time, limit, points}
+    const {name, desc, date} = newEmployee;
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        updateEmployee(id, updatedEmployee)
+        props.updateAnnouncement(props.theEmployee.announcementid, name, desc, date);
     }
 
      return (
@@ -31,42 +27,22 @@ const EditForm = ({theEmployee}) =>{
                     placeholder="Name *"
                     name="name"
                     value={name}
-                    onChange={(e)=> setName(e.target.value)}
+                    onChange={(e)=> onInputChange(e)}
                     // required
                 />
             </Form.Group>
             <Form.Group>
                 <Form.Control
                     type="text"
-                    placeholder="Due Time *"
-                    name="time"
-                    value={time}
-                    onChange={(e)=> setEmail(e.target.value)}
-                    // required
-                />
-            </Form.Group>
-            <Form.Group>
-                <Form.Control
-                    type="text"
-                    placeholder="Time Limit *"
-                    name="limit"
-                    value={limit}
-                    onChange={(e)=> setAddress(e.target.value)}
-                    // required
-                />
-            </Form.Group>
-            <Form.Group>
-                <Form.Control
-                    type="text"
-                    placeholder="Total Points"
-                    name="points"
-                    value={points}
-                    onChange={(e)=> setPhone(e.target.value)}
+                    placeholder="Description *"
+                    name="desc"
+                    value={desc}
+                    onChange={(e)=> onInputChange(e)}
                     // required
                 />
             </Form.Group>
             <Button variant="success" type="submit" block>
-                Edit Test
+                Edit Announcement
             </Button>
         </Form>
 

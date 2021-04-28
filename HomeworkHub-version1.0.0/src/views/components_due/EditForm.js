@@ -3,23 +3,21 @@ import { Form, Button } from "react-bootstrap"
 import {EmployeeContext} from '../contexts_due/EmployeeContext';
 import {useContext, useState} from 'react';
 
-const EditForm = ({theEmployee}) =>{
+const EditForm = (props) =>{
 
-    const id = theEmployee.id;
+    const [newEmployee, setNewEmployee] = useState({
+        name:props.theEmployee.name, desc:props.theEmployee.description, duedate:props.theEmployee.duedate, points:props.theEmployee.points
+    });
 
-    const [name, setName] = useState(theEmployee.name);
-    const [time, setEmail] = useState(theEmployee.time);
-    const [limit, setAddress] = useState(theEmployee.limit);
-    const [points, setPhone] = useState(theEmployee.points);
+    const onInputChange = (e) => {
+        setNewEmployee({...newEmployee,[e.target.name]: e.target.value})
+    }
 
-
-    const {updateEmployee} = useContext(EmployeeContext);
-
-    const updatedEmployee = {id, name, time, limit, points}
+    const {name, desc, duedate, points} = newEmployee;
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        updateEmployee(id, updatedEmployee)
+        props.updateHomework(props.theEmployee.homeworkid, name, desc, duedate, points);
     }
 
      return (
@@ -28,40 +26,40 @@ const EditForm = ({theEmployee}) =>{
             <Form.Group>
                 <Form.Control
                     type="text"
-                    placeholder="Name *"
+                    placeholder="Name"
                     name="name"
                     value={name}
-                    onChange={(e)=> setName(e.target.value)}
+                    onChange={(e)=> onInputChange(e)}
                     // required
                 />
             </Form.Group>
             <Form.Group>
                 <Form.Control
                     type="text"
-                    placeholder="Due Dates *"
-                    name="time"
-                    value={time}
-                    onChange={(e)=> setEmail(e.target.value)}
+                    placeholder="Description"
+                    name="desc"
+                    value={desc}
+                    onChange={(e)=> onInputChange(e)}
                     // required
                 />
             </Form.Group>
             <Form.Group>
                 <Form.Control
                     type="text"
-                    placeholder="Available Until *"
-                    name="limit"
-                    value={limit}
-                    onChange={(e)=> setAddress(e.target.value)}
+                    placeholder="Due Date"
+                    name="duedate"
+                    value={duedate}
+                    onChange={(e)=> onInputChange(e)}
                     // required
                 />
             </Form.Group>
             <Form.Group>
                 <Form.Control
                     type="text"
-                    placeholder="Total Points"
+                    placeholder="Points"
                     name="points"
                     value={points}
-                    onChange={(e)=> setPhone(e.target.value)}
+                    onChange={(e)=> onInputChange(e)}
                     // required
                 />
             </Form.Group>

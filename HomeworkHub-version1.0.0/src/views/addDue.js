@@ -31,6 +31,7 @@ class addDue extends React.Component {
     this.addHomework = this.addHomework.bind(this);
     this.getHomeworks = this.getHomeworks.bind(this);
     this.deleteHomework = this.deleteHomework.bind(this);
+    this.updateHomework = this.updateHomework.bind(this);
     
     this.getHomeworks();
   }
@@ -77,8 +78,19 @@ class addDue extends React.Component {
     this.getHomeworks();
   }
 
-  updateHomework() {
-
+  updateHomework(eventid, name, desc, duedate, points) {
+    const url = "/HomeworkHub/backend/update_event.php";
+    let formData = new FormData();
+    let data = '{"type":"homework", "eventid":"'+eventid+'", "name":"' + name + '", "description":"' + desc + '", "duedate":"' + duedate + '", "points":"' + points + '"}';
+    formData.set("formData", data);
+    axios.post(url, formData)
+    .then(response => {
+       var res = response["data"];
+       console.log(res);
+       if (res == 0) {console.log("success");}
+    })
+    .catch(err=>console.log(err));
+    this.getHomeworks();
   }
  
   render() {

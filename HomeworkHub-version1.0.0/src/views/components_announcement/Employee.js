@@ -50,7 +50,7 @@ const Employee = (props) => {
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <EditForm theEmployee={props.employee} />
+            <EditForm theEmployee={props.employee} updateAnnouncement={props.updateAnnouncement}/>
         </Modal.Body>
         <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>

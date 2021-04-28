@@ -73,7 +73,7 @@ const EmployeeList = (props) => {
                 {
                   currentEmployees.map(employee => (
                       <tr key={employee.id}>
-                        <Employee employee={employee} deleteHomework={props.deleteHomework}/>
+                        <Employee employee={employee} deleteHomework={props.deleteHomework} updateHomework={props.updateHomework}/>
                     </tr>
                   ))  
                 }

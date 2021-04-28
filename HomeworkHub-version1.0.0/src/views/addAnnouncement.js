@@ -16,6 +16,7 @@ class addAnnouncement extends React.Component {
       this.deleteAnnouncement = this.deleteAnnouncement.bind(this);
       this.addAnnouncement = this.addAnnouncement.bind(this);
       this.getAnnouncements = this.getAnnouncements.bind(this);
+      this.updateAnnouncement = this.updateAnnouncement.bind(this);
 
       this.getAnnouncements();
     }
@@ -38,7 +39,6 @@ class addAnnouncement extends React.Component {
     }
 
     addAnnouncement(id, name, desc, date) {
-      //USE Date() AND PASS IN CURRENT DATE!
       var today = this.getTodaysDate();
       const url = "/HomeworkHub/backend/create_event.php";
       let formData = new FormData();
@@ -67,8 +67,19 @@ class addAnnouncement extends React.Component {
      this.getAnnouncements();
     }
 
-    updateAnnouncement() {
-      //TODO
+    updateAnnouncement(eventid, name, desc, date) {
+      const url = "/HomeworkHub/backend/update_event.php";
+      let formData = new FormData();
+      let data = '{"type":"announcement", "eventid":"'+eventid+'", "name":"' + name + '", "description":"' + desc + '", "duedate":"' + date + '"}';
+      console.log(data);
+      formData.set("formData", data);
+      axios.post(url, formData)
+      .then(response => {
+         var res = response["data"];
+         if (res == 0) {console.log("success");}
+      })
+      .catch(err=>console.log(err));
+      this.getAnnouncements();
     }
   
     render() {

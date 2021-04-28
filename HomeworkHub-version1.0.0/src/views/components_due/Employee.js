@@ -51,7 +51,7 @@ const Employee = (props) => {
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <EditForm theEmployee={props.employee} />
+            <EditForm theEmployee={props.employee} updateHomework={props.updateHomework}/>
         </Modal.Body>
         <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
