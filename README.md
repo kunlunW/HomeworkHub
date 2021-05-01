@@ -26,3 +26,5 @@ Now, the database should be created and populated with several tables
     2. Navigate to /HomeworkHub/HomeworkHub-version1.0.0
     3. Run 'npm install' to get all updates
     4. Run 'npm start'
+    5. Install socket.io client and material UI 
+    6. Go to the server folder, and run npm start (this will run the server for the messenger)
