@@ -9,7 +9,7 @@ import LogIn from "views/LogIn.js";
 import Signup from "views/SignUp.js";
 import Classroom from "views/Classroom.js";
 import addAnnouncement from "views/addAnnouncement.js";
-
+import User from "views/chatroom.js";
 import ParentDashboard from "views/ParentDashboard.js";
 import ParentUserProfile from "views/ParentUserProfile.js";
 import ParentCalendar from "views/ParentCalendar.js";
@@ -159,6 +159,14 @@ const routes = [
     component: ParentJoinClass,
     layout: "/parent",
   },
+  {
+    path: "/chatroom",
+    name: "Chat Room",
+    icon: "nc-icon nc-circle-09",
+    component: User,
+    layout: "/admin",
+  },
+
 
 ];
 
